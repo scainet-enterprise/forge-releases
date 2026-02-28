@@ -2,7 +2,7 @@
   <h1 align="center">SCAINET Forge</h1>
   <p align="center"><strong>The development tool for the 99% who aren't developers.</strong></p>
   <p align="center">
-    <a href="https://github.com/scainet-enterprise/forge-releases/releases/latest"><img src="https://img.shields.io/badge/version-4.1.2-blue" alt="Version"></a>
+    <a href="https://github.com/scainet-enterprise/forge-releases/releases/latest"><img src="https://img.shields.io/badge/version-4.2.0-blue" alt="Version"></a>
     <a href="https://github.com/scainet-enterprise/forge-releases/releases/latest"><img src="https://img.shields.io/badge/status-Beta-brightgreen" alt="Beta"></a>
     <img src="https://img.shields.io/badge/platforms-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey" alt="Platforms">
     <a href="https://scainet.io/innovation"><img src="https://img.shields.io/badge/patents-6%20filed-orange" alt="Patents"></a>
@@ -23,11 +23,11 @@ If you can talk, you can build software.
 
 | Platform | Download | Size |
 |----------|----------|------|
-| **Windows** (x64) | [SCAINET-Forge_4.1.2_x64-setup.exe](https://github.com/scainet-enterprise/forge-releases/releases/download/v4.1.2/SCAINET-Forge_4.1.2_x64-setup.exe) | ~9 MB |
-| **macOS** (Apple Silicon) | [SCAINET-Forge_4.1.2_aarch64.dmg](https://github.com/scainet-enterprise/forge-releases/releases/download/v4.1.2/SCAINET-Forge_4.1.2_aarch64.dmg) | ~14 MB |
-| **macOS** (Intel) | [SCAINET-Forge_4.1.2_x64.dmg](https://github.com/scainet-enterprise/forge-releases/releases/download/v4.1.2/SCAINET-Forge_4.1.2_x64.dmg) | ~16 MB |
-| **Linux** (AppImage) | [SCAINET-Forge_4.1.2_amd64.AppImage](https://github.com/scainet-enterprise/forge-releases/releases/download/v4.1.2/SCAINET-Forge_4.1.2_amd64.AppImage) | ~89 MB |
-| **Linux** (Debian) | [SCAINET-Forge_4.1.2_amd64.deb](https://github.com/scainet-enterprise/forge-releases/releases/download/v4.1.2/SCAINET-Forge_4.1.2_amd64.deb) | ~15 MB |
+| **Windows** (x64) | [SCAINET-Forge_4.2.0_x64-setup.exe](https://github.com/scainet-enterprise/forge-releases/releases/download/v4.2.0/SCAINET-Forge_4.2.0_x64-setup.exe) | ~9 MB |
+| **macOS** (Apple Silicon) | [SCAINET-Forge_4.2.0_aarch64.dmg](https://github.com/scainet-enterprise/forge-releases/releases/download/v4.2.0/SCAINET-Forge_4.2.0_aarch64.dmg) | ~14 MB |
+| **macOS** (Intel) | [SCAINET-Forge_4.2.0_x64.dmg](https://github.com/scainet-enterprise/forge-releases/releases/download/v4.2.0/SCAINET-Forge_4.2.0_x64.dmg) | ~16 MB |
+| **Linux** (AppImage) | [SCAINET-Forge_4.2.0_amd64.AppImage](https://github.com/scainet-enterprise/forge-releases/releases/download/v4.2.0/SCAINET-Forge_4.2.0_amd64.AppImage) | ~89 MB |
+| **Linux** (Debian) | [SCAINET-Forge_4.2.0_amd64.deb](https://github.com/scainet-enterprise/forge-releases/releases/download/v4.2.0/SCAINET-Forge_4.2.0_amd64.deb) | ~15 MB |
 
 Or browse [all releases](https://github.com/scainet-enterprise/forge-releases/releases).
 
@@ -48,16 +48,18 @@ Or browse [all releases](https://github.com/scainet-enterprise/forge-releases/re
 | **Output verification** | PNEUMA — scans every response for assumptions | None |
 | **Voice interaction** | Built-in speech-to-text and text-to-speech | None |
 | **Audit trail** | Every action recorded, every session replayable | None |
+| **MCP integration** | Built-in marketplace, 10+ curated servers | Varies |
 | **Build size** | < 20 MB (native desktop, Tauri + Rust) | 500 MB+ (Electron) |
 | **Your API keys** | BYOK — bring your own keys, zero lock-in | Vendor-locked |
 
 ## Features
 
-- **15+ Agent Tools** — file operations, terminal, Git, web search, code analysis, and more
+- **39+ Agent Tools** — file operations, terminal, Git, web search, code analysis, database, memory, MCP, computer use
 - **4 LLM Providers** — Grok, Claude, GPT, Ollama (bring your own key)
 - **Voice Mode** — press mic, speak your instruction, watch it happen
 - **The Trinity** — HUMAN (input interpretation) + EGO (persistent identity) + PNEUMA (output verification)
 - **10-Article Constitution** — governance rules enforced on every action, not just suggested
+- **MCP Marketplace** — one-click install of GitHub, PostgreSQL, Slack, Brave Search, and more
 - **GitHub OAuth** — sign in with your GitHub account via Device Flow
 - **Tiered Subscriptions** — Free / Pro ($29/mo) / Enterprise
 - **Cross-Platform** — Windows, macOS (ARM + Intel), Linux
