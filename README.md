@@ -80,6 +80,34 @@ SCAINET Forge incorporates technology protected by 6 provisional patent applicat
 
 This repository contains compiled binaries and update manifests only. Source code is proprietary and maintained in a separate private repository. SCAINET Forge is built with [Tauri](https://tauri.app) (Rust backend) and [Svelte](https://svelte.dev) (frontend).
 
+## Release Channels
+
+FORGE uses a channel-based release system for controlled rollout:
+
+| Channel | URL | Description |
+|---------|-----|-------------|
+| **Beta** | `beta/latest.json` | Current development builds — updated automatically on release |
+| **Stable** | `stable/latest.json` | Production-ready builds — promoted from beta after verification (coming soon) |
+
+**Updater manifests** are stored as repo files (not release assets) to enable:
+- Multiple channels without asset duplication
+- Trivial promotion between channels
+- Stable URLs that never change
+
+Assets (binaries) remain in GitHub Releases. Manifests point to those assets.
+
+### For Developers
+
+The Tauri updater checks:
+```
+https://raw.githubusercontent.com/scainet-enterprise/forge-releases/main/beta/latest.json
+```
+
+This URL will remain stable. When stable channel launches, users can switch via:
+```
+https://raw.githubusercontent.com/scainet-enterprise/forge-releases/main/stable/latest.json
+```
+
 ---
 
 Built by [SCAINET](https://scainet.io) — Human + AI, building the future together.
