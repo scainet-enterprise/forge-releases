@@ -2,6 +2,15 @@
 
 > **Maintainers:** This file is copied to [forge-releases `CHANGELOG.md`](https://github.com/scainet-enterprise/forge-releases/blob/main/CHANGELOG.md) on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+## 5.13.3 (2026-03-21)
+
+- **Sentry:** Production-ready error tracking with release health and source maps.
+  - Events tagged with `scainet-forge@{VERSION}` for release tracking.
+  - Source maps uploaded in CI via `@sentry/vite-plugin` (readable stack traces in production).
+  - Automatic session tracking for crash-free % per release.
+  - Dev testing: `VITE_FORCE_SENTRY=1` env var + `window.__sentryTest()` helper.
+- **CI:** Added `SENTRY_AUTH_TOKEN`, `SENTRY_ORG`, `SENTRY_PROJECT` env vars for source map upload.
+
 ## 5.13.2 (2026-03-20)
 
 - **CI:** Single source of truth for app version — repo-root `VERSION` file + `npm run sync-version`; CI verifies consistency and that CHANGELOG has a matching heading.
