@@ -2,6 +2,11 @@
 
 > **Maintainers:** This file is copied to [forge-releases `CHANGELOG.md`](https://github.com/scainet-enterprise/forge-releases/blob/main/CHANGELOG.md) on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+
+## 5.13.5 (2026-03-21)
+
+- Automated version bump after merge; see [recent commits](https://github.com/scainet-enterprise/scainet-forge/commits/main) for details.
+
 ## 5.13.4 (2026-03-21)
 
 - **Infra:** Upgrade to Node.js 22 LTS (Node 20 EOL is April 2026).
