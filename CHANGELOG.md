@@ -2,6 +2,12 @@
 
 > **Maintainers:** This file is copied to [forge-releases `CHANGELOG.md`](https://github.com/scainet-enterprise/forge-releases/blob/main/CHANGELOG.md) on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+## 5.13.7 (2026-03-22)
+
+- **File Explorer:** Phase 1 fix for "Loading…" blanking the tree during agent file activity — `refresh({ silent: true })` on `agent:file_changed`, sequence guard for overlapping refreshes, header ⟳ badge while updating, full loading only for explicit refresh / mount / `working_dir_changed`.
+- **Refactor:** `src/lib/fileExplorer/fetchFileTreeSnapshot.ts` + `entriesToFileNodes` (shared with `loadDirectory`); Vitest coverage for staleness, races, empty/malformed IPC, and `rootPath` preserved when listing fails after `env_status`.
+- **Docs:** [ACTIONABLE_BUG_FIXES.md](./ACTIONABLE_BUG_FIXES.md) / [ACTIONABLE_IMPROVEMENTS.md](./ACTIONABLE_IMPROVEMENTS.md) — Phase 1 marked complete; Phase 2 (merge / payload) and Phase 3 (store + fs notify) captured.
+
 ## 5.13.6 (2026-03-22)
 
 - **Docs (S0):** [FORGE-ML-DATA-COLLECTION-S0.md](./FORGE-ML-DATA-COLLECTION-S0.md) — training-ready data collection for future fine-tuning (context summarisation, tool trajectories, preferences, consent tiers).
