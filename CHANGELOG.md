@@ -2,6 +2,11 @@
 
 > **Maintainers:** This file is copied to [forge-releases `CHANGELOG.md`](https://github.com/scainet-enterprise/forge-releases/blob/main/CHANGELOG.md) on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+
+## 5.13.9 (2026-03-24)
+
+This PR combines **CI auth changes** (SCAINET GitHub App token), **documentation / learnings** (FREE tier Upgrade visibility, ProjectPicker notes, investigation queues), and **small UI updates** (home page + Lifecycle Dashboard).
+
 ## 5.13.8 (2026-03-23)
 
 - **CI:** `build.yml` mirror job — authenticate to **`forge-releases`** with the **SCAINET** org GitHub App (`SCAINET_APP_ID`, `SCAINET_APP_PRIVATE_KEY`) instead of a long-lived `FORGE_RELEASES_TOKEN` PAT (git push to `main` + `gh release create` unchanged).
