@@ -2,6 +2,13 @@
 
 > **Maintainers:** This file is copied to [forge-releases `CHANGELOG.md`](https://github.com/scainet-enterprise/forge-releases/blob/main/CHANGELOG.md) on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+
+## 5.14.0 (2026-03-25)
+
+
+Complete lifecycle project flow overhaul for FORGE — delivering a seamless, intuitive experience for users from project creation through stage approval and advancement.
+
+
 ## 5.13.10 (2026-03-25)
 
 - **Docs (S0):** [S7-DEPLOYGATE-S0.md](./S7-DEPLOYGATE-S0.md) — exit/portability (Vercel, GitHub, Firebase/GCP), “automate in their accounts,” OAuth token lifecycle, GitHub App orchestration, novice UX, database/Sentry notes, enterprise BYO / IdP / connection modes; open questions Q11–Q13; Phase 1-ALT framing.
