@@ -1,22 +1,27 @@
 # SCAINET Forge Changelog
 
-> **Maintainers:** This file is copied to [forge-releases `CHANGELOG.md`](https://github.com/scainet-enterprise/forge-releases/blob/main/CHANGELOG.md) on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
+> **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+## 5.16.0 (2026-03-28)
+
+Test coverage expansion and MCP configuration fixes.
+
+- **Test coverage:** +34 Rust tests for ToolExecutor, PNEUMA scanner, sync pull, and lifecycle operations. Total Rust tests now ~500.
+- **MCP import fix:** Auto-split command strings when no args provided (supports Tavily documentation format).
+- **MCP test fix:** Prevent test from polluting production MCP config file.
+- **Docs:** Updated TEST_COVERAGE_AUDIT.md with P1 completion status; added startup log issues to ACTIONABLE_BUG_FIXES.md.
 
 ## 5.15.0 (2026-03-28)
 
 Implements full MCP Streamable HTTP transport support (2025-03-26 spec) and enhanced server configuration management, enabling direct connection to modern MCP servers like Tavily without requiring the `mcp-remote` stdio bridge.
 
-
 ## 5.14.0 (2026-03-25)
-
 
 Complete lifecycle project flow overhaul for FORGE — delivering a seamless, intuitive experience for users from project creation through stage approval and advancement.
 
-
 ## 5.13.10 (2026-03-25)
 
-- **Docs (S0):** [S7-DEPLOYGATE-S0.md](./S7-DEPLOYGATE-S0.md) — exit/portability (Vercel, GitHub, Firebase/GCP), “automate in their accounts,” OAuth token lifecycle, GitHub App orchestration, novice UX, database/Sentry notes, enterprise BYO / IdP / connection modes; open questions Q11–Q13; Phase 1-ALT framing.
+- **Docs (S0):** S7-DEPLOYGATE-S0.md — exit/portability (Vercel, GitHub, Firebase/GCP), "automate in their accounts," OAuth token lifecycle, GitHub App orchestration, novice UX, database/Sentry notes, enterprise BYO / IdP / connection modes; open questions Q11–Q13; Phase 1-ALT framing.
 - **Project picker:** Replace `catch (err: any)` with `unknown` + `formatTauriError`; log GitHub/clone/init/folder errors via `$lib/logger` (`ProjectPicker` tag).
 
 ## 5.13.9 (2026-03-24)
@@ -36,19 +41,19 @@ Complete lifecycle project flow overhaul for FORGE — delivering a seamless, in
 
 - **File Explorer:** Phase 1 fix for "Loading…" blanking the tree during agent file activity — `refresh({ silent: true })` on `agent:file_changed`, sequence guard for overlapping refreshes, header ⟳ badge while updating, full loading only for explicit refresh / mount / `working_dir_changed`.
 - **Refactor:** `src/lib/fileExplorer/fetchFileTreeSnapshot.ts` + `entriesToFileNodes` (shared with `loadDirectory`); Vitest coverage for staleness, races, empty/malformed IPC, and `rootPath` preserved when listing fails after `env_status`.
-- **Docs:** [ACTIONABLE_BUG_FIXES.md](./ACTIONABLE_BUG_FIXES.md) / [ACTIONABLE_IMPROVEMENTS.md](./ACTIONABLE_IMPROVEMENTS.md) — Phase 1 marked complete; Phase 2 (merge / payload) and Phase 3 (store + fs notify) captured.
+- **Docs:** ACTIONABLE_BUG_FIXES.md / ACTIONABLE_IMPROVEMENTS.md — Phase 1 marked complete; Phase 2 (merge / payload) and Phase 3 (store + fs notify) captured.
 
 ## 5.13.6 (2026-03-22)
 
-- **Docs (S0):** [FORGE-ML-DATA-COLLECTION-S0.md](./FORGE-ML-DATA-COLLECTION-S0.md) — training-ready data collection for future fine-tuning (context summarisation, tool trajectories, preferences, consent tiers).
-- **Docs (S0):** [S7-DEPLOYGATE-S0.md](./S7-DEPLOYGATE-S0.md) — S7 DeployGate intake (deployment ownership models, Vercel-first web apps, provider-adapter contract).
-- **Docs:** [S6-DEVOPS-EVIDENCE-S0.md](./S6-DEVOPS-EVIDENCE-S0.md) — revisions to DevOps evidence / Launch Pad S0.
-- **CI:** [auto-version-bump.yml](.github/workflows/auto-version-bump.yml) — smarter post-merge changelog entries (PR Summary / title, duplicate-heading guard, fallback placeholder).
+- **Docs (S0):** FORGE-ML-DATA-COLLECTION-S0.md — training-ready data collection for future fine-tuning (context summarisation, tool trajectories, preferences, consent tiers).
+- **Docs (S0):** S7-DEPLOYGATE-S0.md — S7 DeployGate intake (deployment ownership models, Vercel-first web apps, provider-adapter contract).
+- **Docs:** S6-DEVOPS-EVIDENCE-S0.md — revisions to DevOps evidence / Launch Pad S0.
+- **CI:** auto-version-bump.yml — smarter post-merge changelog entries (PR Summary / title, duplicate-heading guard, fallback placeholder).
 
 ## 5.13.5 (2026-03-21)
 
-- **Docs (S0):** [FORGE-INCIDENT-INTAKE-S0.md](./FORGE-INCIDENT-INTAKE-S0.md) — Forge-native incident intake and AI triage (phased path alongside Sentry).
-- **Docs (S0):** [S6-DEVOPS-EVIDENCE-S0.md](./S6-DEVOPS-EVIDENCE-S0.md) — DevOps evidence for S6 Launch Pad (CI/build/artifact signals in Forge; ownership boundaries).
+- **Docs (S0):** FORGE-INCIDENT-INTAKE-S0.md — Forge-native incident intake and AI triage (phased path alongside Sentry).
+- **Docs (S0):** S6-DEVOPS-EVIDENCE-S0.md — DevOps evidence for S6 Launch Pad (CI/build/artifact signals in Forge; ownership boundaries).
 
 ## 5.13.4 (2026-03-21)
 
