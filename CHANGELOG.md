@@ -3,6 +3,11 @@
 > **Maintainers:** This file is copied to [forge-releases `CHANGELOG.md`](https://github.com/scainet-enterprise/forge-releases/blob/main/CHANGELOG.md) on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
 
+## 5.15.0 (2026-03-28)
+
+Implements full MCP Streamable HTTP transport support (2025-03-26 spec) and enhanced server configuration management, enabling direct connection to modern MCP servers like Tavily without requiring the `mcp-remote` stdio bridge.
+
+
 ## 5.14.0 (2026-03-25)
 
 
