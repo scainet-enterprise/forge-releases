@@ -2,6 +2,18 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+## 5.18.0 (2026-03-28)
+
+Extended router decision logging and UI polish.
+
+- **Router decision logging:** Extended `routing_decisions` table with 9 new fields for comprehensive model selection analysis — tracks stickiness behavior, override reasons, detected capability dimensions, conversation depth, vision requirements, and fallback chains.
+- **Every decision logged:** Now records all routing decisions (not just model changes) for complete optimizer training data.
+- **Stickiness observability:** New `evaluate_stickiness()` returns override reasons (`tier_upgrade`, `vision_required`, `context_capacity`, `low_confidence`, `shallow_conversation`, `model_unavailable`).
+- **Dimension detection:** Router logs which capability dimension triggered model selection (`code`, `reasoning`, `perception`, `creativity`, `generation`).
+- **Bug fix:** Firestore undefined error in action-cards.ts — omit `previousCardHash` field when absent instead of passing `undefined`.
+- **UI:** Added Beta pill to TitleBar and ProjectPicker.
+- **Docs:** Updated AUDIT_TRAIL_AND_LIFECYCLE_FLOW.md with §1d Routing Decisions; cleaned up completed items from ACTIONABLE_BUG_FIXES.md; added terminal workspace opportunities doc.
+
 ## 5.17.0 (2026-03-28)
 
 Agent reliability and audit trail improvements.
