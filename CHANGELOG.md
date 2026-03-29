@@ -2,6 +2,29 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+## 5.20.0 (2026-03-29)
+
+Per-project working directory and automatic document-to-disk on lock.
+
+- **Document-to-disk:** When a lifecycle document is locked (immutable in SQLite), a markdown copy is now written to `{working_dir}/docs/{stage-folder}/{STAGE}-{PROJECT_ID}.md`. Disk write is best-effort — failure does not block the authoritative SQLite lock or Portal sync.
+- **Per-project working directory:** `lifecycle_projects` table gains a `working_dir TEXT` column (migration v18). Stored at project creation time and used by `lock_document()` to resolve the output path.
+- **Stage folder mapping:** `Stage::folder_name()` maps each stage to its docs subdirectory (e.g., S2 → `features`, S3 → `high-level-plan`).
+- **Caller wiring:** Both the IPC `lifecycle_create_project` command and the agent `lifecycle_create` tool now pass the working directory to the engine.
+- **Tests:** 9 new tests covering folder mapping, file writing, path creation, error handling, and graceful degradation. 535 total passing.
+
+## 5.19.0 (2026-03-29)
+
+Lifecycle stage personas, Mode B tool enforcement, shared engine wiring, and UI/UX refinements.
+
+- **Lifecycle Personas:** 8 stage-specific personas (SPARK through HERALD, S0-S7) with tailored system prompts, mandates, and per-stage DelegationPolicy tool permissions. Bootstrap upserts on startup keep SQLite in sync with source definitions. Persona descriptions use "operating persona" framing.
+- **Mode B DelegationPolicy Enforcement:** When a lifecycle persona is active and mode is not Conversational (Mode A), the persona's tool restrictions are now enforced at runtime. Mode A remains fully unrestricted. Policy is cleared after each agent loop.
+- **Shared LifecycleEngine:** All 6 lifecycle tool methods now use the shared AppState engine instead of creating a new DB connection and running full schema init per call. Fixes `lifecycle_status` timeout caused by SQLite lock contention.
+- **Per-Project Conversations:** Multi-session conversation store with archive and new-session support. Conversation header shows active persona name and role description.
+- **System Prompt Context:** Agents are told they are "operating under" a persona (not "You are"). Greeting directives reference the active project and stage, preventing generic responses.
+- **UI/UX:** Terminal and Agent Stream panels minimizable to session bar buttons; card view removed from Projects tab; duplicate gate coaching card removed; session bar controls centered.
+- **Housekeeping:** Rust warning cleanup, unused export removal, gitignore for test artifacts, deprecated `process_engine` standalone functions.
+- **Fix:** `sync-version.mjs` Cargo.lock regex now handles CRLF line endings.
+
 ## 5.18.0 (2026-03-28)
 
 Extended router decision logging and UI polish.
