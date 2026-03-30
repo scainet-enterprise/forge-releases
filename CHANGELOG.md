@@ -2,6 +2,15 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+## 5.20.2 (2026-03-30)
+
+File Explorer polish, editor reveal, MCP protocol tool counts, and security documentation.
+
+- **File Explorer:** VS Code–style file-type icons (CDN SVGs), chevron-only folders with Lucide `ChevronRight` rotation, unified muted label color for files and folders.
+- **Editor reveal:** Opening a file from the explorer dispatches `forge:reveal-editor` so the right panel switches to the editor tab.
+- **MCP:** Protocol store exposes per-server tool counts; TitleBar and MCP UI show tool numbers where relevant.
+- **Docs:** S0 note `FORGE-FIRESTORE-RULES-TENANT-ISOLATION-S0.md` and related updates to `FURTHER_INVESTIGATION_REQUIRED.md` and `AUDIT_TRAIL_AND_LIFECYCLE_FLOW.md`.
+- **Tests:** `fileIcons.test.ts` for icon URL and mapping behavior.
 
 ## 5.20.1 (2026-03-30)
 
