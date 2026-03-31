@@ -2,6 +2,16 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+## 5.20.3 (2026-03-31)
+
+EGO database migration fix, Firebase emulator reliability, documentation for data-sync testing, and version-control planning notes.
+
+- **Fix:** EGO migration `routing_decisions_extended` (v3_017) no longer runs duplicate `ALTER TABLE` statements. The extended columns already exist in the base schema; rerunning the migration on a fresh database caused `duplicate column name: model_changed` and a startup panic.
+- **Firebase:** Import `$lib/firebase` from `+layout.ts` so emulator connection runs early in the client lifecycle (fixes Auth emulator sign-in when components loaded `firebase` late).
+- **Firebase:** Dev-mode sign-in errors suggest enabling `VITE_USE_EMULATORS=true` when using seeded Auth emulator accounts.
+- **Docs:** `FURTHER_INVESTIGATION_REQUIRED.md` — new section on Forge data sync inconsistency (Firestore vs Portal API vs local `ego.db`) and impact on local testing.
+- **Docs (working):** `S0-FILE-EXPLORER-GIT-STATUS-OVERLAY.md` (S0 idea for explorer git status overlay). Version-control abstraction pipeline: `S1-VERSION-CONTROL-ABSTRACTION.md` through `S4-VERSION-CONTROL-ABSTRACTION.md` (triage through detailed action plan for a unified VCS layer in Forge).
+
 ## 5.20.2 (2026-03-30)
 
 File Explorer polish, editor reveal, MCP protocol tool counts, and security documentation.
