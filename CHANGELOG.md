@@ -2,6 +2,37 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+## 5.22.0 (2026-04-12)
+
+Bug fixes, test reliability, UI layout improvements, and GitHub auth hardening.
+
+- **Tier defaults:** All new projects now default to Standard tier instead of Enterprise. Existing Enterprise-defaulted projects migrated. Gold Review subtasks marked completed for Standard tier.
+- **Document visibility:** Review & Approve button only appears when the document actually exists in the database, preventing phantom approval prompts.
+- **Agent retry:** When `lifecycle_lock_document` or `lifecycle_save_draft` fails, the agent receives an explicit failure notice and retries automatically. User sees a clear error message instead of false success.
+- **UI layout:** Stage description inlined into the lifecycle rail row (dynamic per selected stage). Chat area fills remaining screen space via flex layout. Tasks/docs sections capped at 25vh when chat is active. Removed duplicate "Approve Plan" CTA banner.
+- **GitHub auth:** Detects organization OAuth third-party app restrictions and shows actionable warnings. User-friendly error message for DNS/network failures instead of raw reqwest errors.
+- **Project type selector:** New Project flow now includes project type radio (Job / Standard / Enterprise).
+- **Test fixes:** Windows path separators in `project_root` skip-dir checks. `file://` URL generation for workspace tests on Windows. Unique project IDs in conflict resolution tests to prevent parallel timestamp collisions.
+
+## 5.21.0 (2026-04-09)
+
+Version control abstraction (Save / Publish / Ship), unified VC state machine, workspace and Git worktree support, GitHub integration, conflict and manifest tooling, IPC modularization, project context store, lifecycle UI merge, and Portal sync hardening.
+
+- **Version control UX:** User-facing Save, Publish, and Ship replace raw git operations; `vcStateMachine` drives button labels, loading, offline, CI, and conflict states with integration tests.
+- **Workspace & worktrees:** Bare-repo worktrees, project initialization, migration paths, and New Project / Project Picker flows aligned with per-project branches.
+- **Save flow:** Staging merge on save, commit intent from conversation context, manifest and discard paths, local change detection (explorer, terminal idle, window focus).
+- **Publish & Ship:** GitHub API client; PR creation to `staging`; ship toward `main`; PR / CI status polling; cancel review and branch cleanup hooks; network checks before push-with-publish.
+- **Conflicts:** Detection, resolution UI, merge completion, conflict brief generation; FSM returns to a sane state after resolution (including publish retry).
+- **Manifest:** Drift detection, nested project roots, removal detection, manifest sync and CI template awareness where wired.
+- **IPC refactor:** Large extraction from `main.rs` into domain modules (version control, lifecycle, jobs, terminal, sync, personas, etc.) for maintainability.
+- **Project context store:** Shared reactive project context for UI and agent surfaces; related S1/S2 working docs.
+- **Lifecycle UI (merged):** Human-confirmed task progression with inline proceed controls; lifecycle list sync fixes; review-before-gate behavior and tier-aware seeding refinements as integrated from `feat/lifecycle-personas-ui-refinements`.
+- **Portal & sync:** Wait for Firebase auth before Portal pull; push ID token into Rust for Bearer calls; refresh token before `lifecycle_sync_portal`; Portal-only projects (`is_worktree` off) with **Link folder** and `link_folder_to_project`.
+- **Save button:** `no_changes` from `save_project` now emits `SAVE_SUCCESS` so the UI does not stay stuck on “Saving…”.
+- **Publish guard:** Invalidate network cache before online check; more resilient connectivity probing; logging around unpushed commits before publish.
+- **CI:** Path filters on workflows to cut unrelated runs.
+- **Docs:** Version control abstraction pipeline (S1–S4) and project context store triage/F&F; assorted planning and investigation notes.
+
 ## 5.20.3 (2026-03-31)
 
 EGO database migration fix, Firebase emulator reliability, documentation for data-sync testing, and version-control planning notes.
