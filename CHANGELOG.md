@@ -3,6 +3,14 @@
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
 
+## 5.25.0 (2026-04-14)
+
+This PR merges **`feat/version-control-abstraction-part-2`** into `main`, including version control / merge conflict work, documentation, and release **5.24.1**.
+
+## 5.24.1 (2026-04-14)
+
+- **Conflict resolution UI:** File-level block is context-only (region count, confidence, Preview defaults, disabled “Refine with AI” placeholder). Removed duplicate Apply from the top card; single Apply remains with per-region choices. Removed “Accept all suggested” from the hunk panel; “Restore defaults” appears only after the user changes a region. Planning doc updates in `S2-CONFLICT-UI-P1-P2.md`. Minor working-docs touch-ups for settings LLM provider notes.
+
 ## 5.24.1 (2026-04-14)
 
 - Project ownership model
@@ -10,22 +18,19 @@
 
 ## 5.24.0 (2026-04-12)
 
-
 - **Project Ownership Model**: Adds `project_members` table with role-based access (owner/editor/viewer), backfills existing projects on sign-in, and filters `list_user_projects` by user identity. Admins see all projects; regular users see only owned/membered projects. Prevents cross-user project visibility.
 - **UX Flow Fixes**: Fixes the broken project selection flow — selecting a project from the picker now correctly opens the Projects tab with that project loaded, shows the correct project in the session bar, and starts a fresh agent conversation (no stale chat from previous sessions).
 - **Freeform Mode**: Adds a "Just Start Building" option to the project picker so users can open FORGE without selecting a project — for experimentation, exploration, and non-project work.
-
-
 
 ## 5.23.1 (2026-04-12)
 
 - Lifecycle personas ui refinements
 
-
 ## 5.23.0 (2026-04-12)
 
 This release delivers the **version control abstraction** (Save / Publish / Ship), a **unified VC state machine**, **Git worktree workspace** support, **GitHub** publish/ship flows, **conflict and manifest** tooling, a major **IPC refactor** out of `main.rs`, the **project context store**, merged **lifecycle personas UI** work, and **Portal sync** hardening. It also bumps the app to **5.21.0** with changelog and synced semver across Tauri/npm/Cargo.
 **Stats vs `main`:** ~173 files changed; branch includes 36 commits ahead of `main` (including merge of `feat/lifecycle-personas-ui-refinements`).
+
 ---
 
 ## 5.22.0 (2026-04-12)
