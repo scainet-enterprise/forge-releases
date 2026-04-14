@@ -3,6 +3,11 @@
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
 
+## 5.24.1 (2026-04-14)
+
+- Project ownership model
+
+
 ## 5.24.0 (2026-04-12)
 
 
