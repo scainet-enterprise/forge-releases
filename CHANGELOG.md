@@ -2,6 +2,60 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+## 5.26.0 (2026-04-12)
+
+PROJ-PROMPTAUDIT deliverables. This release ships the findings from a full S0–S7 lifecycle audit of FORGE's prompt injection system — the first time a FORGE project was used to audit FORGE itself. The audit identified 8 findings (AF-001–AF-008), 16 Prompt Effectiveness Ledger entries (PEL-001–PEL-016), and produced 2 new features, 1 critical bug fix, and 5 new Rust modules.
+
+### Feature 8: Stage-Aware Agent Posture Model (PEL-015 fix)
+
+The highest-impact change from the audit. Replaces the static lifecycle Rule #1 ("draw it out gradually") in `lifecycle/mod.rs` — which caused agents to default to an interviewer posture at every stage — with 7 context-sensitive postures:
+
+- **S0 (Listener):** Capture the user's vision faithfully, one question at a time
+- **S1 (Analyst):** Evaluate feasibility with evidence, don't defer analysis to the user
+- **S2 (Co-Designer):** Propose features with rationale and traceability to S0
+- **S3 (Technical Lead):** Present trade-offs with recommendations, lead the technical conversation
+- **S4 (Planner):** Decompose the HLP into precise, verifiable steps with PRESERVE blocks
+- **S5–S7 (Builder):** Execute the plan, diagnose issues, report progress — don't request direction
+- **Default:** Single-question conversational fallback
+
+Also adds explicit **stage boundary rules** (Rule 2) that constrain each stage's scope — S0 captures ideas only, S3 does architecture only, S5 builds only, etc. — preventing agents from leaking work across stage boundaries.
+
+### Feature 10: Conditional Prompt Inclusion
+
+Reduces token cost on repeat messages by making large prompt sections conditional on `is_first_message`:
+
+- **First message:** Full tool documentation (~3,000 tokens), complete project structure (~500 tokens), FORGE capabilities overview (~400 tokens), and work management details are included
+- **Subsequent messages:** Concise one-line summaries replace these sections, saving ~3,900 tokens per message
+
+Wired through `system_prompt::build_system_prompt(is_first_message)` → `orchestrator.rs` derives state from `self.conversation.is_none()`.
+
+### Fix: Gateless Stage Advancement (AF-007)
+
+S5 has no gate in the backend (by design — it's a build stage), but the UI assumed every stage required `lifecycle_approve_gate` before advancement. This caused the "Approve & Advance" button to fail silently for S5, blocking project progression.
+
+Three changes:
+
+1. **`lifecycleTokens.ts`:** `GATE_IDS` correctly omits S5 (G5 is the S6→S7 gate, not S5→S6)
+2. **`ProjectDetailView.svelte` `onComplete`:** Detects gateless stages via `GATE_IDS[current_stage]` and calls `lifecycle_advance` directly, skipping `lifecycle_approve_gate`
+3. **`ProjectDetailView.svelte` UI:** New `needsGatelessAdvance` computed property renders a "Complete & Advance" button for stages without gates, and the `isAlreadyApproved` error handler now precisely detects "already approved" states instead of treating all errors as approvals
+
+### CATALYST Module: Phase 3+4 — Prompt Quality Data Layer
+
+Five new Rust modules in `src-tauri/src/catalyst/` plus three data files in `src-tauri/data/`:
+
+- **`registry.rs` + `patterns.toml`:** Pattern Registry — 16 prompt injection quality patterns with PEL cross-references, injection point mapping, per-stage filtering, and confidence weights. Loaded via `include_str!` with TOML schema validation.
+- **`pipeline.rs`:** PEL Pipeline — reads raw PEL entries from `ego.db`, categorises them by injection point, computes weights from severity × frequency, and exports structured TOML for downstream consumption.
+- **`token_budget.rs`:** Ceiling Manager — per-slot and global token budgets with `truncate_to_ceiling` (per-section) and `reconcile` (cross-section budget balancing that drops low-priority sections when overbudget).
+- **`quality.rs` + `quality_rubric.md`:** Quality Harness — PEL regression testing (checks for mitigation markers), token compliance checks against CeilingManager, structural validation, and composite scoring. Rubric defines objective (60%) and subjective (40%) criteria with "expert-calibre = consistent with Simon's manual guidance" anchor.
+- **`exemplars.rs` + `exemplars.toml`:** Exemplar Library — 12 gold-standard prompt injection templates across 4 injection points (system_prompt, v3_lifecycle, tool_docs, identity) with quality scores and PEL coverage references. `best_exemplar()` returns the highest-scoring template for a given injection point and stage.
+
+**106 catalyst tests passing** (Phases 1–4 + integration). `toml = "0.8"` added to `Cargo.toml` dependencies.
+
+### Audit Artifacts
+
+- **Prompt Effectiveness Ledger:** 16 entries (PEL-001 through PEL-016) tracking every identified prompt injection gap, root cause, and fix status
+- **Audit Findings:** 8 findings (AF-001 through AF-008) covering agent posture, knowledge injection, inter-agent referral, gateless advancement, S5 task types, ancillary document storage, and project-type awareness
+
 ## 5.25.2 (2026-04-14)
 
 - **Document revision cycle**: New `DocumentRevision` task type for review-to-revision tasks in S2/S3/S4. Agents now receive explicit step-by-step instructions to read review findings, read current draft, apply changes, and present a summary of revisions in conversation.
