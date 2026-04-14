@@ -2,6 +2,13 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+## 5.25.1 (2026-04-14)
+
+- **Prompt injection delivery restored**: Gate approval, task completion, and review approval actions now send context-rich instructions to FORGE agents instead of content-free `[proceed]` tokens. Agents receive stage transition details, completed/next task info, and tool guidance (PEL-012, PEL-013).
+- **New agent tools**: `lifecycle_get_draft` (read saved drafts), `lifecycle_get_document` (read locked stage documents), `lifecycle_reject_document` (delete locked doc for revision).
+- **Document rejection flow**: Review modal "Request changes" and ActionCardModal rejection now call `lifecycle_reject_document` and instruct the agent to revise.
+- **Fire-and-forget submitInstruction**: All UI-to-agent instruction calls are now non-blocking to prevent misleading errors when the underlying operation succeeded.
+- **Prompt Effectiveness Ledger**: New tracking document (PEL-001 to PEL-013) for systematic agent communication analysis.
 
 ## 5.25.0 (2026-04-14)
 
@@ -14,7 +21,6 @@ This PR merges **`feat/version-control-abstraction-part-2`** into `main`, includ
 ## 5.24.1 (2026-04-14)
 
 - Project ownership model
-
 
 ## 5.24.0 (2026-04-12)
 
