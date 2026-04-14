@@ -2,6 +2,13 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+## 5.25.2 (2026-04-14)
+
+- **Document revision cycle**: New `DocumentRevision` task type for review-to-revision tasks in S2/S3/S4. Agents now receive explicit step-by-step instructions to read review findings, read current draft, apply changes, and present a summary of revisions in conversation.
+- **Task-type-specific V3 prompt guidance**: The lifecycle prompt now injects behavioural instructions based on task type — `DocumentDraft` tasks instruct agents to present draft summaries in chat (PEL-014 fix); `DocumentRevision` tasks include the review document stage reference and a 5-step revision workflow.
+- **Enhanced review approval injection**: `[REVIEW APPROVED]` instruction now includes the specific review document stage (e.g., `S2-DIAMOND`) so agents know exactly which document contains the findings.
+- **PEL-014 logged**: Agent behaviour of saving drafts without presenting content in conversation now tracked and systemically addressed.
+
 ## 5.25.1 (2026-04-14)
 
 - **Prompt injection delivery restored**: Gate approval, task completion, and review approval actions now send context-rich instructions to FORGE agents instead of content-free `[proceed]` tokens. Agents receive stage transition details, completed/next task info, and tool guidance (PEL-012, PEL-013).
