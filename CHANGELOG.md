@@ -2,6 +2,79 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+## 5.27.0 (2026-04-12)
+
+PROJ-W5COGNITIVE: W5 Cognitive Checkpoints — a decisions-first architecture for structured, auditable reasoning. This is the foundation for on-chain decision attestation and cross-session context persistence.
+
+### W5 Decision Records
+
+Structured, individually hashable records that capture every decision an agent makes or presents to a human. Each record contains the question, all options with rationale, the selected option, rejection reasons for alternatives, who decided (human or agent), confidence score, and a SHA-256 attestation hash.
+
+Three decision severity tiers:
+
+- **Strategic** — Human-decided, individually chain-attestable (architecture, business model, scope)
+- **Tactical** — Logged, batch-attestable (implementation approach, library choice)
+- **Micro** — Log-only (variable names, formatting decisions)
+
+### Inline Decision Cards
+
+When an agent needs a human decision, it calls `w5_present_decision` which renders an interactive card directly in the chat stream. The card shows the question, all options with rationale, the agent's recommendation and confidence. The user clicks **Select**, **Defer**, or **Discuss** — the choice is recorded as a W5Decision with `decided_by_type = human`.
+
+New Svelte component: `DecisionCard.svelte` with severity-aware styling (amber/strategic, blue/tactical, slate/micro), reactive status tracking, and full IPC integration via `w5_decide`, `w5_defer`, `w5_discuss` Tauri commands.
+
+### W5 Agent Tools (3 new tools)
+
+| Tool                   | Purpose                                                                    |
+| ---------------------- | -------------------------------------------------------------------------- |
+| `w5_record_decision`   | Agent records its own autonomous decision with full structured audit trail |
+| `w5_present_decision`  | Agent presents a decision to the user as an interactive inline card        |
+| `w5_generate_handover` | Auto-generates a structured handover document from W5 context + decisions  |
+
+All three tools are registered in the tool executor with full JSON Schema definitions, routed through the lifecycle engine's database connection, and emit Tauri events where needed.
+
+### PNEUMA Decision Detection (6 new patterns)
+
+Extended `pneuma/scanner.rs` with decision-language detection patterns that flag when agents make decisions without using the structured W5 tools:
+
+- `decision_recommendation` — "I recommend", "I suggest we"
+- `decision_selection` — "let's go with", "I'm choosing"
+- `decision_rejection` — "I'm ruling out", "not suitable"
+- `decision_tradeoff` — "the trade-off is", "pros and cons"
+- `decision_assumption` — "I'll assume", "defaulting to"
+- `decision_question_posed` — "which one do you think", "your call"
+
+Each pattern produces a soft flag guiding agents toward structured capture. `IssueSeverity::Low` penalty adjusted from 3.0 to 2.0 to reflect the advisory nature.
+
+### W5 Context Snapshots & System Prompt Injection
+
+Context snapshots capture the enriched W5 dimensions (Who + stakeholders, What + outcomes, Where + research provenance, When + stage timing, Why + mission statement). The latest snapshot + recent decisions are injected into the agent's system prompt between the lifecycle and PNEUMA sections, giving every agent immediate awareness of the project's cognitive state.
+
+### Database Migration V19
+
+New tables `w5_decisions` and `w5_context_snapshots` in the lifecycle database, with full schema for all decision and context fields including hash storage and chain_tx placeholder for future on-chain attestation.
+
+### W5 Design Document
+
+Comprehensive architecture document (`strategy/W5_DESIGN.md`) capturing all 8 locked design decisions, detailed schemas, integration points, build order, and verification criteria. Created collaboratively during a structured design discussion before any code was written.
+
+### PROJ-TOOLENHANCE Gap Analysis
+
+Full audit of FORGE's tool inventory (85 existing tools) against strategic documents and patents. Identified 3 remaining gaps and proposed 51 new tools across 8 categories. Output captured in `strategy/TOOLENHANCE_GAP_ANALYSIS.md` and used to create a new S0 in the lifecycle database via VOLTAIC-18.
+
+### Housekeeping
+
+- **`.gitattributes`** — Added to normalize line endings (LF in repo, native on checkout), eliminating persistent CRLF ghost diffs on Windows
+- **`AppHandle` wiring** — Tool executor now receives the Tauri app handle for event emission, enabling tools to communicate with the frontend
+- **`W5_FORGE_COMPLETION_PROMPT.md`** — FORGE agent prompt for progressing PROJ-W5COGNITIVE through remaining lifecycle stages to project completion
+
+### Fixes
+
+- **`w5Store` logger calls** — Fixed TypeScript type errors: `logger.info`/`logger.error` require `(tag, message)` format, not single-string; removed unused `get` import from svelte/store
+
+### Test Coverage
+
+869 tests passing, 0 failures, 0 regressions. New tests cover W5 decision CRUD, SHA-256 hashing, context snapshot generation, all 6 PNEUMA decision-language patterns, and score calculation adjustments.
+
 ## 5.26.0 (2026-04-12)
 
 PROJ-PROMPTAUDIT deliverables. This release ships the findings from a full S0–S7 lifecycle audit of FORGE's prompt injection system — the first time a FORGE project was used to audit FORGE itself. The audit identified 8 findings (AF-001–AF-008), 16 Prompt Effectiveness Ledger entries (PEL-001–PEL-016), and produced 2 new features, 1 critical bug fix, and 5 new Rust modules.
