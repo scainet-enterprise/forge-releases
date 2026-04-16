@@ -2,6 +2,35 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+## 5.27.1 (2026-04-17)
+
+Extensible BYOK (bring-your-own-key) LLM providers, dynamic discovery, and OpenRouter — plus fixes so the model list and counts stay aligned when toggling providers on or off.
+
+### Providers & discovery
+
+- **Catalogue & validation** — IPC `get_llm_provider_catalogue` with stable provider ids; key validation per provider (e.g. Anthropic/Google/OpenAI/xAI list-models, Hugging Face `whoami`, OpenRouter models API). `save_api_keys` extended for OpenRouter (`OPENROUTER_API_KEY`), env status, `.env` migration/strip, and Stronghold wiring on the frontend.
+- **Gemini & Hugging Face** — Rust providers and discovery paths integrated into the dynamic registry (`registry.rs`).
+- **OpenRouter** — OpenAI-compatible chat (`openrouter.rs`), model discovery from `GET https://openrouter.ai/api/v1/models` (with sensible filters and cap), streaming with reasoning/tool-call handling, catalogue row + UI.
+- **model_capabilities.json** — Bumped to **1.1.0** with expanded score entries for Gemini, OpenRouter-routed models, and Hugging Face curated ids; `_meta.sources` for maintainers.
+
+### Settings UI
+
+- **SettingsDialog** — Unified Providers section: add/remove catalogue providers, API keys via Stronghold, Ollama URL, enabled toggles, save flow tied to `save_api_keys` + discovery.
+- **ApiKeySetup** — Help link, accessibility, discovery messaging updates.
+- **TitleBar** — Provider health chip with popover, OpenRouter in status list, **FolderInput** icon for switch project, Escape/outside-click behavior.
+
+### Model list & prefs (fixes)
+
+- **`buildSaveApiKeysParamsFromStore` / `hydrateRustFromStronghold`** — Single source for which keys hit process env; toggling a provider re-invokes discovery and refreshes the registry.
+- **`syncLlmEnvAndRegistry`** — Used after provider/Ollama toggles, remove-provider, and Models panel refresh.
+- **`filterModelsByLlmPrefs`** — UI lists and title-bar counts respect `llmProviders.enabled` and `ollamaEnabled` (incl. `grok` → `xai` mapping); reactive `displayModels` in **ModelPanel** replaces `{#each filteredModels()}` for reliable updates.
+- **`reconcileActiveModelAfterRegistryChange`** — Reconciles active model against prefs-filtered models when appropriate.
+
+### Tests & docs
+
+- Unit tests for settings helpers and catalogue selection utilities; lifecycle test alignment.
+- Working docs updates under `docs/paul-working-docs/` (CONFIGURABLE_SETTINGS, S2–S4 extensible LLM providers).
+
 ## 5.27.0 (2026-04-12)
 
 PROJ-W5COGNITIVE: W5 Cognitive Checkpoints — a decisions-first architecture for structured, auditable reasoning. This is the foundation for on-chain decision attestation and cross-session context persistence.
