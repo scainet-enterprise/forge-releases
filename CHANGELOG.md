@@ -2,6 +2,38 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+## 5.27.2 (2026-04-18)
+
+File explorer **Git / version-control decorations**, **`.gitignore` integration**, and **merge-safe silent refresh** — plus everything from **5.27.1** below when comparing this branch to `main` (still at **5.27.0**).
+
+### Critical fix — W5 orchestrator deadlock
+
+- **Same-thread deadlock in W5 prompt injection** — The W5 Cognitive Checkpoints feature (`2cf93e6`) called `lifecycle_engine.project_status()` while already holding `lifecycle_engine.db().lock()`. Since `std::sync::Mutex` is non-reentrant, this caused the agent session to hang immediately after "Lifecycle mode active" with no LLM call ever made.
+- **IPC lock contention** — `list_user_projects` and `get_project_state` held the DB lock during slow filesystem/git operations, extending contention. Now both release the lock immediately after the SQL query.
+- See `docs/paul-working-docs/RCA-AGENT-LOOP-BLOCKING.md` for full root-cause analysis.
+
+### File explorer — Git working tree
+
+- **Porcelain v2** — IPC `get_git_working_tree_status` (`git status --porcelain=v2`), `gitDecorationStore`, debounced refresh on `forge:file-saved`, `agent:file_changed`, focus, terminal idle, and VC events.
+- **Row styling** — Modified / staged / untracked badges and accent classes; **unsaved editor buffer** (`dirtyPathKeys`) shows distinct “unsaved” styling before disk matches Git.
+- **Rust** — Parser fix for real-world modified lines (9-token porcelain lines); non-repo and spawn failures handled without breaking the tree load.
+
+### File explorer — `.gitignore` and “show hidden”
+
+- **IPC** `check_git_ignore_paths` (`git check-ignore -z --no-index --stdin`) for batch ignore checks — **`--no-index`** applies `.gitignore` rules even for **tracked** files (default `check-ignore` skips them), so muted styling and “hidden when gitignored” match editor expectations.
+- **Default hidden** — Build/cache dir names (e.g. `node_modules`, `.git`, `target`) and junk filenames are hidden with the same toggle as dotfiles; **gitignored** paths default hidden; all can be shown with the eye control.
+- **Muted rows** — Gitignored entries use `forge-explorer-gitignored` when visible.
+- **`patchTreeGitIgnoreFlags`** — Immutable tree clone so Svelte updates ignore styling immediately after `.gitignore` saves; **immediate** reapply on `forge:file-saved` (plus short debounced full silent refresh).
+
+### File explorer — merge snapshot (Phase 2)
+
+- **`mergeFileTreeSnapshot`** — Merges structural `list_directory` snapshots into existing UI state (expanded folders, loaded children) so silent refresh does not reset the tree.
+- **`refresh` race** — `try`/`finally` clears loading only for the latest `refreshSeq`; avoids stuck “Loading…” when overlapping refreshes occur (e.g. non–git repos).
+
+### Tests & docs
+
+- Vitest coverage for `fetchFileTreeSnapshot`, `mergeFileTreeSnapshot`, `gitDecorationUi`, path utilities, and related stores; working docs under `docs/paul-working-docs/` (S2–S4 file explorer merge / decorations).
+
 ## 5.27.1 (2026-04-17)
 
 Extensible BYOK (bring-your-own-key) LLM providers, dynamic discovery, and OpenRouter — plus fixes so the model list and counts stay aligned when toggling providers on or off.
