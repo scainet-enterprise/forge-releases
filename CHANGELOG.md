@@ -2,6 +2,15 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+## 5.27.4 (2026-04-19)
+
+### Agent orchestrator modularization
+
+- **Layout** — `agent/orchestrator` is a directory module: `mod.rs` facade plus `display.rs`, `escalation.rs`, `events.rs`, `hints.rs`, and `loop_run/` (`mod.rs` + `stream.rs`). Public `AgentOrchestrator` API and Tauri `agent:*` event names are unchanged (move-only refactor).
+- **Extracted helpers** — Display/preview (`strip_internal_tags`, truncation, file meta, tool arg summaries), model escalation (`try_escalate`), serializable event DTOs, lifecycle/PE hints, loop helpers (system prompt assembly, stream buffer + tag stripping, task gates, tool↔LLM mapping, lifecycle tool UI emits and LLM notices, `dispatch_llm_stream_event`).
+- **Tests** — 65 focused unit tests under `agent::orchestrator` (was a smaller set pre-split).
+- **Docs** — S4 execution log and actionable-improvements entry for modularization milestone; `FURTHER_INVESTIGATION_REQUIRED` note on Project Documents vs filesystem (locked docs + task `linkedDocs`).
+
 ## 5.27.3 (2026-04-19)
 
 ### Integrated terminal
