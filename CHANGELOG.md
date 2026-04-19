@@ -2,6 +2,28 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+## 5.27.3 (2026-04-19)
+
+### Integrated terminal
+
+- **PTY ↔ xterm sizing** — After `fit()`, always resizes the backend PTY when `cols`/`rows` are valid (not only after `ready`), so wrapping and backspace match the visible grid.
+- **Project root CWD** — `resolveTerminalCwd()` prefers `projectContextStore.workingDir`, falls back to `env_status.working_dir`, then `"."`. Vitest coverage in `terminalCwd.test.ts`.
+- **Project switch (single tab)** — On `working_dir_changed`, if exactly one terminal tab is ready and the path changed, the tab is closed and recreated so the shell starts in the new directory without injecting a visible `cd`.
+- **IPC `terminal_execute`** — One-shot commands use the orchestrator working directory when it exists on disk (`execute_command_in_dir`); Rust unit test for cwd on Unix and Windows.
+- **PTY idle thread** — Shared shutdown flag and `Drop` on `PtyInstance` so the idle-detection loop exits when a tab is closed (avoids orphaned threads).
+- **Frontend** — `Terminal.svelte` uses typed `@xterm/*` instances and constructors; clearer separation from dynamic import.
+
+### Editor & workspace UI
+
+- **Editor tabs** — Tab bar and editor store support for tab-style navigation alongside **CodeEditor** / **EditorPanel** wiring.
+- **Project picker** — Freeform working-directory flow, folder picker helpers, and navigation back to the picker home.
+- **`+page.svelte`** — Layout and integration updates for the above.
+
+### Documentation
+
+- Working docs reorganized under `completed/`, `partial-or-blocked/`, and `raw-research/`.
+- New or updated S0 notes: agent orchestrator modularization, GitHub org/repo OAuth, settings BYOK phase B / N5 / phase D.
+
 ## 5.27.2 (2026-04-18)
 
 File explorer **Git / version-control decorations**, **`.gitignore` integration**, and **merge-safe silent refresh** — plus everything from **5.27.1** below when comparing this branch to `main` (still at **5.27.0**).
