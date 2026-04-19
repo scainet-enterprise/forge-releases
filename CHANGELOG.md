@@ -2,6 +2,15 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+## 5.27.5 (2026-04-20)
+
+### Lifecycle DB mutex discipline (follow-up)
+
+- **Rust** — Module and `LifecycleEngine` rustdoc: `std::sync::Mutex` around SQLite is not reentrant; do not call `project_status` / similar while holding `db().lock()` on the same engine; avoid slow I/O or `.await` under the guard.
+- **W5 agent tools** — `w5_record_decision`, `w5_present_decision`, and `w5_generate_handover` call `project_status` **before** `db().lock()` inside `spawn_blocking`, fixing a same-thread deadlock class (see RCA).
+- **Tests** — `project_status_then_db_lock_same_thread_succeeds` regression on `LifecycleEngine`.
+- **Docs** — S0–S4 lifecycle lock-discipline working docs and `ACTIONABLE_IMPROVEMENTS` updated; `PROJECT_LEARNINGS` #34 expanded (`&Connection` helper note, execution summary).
+
 ## 5.27.4 (2026-04-19)
 
 ### Agent orchestrator modularization
