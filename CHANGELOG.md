@@ -2,6 +2,14 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+## 5.27.6 (2026-04-21)
+
+### Fix — Windows console-window flashing on file/focus/idle events
+
+- **`src-tauri/src/ipc/git_working_tree.rs`** — All three `git` spawns (`git status --porcelain=v2`, `git rev-parse --is-inside-work-tree`, `git check-ignore --stdin`) now go through `crate::agent::tools::hidden_command`, which sets `CREATE_NO_WINDOW` on Windows. Previously these used `tokio::process::Command::new("git")` directly, which caused a console window to flash open and closed on every File Explorer git-decoration refresh — and those refreshes are debounced to file save, agent file change, window focus, terminal idle, and VC events, so the flashing read as a continuous loop on Windows. macOS / Linux unaffected.
+- **Module rustdoc** added to `git_working_tree.rs` requiring all `git` spawns in that module to use `hidden_command` to prevent future regressions.
+- **Follow-up tracked** in `docs/paul-working-docs/ACTIONABLE_IMPROVEMENTS.md` ("Centralize Windows `CREATE_NO_WINDOW` for child processes") to lift the helper into a shared `util/process.rs` and convert the remaining `Command::new` spawn sites in `version_control/operations.rs`, `version_control/conflict/lockfile.rs`, `session/manager.rs`, `agent/tools/vc_conflict.rs`, and `protocols/stdio_transport.rs`.
+
 ## 5.27.5 (2026-04-20)
 
 ### Lifecycle DB mutex discipline (follow-up)
