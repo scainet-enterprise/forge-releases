@@ -2,13 +2,51 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
-## 5.27.6 (2026-04-21)
+## 5.27.7 (2026-04-21)
 
-### Fix — Windows console-window flashing on file/focus/idle events
+### DbHandle — async SQLite wrapper (T1–T7 spike)
 
-- **`src-tauri/src/ipc/git_working_tree.rs`** — All three `git` spawns (`git status --porcelain=v2`, `git rev-parse --is-inside-work-tree`, `git check-ignore --stdin`) now go through `crate::agent::tools::hidden_command`, which sets `CREATE_NO_WINDOW` on Windows. Previously these used `tokio::process::Command::new("git")` directly, which caused a console window to flash open and closed on every File Explorer git-decoration refresh — and those refreshes are debounced to file save, agent file change, window focus, terminal idle, and VC events, so the flashing read as a continuous loop on Windows. macOS / Linux unaffected.
-- **Module rustdoc** added to `git_working_tree.rs` requiring all `git` spawns in that module to use `hidden_command` to prevent future regressions.
-- **Follow-up tracked** in `docs/paul-working-docs/ACTIONABLE_IMPROVEMENTS.md` ("Centralize Windows `CREATE_NO_WINDOW` for child processes") to lift the helper into a shared `util/process.rs` and convert the remaining `Command::new` spawn sites in `version_control/operations.rs`, `version_control/conflict/lockfile.rs`, `session/manager.rs`, `agent/tools/vc_conflict.rs`, and `protocols/stdio_transport.rs`.
+Introduces `DbHandle`, a new async SQLite access layer that replaces direct `Arc<Mutex<Connection>>` usage with structured read/write/transaction APIs, automatic tracing instrumentation, and graceful shutdown with WAL checkpoint.
+
+#### New module: `src-tauri/src/db/`
+
+- **`DbHandle`** — Single-owner async wrapper over `tokio-rusqlite`:
+  - `read(closure)` — Read-only operations with automatic `db.read` tracing span
+  - `write(closure)` — Exclusive write operations with `db.write` span
+  - `transaction(closure)` — Multi-statement transactions with `db.transaction` span
+  - `shutdown()` — Graceful close with WAL checkpoint and `db.shutdown` span
+  - `with_blocking(closure)` — Deprecated shim for mechanical migration of existing sync code
+  - `for_test()` — Isolated in-memory database for unit tests (unique URI per instance)
+- **`DbError`** — Structured error enum: `Sqlite`, `Driver`, `ShuttingDown`, `ReadPoolTimeout`
+- **Connection init** — `open_writer()` / `open_reader()` with PRAGMA settings (WAL, foreign keys, busy timeout)
+
+#### App shell integration
+
+- **`main.rs`** — `AppState` includes `db_handle: Arc<DbHandle>`; graceful shutdown on `RunEvent::ExitRequested` / `RunEvent::Exit` calls `db_handle.shutdown().await`
+- **Startup** — `DbHandle::open()` with `block_on` for synchronous initialization before Tauri runs
+
+#### LifecycleEngine hybrid compatibility
+
+- **Backward compatible** — `LifecycleEngine` now holds both `db: Arc<Mutex<Connection>>` (legacy) and `db_handle: Arc<DbHandle>` (new)
+- **`db()`** — Deprecated accessor for existing code; emits deprecation warning
+- **`db_handle()`** — New async accessor for phased migration
+- **`new_for_test()`** — Test constructor using legacy-only path with dummy `DbHandle`
+- **Lock count** — 146 → 144 (lifecycle hybrid; remaining subsystems unchanged)
+
+#### Documentation & learnings
+
+- **S4 §5** — Execution findings updated with T7 spike results and hybrid approach notes
+- **Learning #34** — Execution note added for `DbHandle` availability and migration status
+- **ACTIONABLE_BUG_FIXES.md** — Documented unrelated log anomalies found during smoke testing (persona bootstrap, task seeding, doc watcher, portal 401)
+
+#### Testing
+
+- **Unit tests** — `db::handle::tests` (write/read roundtrip, transaction commits/rollbacks, test isolation)
+- **Manual smoke** — macOS and Windows verified: normal lifecycle flow, graceful shutdown with `db.shutdown` span
+
+#### Dependencies
+
+- **`tokio-rusqlite = "0.5.1"`** — Async SQLite driver
 
 ## 5.27.5 (2026-04-20)
 
