@@ -2,6 +2,25 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+## 5.27.8 (2026-04-21)
+
+### SQLite access — lifecycle on DbHandle only (S4 T5 closeout)
+
+Completes the lifecycle slice of the S4 migration: `LifecycleEngine` no longer exposes `db()`; all lifecycle database work goes through `DbHandle` (`read` / `write` / `transaction` / `with_blocking` / `with_blocking_read`). IPC and other subsystems that still use synchronous `rusqlite` on the shared file now take `state.ego.db()` (legacy `Arc<Mutex<Connection>>`) until ego is migrated in a later phase.
+
+#### Backend
+
+- **`LifecycleEngine`** — `DbHandle`-only internals; `db_handle()` accessor; `new_for_test()` applies full EGO schema via `ego::db::apply_schema_and_migrations`.
+- **`ego::db`** — `apply_schema_and_migrations(conn)` for shared schema + migrations (used by test setup and `initialize()`).
+- **IPC** — `lifecycle`, `environment`, `w5`, and `version_control/*` updated to use `ego` for mutex DB access where appropriate; lifetime fixes (`db_arc` binding) where needed.
+- **Agent** — Orchestrator W5 context via `db_handle.read().await`; Catalyst context via `ego.db()`; W5 agent tools use `db_handle.write().await`. Optimizer feedback still uses `ego.db().lock()` (expected until T14).
+- **`DbHandle` tests** — File-backed round-trip + WAL persistence (`file_backed_write_read_persistence`); concurrent read-pool smoke (`concurrent_reads_do_not_block`).
+
+#### Documentation & learnings
+
+- **S4 §5** — T6+T7 spike closeout (S1 §11a.1 checklist), T8 agent/orchestrator notes.
+- **Learning #34** — Updated: lifecycle is DbHandle-only; remaining mutex sites listed by area.
+
 ## 5.27.7 (2026-04-21)
 
 ### DbHandle — async SQLite wrapper (T1–T7 spike)
