@@ -2,6 +2,29 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+## 5.27.11 (2026-04-22)
+
+### Fix: nested Tokio runtime from EGO + `DbHandle::with_blocking` (S4)
+
+**Runtime:** Tauri `async` commands, `tokio::spawn` agent tasks, and the orchestrator run on the async runtime’s worker threads. Calling **`EgoEngine`** (which uses `DbHandle::with_blocking` → `block_on` internally) from those paths caused **`Cannot start a runtime from within a runtime`**, failed DB reads/writes, and the EGO dashboard stalling on “loading identity.”
+
+**Approach:** Prefer **`DbHandle::read` / `write` + `.await`** on async paths. Do not nest `block_on` inside an already running runtime.
+
+#### Backend
+
+- **`ego::build_identity_context_for_conn`** — Builds the same system-prompt EGO block as `EgoEngine::build_identity_context` on a raw `&Connection` (used from async `read`). `EgoEngine::build_identity_context` now delegates to this helper via `with_blocking_read` for sync call sites.
+- **`main.rs` — `start_agent_session`** — Naming ceremony, session records, EGO complete/memory/stats/badges, post-session audit, and AEF config for the run use **`db_handle` async APIs**; **`load_config_from_conn`** is bridged with **`config::loader::string_to_rusqlite`** for `read`’s `rusqlite::Result` signature. **`run_agent_loop`** no longer receives **`Arc<Mutex<EgoEngine>>`**, only **`Arc<DbHandle>`**.
+- **`agent/orchestrator/mod.rs` — `run_agent_loop`** — PNEUMA and Constitution **`log_action`** paths use **`db_handle.write().await`**. Tool success/failure EGO logging uses **`tokio::spawn` + `db_handle.write().await`** (with **`Option<String>`** for file paths to satisfy `Send + 'static` closures) instead of **`spawn_blocking` + `EgoEngine`**.
+- **IPC** — Prior **`ipc/ego.rs`** and **`ipc/config.rs`** work remains on **`db_handle` async** (no `EgoEngine` from async Tauri commands).
+
+#### Documentation
+
+- **`docs/paul-working-docs/TECHNICAL_DEBT.md`** — Notes on (1) “0 iterations” in session summary vs. actual LLM turns, (2) repeated “Seeded 3 standard task(s)” INFO noise.
+
+#### Testing
+
+- **`cargo check`** (release-related validation during development).
+
 ## 5.27.10 (2026-04-22)
 
 ### SQLite access — audit on `DbHandle` (S4 T11)
