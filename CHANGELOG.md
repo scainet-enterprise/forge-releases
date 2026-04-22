@@ -2,6 +2,27 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+## 5.27.10 (2026-04-22)
+
+### SQLite access — audit on `DbHandle` (S4 T11)
+
+Moves **`AuditStore`**, **`AuditEngine`**, and audit-related IPC to **`Arc<DbHandle>`** with async **`record`**, **`verify`**, **`events`**, **`export_session`**, and related export APIs. Startup uses **`AuditEngine::init`**. Orchestrator tool-result audit runs via **`tokio::spawn`** so async `record` is not called inside blocking pools; **`export_project_transcript`** loads audit before holding the EGO mutex so the IPC future stays **`Send`**. Arbiter tests use **`block_on(AuditEngine::test_engine())`** to avoid nested Tokio runtimes with **`LifecycleEngine::new_for_test`**.
+
+#### Backend
+
+- **`audit/`** — `AuditStore` / `export` / `transcript` on `DbHandle`; `#[cfg(test)]` **`test_engine()`** helper.
+- **IPC** — `ipc/audit`, `ipc/lifecycle` audit calls, and related commands **`await`** audit APIs.
+- **Agent** — Orchestrator audit **`await`**, with EGO + audit split where needed.
+- **`main.rs`** — **`tauri::async_runtime::block_on(AuditEngine::init(db_handle))`** at startup.
+
+#### Documentation
+
+- **S4 §5** — `rg` §1.3 total **57** after T11; **`audit/`** app code at **0** lock-site matches in §1.3.
+
+#### Testing
+
+- Audit store/export/transcript and arbiter tests updated for async audit; **`cargo test`** green.
+
 ## 5.27.9 (2026-04-22)
 
 ### SQLite access — CATALYST, IPC, and orchestrator on `DbHandle` (S4 T9–T10)
