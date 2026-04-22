@@ -2,6 +2,37 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+## 5.27.12 (2026-04-22)
+
+### SQLite access — agent tools on `DbHandle`, remove dead EGO escape hatches (S4)
+
+Finishes the **agent runtime** slice of the S4 migration: the **tool executor** uses the shared **`Arc<DbHandle>`** for VC conflict tools, long-term memory (LTM) tools, and **tool metrics**—no ad-hoc `Connection::open` to `ego.db`. Removes unused **`agent::session_manager`** (never wired; distinct from `session::manager` in `main`) and legacy **`ego::db::get_db_connection`** / **`initialize()`** now that startup and tools go through **`DbHandle::open`** + **`apply_schema_and_migrations`**.
+
+#### Backend
+
+- **`ToolExecutor`** — `set_db_handle`, `require_db()`; `record_tool_metric` uses **`db_handle.write().await`** in a spawned task; **memory** store/recall/context use **`write`** with a shared **`map_agent_memory_err`** (boxes `anyhow::Error` into `rusqlite::Error::ToSqlConversionFailure` for the closure contract; `UserFunctionError` is behind rusqlite `features = ["functions"]`, not enabled).
+- **`vc_conflict` tools** — `vc_show_conflicts`, `vc_resolve_file`, `vc_abort_merge`, `vc_mark_resolved`, `vc_undo_resolution`, `vc_regenerate_lockfile` take **`&Arc<DbHandle>`** and use **`read` / `write` + `await`** instead of `get_db_connection()`.
+- **`AgentOrchestrator::set_db_handle`** and **`AgentPool::with_db_handle`** — spawned agents get the same DB wiring as the primary orchestrator; **`main`** calls **`agent.set_db_handle(db_handle.clone())`** and builds the pool with **`with_db_handle`**.
+- **`ego::db`** — delete **`get_db_connection`** and **`initialize()`**; keep **`db_path`**, **`ensure_db_parent_dir`**, **`apply_schema_and_migrations`**.
+- **Removed** — **`src-tauri/src/agent/session_manager.rs`** and **`pub mod session_manager`** from **`agent/mod.rs`**.
+
+#### Maintenance
+
+- **`db/mod.rs`** — remove unused re-exports of PRAGMA constants; clarify module docs for sync tests vs **`with_blocking`**.
+- **`hidden_command` (`agent/tools/mod.rs`)** — `#[cfg(windows)]` / `#[cfg(not(windows))]` so non-Windows builds avoid **`unused_mut`**.
+- **`version_control/git_ops`** — drop unnecessary **`mut`** on `repo.index()` in merge-state handling.
+- **`lifecycle/documents.rs` / `gates.rs`** — remove unused **`rusqlite::Connection`** imports.
+- **`lifecycle` tests** (`play_mode_no_injection`, `active_project_selects_correct_prompt`) — comments explaining why they stay sync **`#[test]`** + deprecated **`with_blocking`** (nested **`block_on`** with **`build_v3_lifecycle_prompt_section`** / **`project_status`**).
+
+#### Documentation
+
+- **`docs/paul-working-docs/TECHNICAL_DEBT.md`** — resolved multi-tab `session_manager` + **`get_db_connection`**; new item **S4: `LifecycleEngine` / `JobEngine` still use `with_blocking` / `with_blocking_read`** (epic: async facades, **`read` / `write` / `.await`**).
+- **`docs/paul-working-docs/TEST_COVERAGE_AUDIT.md`** — drop row for removed **`agent/session_manager.rs`**.
+
+#### Testing
+
+- **`cargo test`** — full suite green after changes.
+
 ## 5.27.11 (2026-04-22)
 
 ### Fix: nested Tokio runtime from EGO + `DbHandle::with_blocking` (S4)
