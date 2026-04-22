@@ -2,6 +2,29 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+## 5.27.13 (2026-04-23)
+
+### SQLite access — S4 T15 program closeout + audit chain hardening
+
+Completes the **S4 Detailed Action Plan** (T15): **S2 §8** definition-of-done evidence in **S4 §5.2**, **S0–S3** SQLite architecture docs moved to **`docs/paul-working-docs/completed/`** with thin redirect stubs at the old paths, **`TESTING.md`** (macOS/Windows manual matrix vs Linux CI), and **Learning #34** retitled per **S1 §15.2** (with **Historical context** for the W5 mutex incident). **Removes `DbHandle::with_blocking`** and migrates **lifecycle** / **IPC** / **orchestrator** paths to **`read` / `write` / `transaction` + `.await`** (or narrow `block_on` at sync boundaries).
+
+#### Backend
+
+- **`AuditStore::record_chained`** — parent read + insert in a **single `db.transaction`** (S2 §7); **`AuditEngine::record`** delegates; **in-process cache** for last event removed.
+- **Tests** — **`eight_concurrent_records_same_session_pass_verify_chain`** (8 concurrent `record` + `verify_chain`).
+- **`AuditEventType`** — **`Copy`** for clean transaction closures.
+- **`db/handle.rs`** — delete **`with_blocking`** / **`with_blocking_read`**; **`lifecycle`**, **`ipc`**, **`catalyst`**, **`orchestrator`** — async facades / no blocking shims on the hot paths covered in this branch.
+
+#### Documentation
+
+- **`S4-SQLITE-ACCESS-ARCHITECTURE.md`** — status **Complete**, **§5.2** DoD table, **§6** acceptance.
+- **`TESTING.md`** (repo root); **`.github/workflows/build.yml`** — comment linking S2 §11 / DoD #11 to manual matrix.
+- **`PROJECT_LEARNINGS.md`** — Learning **#34** final form; **Review History** row.
+
+#### Testing
+
+- **`cargo test`** — full suite green.
+
 ## 5.27.12 (2026-04-22)
 
 ### SQLite access — agent tools on `DbHandle`, remove dead EGO escape hatches (S4)
