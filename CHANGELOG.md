@@ -2,6 +2,28 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+## 5.27.9 (2026-04-22)
+
+### SQLite access — CATALYST, IPC, and orchestrator on `DbHandle` (S4 T9–T10)
+
+Extends the **`DbHandle`** migration to the **CATALYST** stack, **CATALYST IPC**, **W5 / environment / version-control** commands that touch the shared DB, and **orchestrator** paths that assemble CATALYST context. Finishes **T10** by moving **`CatalystConfig`** to **`Arc<DbHandle>`** with an **async** instance API (no `self.db.lock()` in app code). Static `get_or_default_conn` / `set_conn` / `delete_conn` remain for use inside `read` / `write` closures.
+
+#### Backend
+
+- **IPC** — `ipc/catalyst`, `ipc/w5`, `ipc/environment`, and `ipc/version_control/project` use **`db_handle.read` / `write` + `await`** where appropriate instead of holding the legacy mutex connection across async boundaries.
+- **Agent** — `orchestrator` updates for CATALYST-related context loading against **`DbHandle`**.
+- **CATALYST** — **`ContextInjector`**, **`CatalystDispatcher`**, **`CircuitBreakers` / `HumanOverride`**, **`ClarificationExtractor`**, **`ProgramManager`**, **`PelPipeline`**, **`RefinementEngine`**, and **`test_utils`** (`catalyst_test_db_handle`, etc.) on **`Arc<DbHandle>`**; async methods and **`#[tokio::test]`** as needed.
+- **`CatalystConfig`** — **`Arc<DbHandle>`**; async `get` / `get_or_default` / `set` / `delete` / `all_for_project`; `*_conn` helpers unchanged.
+- **`main.rs`** — Wiring consistent with the above.
+
+#### Documentation
+
+- **S4 §5** — `rg` §1.3 lock count **62** after T10; **`catalyst/`** app code has **0** `self.db.lock()` matches; test fixture **`catalyst_test_db()`** (mutex) retained where sync tests still use it.
+
+#### Testing
+
+- CATALYST unit and integration tests updated for async **`DbHandle`**; config and cross-instance integration tests on **`DbHandle`**; added coverage for empty/miss paths, PEL, and profile resolution where applicable.
+
 ## 5.27.8 (2026-04-21)
 
 ### SQLite access — lifecycle on DbHandle only (S4 T5 closeout)
