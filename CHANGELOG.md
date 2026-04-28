@@ -2,6 +2,65 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+## 6.0.0 (2026-04-28)
+
+### Voice-Native Conductor — A New Way to Build Software
+
+Forge 6.0 introduces the **Voice-Native Conductor**: a bidirectional realtime voice interface powered by xAI's Grok Voice API. This is not a voice-to-text wrapper — it is a persistent conversational presence that hears, thinks, acts, and speaks in real time while the user works. The conductor can take screenshots, create jobs, navigate the UI, advance lifecycle stages, and discuss project context as naturally as a human colleague.
+
+This release represents a paradigm shift from text-agent IDE to voice-native orchestration platform.
+
+#### Voice Architecture (Phase 2B)
+
+- **`GrokRealtimeClient`** — WebSocket client against xAI's `wss://api.x.ai/v1/realtime` endpoint with bearer-token auth, server-VAD turn detection, and PCM16 16 kHz bidirectional audio.
+- **`ReconnectingProvider`** — Audio-buffer-and-replay reconnection layer (90-second buffer, exponential backoff, auto-replay on disconnect). New in 6.0: **session auto-renewal** resets the reconnect budget when the server enforces a session duration limit, keeping conversations alive across server disconnects without user intervention.
+- **`VoiceSession` actor model** — Single tokio task owns the provider; audio uplink, event downlink, tool dispatch, mode commands, and shutdown are independent channels. No shared mutex over network I/O. Biased `select!` guarantees shutdown wins over message processing.
+- **`MicCapture`** — AudioWorklet-based 16 kHz PCM capture with hardware mute detection (`MediaStreamTrack.onmute`), first-quantum diagnostic logging, and graceful rollback on permission denial.
+- **`StreamingAudio`** — Low-latency base64 PCM playback via Web Audio API with interrupt-on-speech (gain ramp to zero within one render quantum when VAD fires).
+- **Tool dispatch** — Voice-triggered function calls (`forge_screenshot`, `job_create`, `lifecycle_create`, `job_advance`, `signal_navigate_ui`, `take_screenshot`, and more) execute server-side, emit results back to the realtime model, and auto-navigate the frontend UI to reflect the outcome.
+- **Duplicate call-id guard** — xAI's realtime stream emits `function_call.done` twice per invocation; the actor deduplicates by `call_id` to prevent double tool execution and double audit rows.
+
+#### Interaction Modes
+
+- **Mode A (Conversational)** — Generic conductor persona with boundary detection. Redirects lifecycle actions to the appropriate UI surface.
+- **Mode B (Transactional)** — Receives detailed project/job context (stage, tasks, documents, history). Directly handles lifecycle actions, references project documents by name, and advances workflow stages via tool calls.
+- **Dynamic mode switching** — `set_active_work_context` triggers a mid-session `session.update` to the realtime model, flipping persona and tools without dropping the WebSocket. Deduplication prevents redundant prompt rebuilds when context hasn't changed.
+- **Proactive acknowledgement** — After a mode flip to Transactional, the conductor proactively greets the user with the new context ("I've switched to JOB-008. How can I help?") so the user has immediate confirmation.
+
+#### Audit-Driven Agent Stream
+
+- **Job-aware context keying** — Audit events are stored and retrieved under `project_id` or `job:{jobId}` keys, ensuring voice and text agent activity renders in the correct panel regardless of which agent produced it.
+- **`audit_get_events_for_job`** — New IPC command fetches historical audit events for a specific job, enabling the Agent Stream to show voice conductor activity within job views.
+- **Reactive refresh** — `JobDetailView` listens for `audit:event_written` events and reloads data when job-mutating tools (`job_advance`, `job_complete`, `skip_job_stage`) fire, so the UI reflects stage changes without manual refresh.
+
+#### Frontend UX
+
+- **"Let's Go" voice awareness** — When a voice session is active, clicking "Let's Go" updates the work context and shows a status indicator ("Working via Voice — speak to the conductor") instead of spawning a competing text agent.
+- **Mic state badge** — Real-time visual indicator showing idle/listening/speaking/muted/error states, driven by a derived Svelte store.
+- **Mode flip toast** — Brief notification when the conductor switches between conversational and transactional modes.
+- **New Chat fix** — Restored functionality that had regressed during session management changes.
+- **Session pill rationalisation** — Reduced the bottom-bar session pill count from displaying all historical sessions to a focused recent set.
+
+#### Data Integrity
+
+- **Project deletion with tombstones** — New `project_delete_tombstones` SQLite table tracks deletions locally. The sync engine respects tombstones during Portal sync, preventing deleted projects from reappearing after Firebase pull.
+- **Tenant filtering** — Projects from other tenants (identified by Firebase custom claims) are excluded from local display, preventing cross-tenant data leakage in the UI.
+- **Reference document scoping** — The reference documents panel now shows only documents associated with the active project, not all documents in the storage directory.
+
+#### Performance & Stability
+
+- **Mode flip deduplication** — `set_active_work_context` compares incoming context against the current state before queuing a mode flip, eliminating redundant `system_prompt` and `prompt_package` audit events on every reactive component mount.
+- **Deadlock prevention** — All `LifecycleEngine::new()` calls within async contexts are wrapped in `tokio::task::spawn_blocking`, preventing `block_on` inside the Tokio runtime thread pool.
+- **Session auto-renewal** — When the realtime server enforces a session duration limit (observed at 5 minutes), the actor resets the reconnect budget and establishes a fresh session transparently. The model receives a continuity instruction to resume naturally.
+
+#### Testing
+
+- **`cargo check`** — Clean with no new warnings beyond pre-existing dead-code notices.
+- **Voice session unit tests** — Actor lifecycle, drain semantics, mode flip queuing, cost-unit accounting, audit chain integrity, and tool dispatch all covered.
+- **UAT validated** — Screenshot tool, job creation, stage advancement, and natural conversation verified in live testing sessions.
+
+---
+
 ## 5.27.13 (2026-04-23)
 
 ### SQLite access — S4 T15 program closeout + audit chain hardening
@@ -287,6 +346,108 @@ Extensible BYOK (bring-your-own-key) LLM providers, dynamic discovery, and OpenR
 
 - Unit tests for settings helpers and catalogue selection utilities; lifecycle test alignment.
 - Working docs updates under `docs/paul-working-docs/` (CONFIGURABLE_SETTINGS, S2–S4 extensible LLM providers).
+
+## 5.28.0 (2026-04-23)
+
+PROJ-TOOLENHANCE (partial) — Voice-native conductor, document engine, headless CLI, and 9 net-new agent tools. This release ships the PROJ-TOOLENHANCE critical path (Phase 1, Phase 2A, Phase 2B, plus Tasks 3.1, 3.4, and 4.1). Phase 3 breadth tasks (3.5–3.10) and Phase 4 polish tasks (4.2–4.6, 4.8) are deferred to a subsequent release; see CORRECTION-19 in `strategy/S4-PROJ-TOOLENHANCE-CORRECTIONS.md` for the full scope reconciliation.
+
+### New tools (9 net new, 88 → 97 baseline)
+
+| Tool                   | Source task | Purpose                                                                |
+| ---------------------- | ----------- | ---------------------------------------------------------------------- |
+| `w5_create_checkpoint` | Task 2.8    | Create a W5 cognitive checkpoint snapshot tied to a session            |
+| `w5_get_checkpoint`    | Task 2.8    | Fetch a single checkpoint by id                                        |
+| `w5_query_checkpoints` | Task 2.8    | Query checkpoints by session / agent / time window                     |
+| `w5_get_latest`        | Task 2.8    | Fetch the most recent checkpoint for a project                         |
+| `catalyst_set_profile` | Task 2.9    | Set the active CATALYST refinement profile for the current session     |
+| `catalyst_multi_pass`  | Task 2.9    | Trigger a multi-pass refinement cycle (planning surface)               |
+| `gate_evaluate`        | Task 2.9    | Evaluate a lifecycle gate against the current document state           |
+| `gate_scope_extract`   | Task 2.9    | Extract the in-scope item set for a given gate                         |
+| `bug_report_create`    | Task 3.4    | File a structured bug report with optional W5 link, attachments, Nexus |
+
+### Voice-native conductor (Phase 2A, Tasks 2.1–2.7)
+
+Realtime voice provider trait, Grok WebSocket client, PCM16 streaming with reconnection, Tauri IPC bridge, Svelte streaming UI, conductor persona with interruption handling, voice-aware narration on `forge_act` / `forge_perceive`, and an equivalent text/CLI conductor for accessibility. The pipe model remains the default; realtime mode is opt-in via the new voice-mode toggle in the agent stream header.
+
+### Document engine (Task 3.1)
+
+Headless `chromiumoxide` HTML→PDF rendering with a global `tokio::sync::OnceCell` engine pool, two HTML fixtures, and a Criterion benchmark. `forge_pdf_render` is callable from the bug-report tool to attach screenshots or pre-rendered documents.
+
+### Headless CLI (Task 4.1)
+
+New `forge-cli` binary alongside the existing `scainet-forge` GUI binary. Two modes:
+
+- `--pipe` reads one JSON request from stdin and writes one JSON response to stdout, suitable for shell pipelines.
+- `--batch <script>` runs a script file (one command per line, `#` comments) and emits one chained audit event per command into the EGO audit log.
+
+Shared initialization (`.env` loading, tracing setup, audit DB path) lives in `src/cli_init.rs` so both binaries call the same code path. See CORRECTION-18 for the `#[path]` design rationale.
+
+### Final compliance gate (Task 4.7)
+
+New integration test (`src-tauri/tests/final_compliance.rs`) and binary-size validators (`scripts/validate-binary.sh`, `scripts/validate-binary.ps1`) enforce the tool-count baseline (>= 97), the Article 1 (PRESERVE) regression set (88 pre-DAP tools must remain), the Article 8 (GUARD) naming convention, and the S0 §4 success criteria. The DAP-original `test_tool_count_142plus` is shipped as `#[ignore]` and acts as a forcing function for the deferred Phase 3.5–3.10 work.
+
+### Deferred from PROJ-TOOLENHANCE
+
+- Phase 3 breadth: Tasks 3.5–3.10 (compliance docs, patent templates, brand kit, etc.) — would have added ~39 more tools to reach the DAP-original 136 built-in target.
+- Phase 4 polish: Tasks 4.2–4.6 (CLI flags expansion, telemetry export, etc.) and 4.8 (docs site updates).
+- The `[lib]` extraction of `scainet-forge` — deliberately deferred per CORRECTION-18 to avoid touching ~30 internal modules; the `#[path]` include pattern shipped in this release is the surgical alternative.
+
+### Post-critical-path additions to 5.28.0 (continued PROJ-TOOLENHANCE work)
+
+After the 5.28.0 critical path landed (Tasks 1.x → 2.x → 3.1, 3.4 → 4.1 → 4.7 above), the resumed-DAP sequence was completed on the same `feat/proj-toolenhance-dap` branch before the public release cut. The deliverables below ship in the same 5.28.0 binary; the version was not re-bumped because no public release intervened.
+
+#### Additional tools (30 net new — bringing the total from 97 to 127)
+
+| Tools                                                                                                                                                      | Source task | Count |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- | ----- |
+| `services_create_project_from_job`, `services_present_to_portal`, `services_track_milestone`, `services_capture_feedback`, `services_back_propagate`       | Task 3.5    | 5     |
+| `morpheus_import_idea`, `morpheus_auto_s0`, `morpheus_notify_thinker`, `morpheus_track_revenue`                                                            | Task 3.6    | 4     |
+| `pdf_read`, `archive_extract`, `archive_create`, `env_read`, `env_set`, `audio_transcribe`, `git_log`, `git_merge`, `voice_mode_switch`, `headless_status` | Task 3.9    | 10    |
+| `bod_request_briefing`, `bod_trigger_deliberation`, `bod_get_decision`, `bod_cast_vote`, `bod_dispatch_decision`, `bod_ceo_veto`                           | Task 3.7    | 6     |
+| `marketplace_search`, `marketplace_install`, `marketplace_publish`, `marketplace_pneuma_scan`, `marketplace_update`                                        | Task 3.8    | 5     |
+
+The full inventory (with grouping by domain and tier) lives in [`docs/TOOLS.md`](TOOLS.md), which is parity-tested against the runtime via `cargo test --test docs test_tool_doc_count_matches_runtime`.
+
+#### Document templates (Tasks 3.2, 3.3)
+
+Versioned template registry with a starter `minimal` template embedded via `include_str!`, plus the patent template + USPTO-style `patent-document.css` overlay. Templates render through the Task 3.1 chromiumoxide engine.
+
+#### Composability flows (Task 3.10)
+
+Two scripted compositions of existing primitives that emit chained audit events:
+
+- `voice_present_approve_advance` — voice presents a draft, human approves, W5 snapshot, gate signoff, stage advance.
+- `bug_then_support_spawn` — file a bug, then spawn the support persona.
+
+Additive `LifecycleEngine::db_arc()` accessor introduced for flow-level reads without widening the engine's mutating surface (CORRECTION-30).
+
+#### Cross-platform smoke matrix (Task 4.3)
+
+Smoke tests under `tests/cross_platform/` cover Windows, macOS, and Linux conditional paths via `#[cfg(target_os = ...)]`. CI workflow runs the matrix on the appropriate runners.
+
+#### Performance budgets (Task 4.4)
+
+Four Criterion benchmarks (cold-start, audio-roundtrip, PDF render, dispatcher) with cross-platform validators that compare results against documented budgets.
+
+#### Patent evidence pipeline (Task 4.5)
+
+Filing-grade JSONL artefacts for CPA-007 (adaptive orchestration), CPA-008 (friction-controlled gates), CPA-009 (board-to-build workflow). Generated by tests under `tests/patent_evidence/`.
+
+#### Tier and entitlement matrix (Task 4.2)
+
+Three-tier model (Free / Pro / Enterprise) gated at `ToolExecutor::execute`. Default tier is Enterprise so existing callers see no behaviour change. See `src-tauri/src/agent/tools/entitlements.rs` and `docs/TOOLS.md` for the tier mapping.
+
+#### Day-2 operations docs (Task 4.6)
+
+Three runbooks (`voice_outage`, `cdp_session_leak`, `headless_chromium_crash`) plus monitoring + rollback playbooks under `docs/operations/`. Cross-platform validators (`scripts/validate-docs.{sh,ps1}`) and an integration test (`tests/docs.rs::test_runbooks_referenced_from_code`) keep the runbooks discoverable from the production source tree.
+
+#### Docs site updates (Task 4.8)
+
+New `docs/TOOLS.md` (the human-readable view of `BASELINE_TOOLS`) and updated README tool-count claims (`40+` → `127`). Parity is asserted by `cargo test --test docs test_tool_doc_count_matches_runtime`.
+
+The deferred-list above (`Phase 3 breadth`, `Phase 4 polish`) is therefore now complete. The remaining open item is the `[lib]` extraction, which stays deferred per CORRECTION-18.
+
+---
 
 ## 5.27.0 (2026-04-12)
 
