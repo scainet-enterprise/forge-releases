@@ -2,6 +2,35 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+## 6.1.2 (2026-05-01)
+
+### Mirror Recovery Republish
+
+Forge 6.1.2 republishes the 6.1.1 stabilization release with all four build platforms intact on the public `forge-releases` mirror. The 6.1.1 mirror job ran while a transient Apple `timestamp.apple.com` outage was still preventing the macOS ARM64 codesign step from completing, so the public release was created with only Linux, Windows, and macOS Intel artifacts. Apple Silicon users on the in-app updater would not have received a working `aarch64` entry for 6.1.1.
+
+This release contains the same product changes as 6.1.1 (see notes below) and re-runs the full build/mirror pipeline so all four platforms publish together.
+
+#### What 6.1.2 fixes vs 6.1.1
+
+- **Apple Silicon (`aarch64`) installer published** — `SCAINET-Forge_6.1.2_aarch64.dmg`, `SCAINET-Forge_aarch64.app.tar.gz`, and `SCAINET-Forge_aarch64.app.tar.gz.sig` are now part of the public release alongside the Intel, Linux, and Windows artifacts.
+- **`latest.json` now lists `darwin-aarch64`** — The auto-updater manifest on `forge-releases` now resolves correctly for Apple Silicon users running 6.1.0 and earlier.
+- **No code changes vs 6.1.1** — Functional product surface, agent-stream behaviour, project usability fixes, and orchestrator context isolation are identical to 6.1.1.
+
+#### Carried forward from 6.1.1
+
+All 6.1.1 fixes ship in 6.1.2 unchanged. See the 6.1.1 section below for the detailed breakdown of agent-stream reliability, project view scrolling, text-agent context isolation, regression coverage, and the next-branch handover.
+
+#### Known Follow-ups
+
+The 6.1.1 follow-up list still applies to 6.1.2:
+
+- **F-037 — Voice realtime context delivery**: context updates are audited correctly, but the live voice model can still answer from its prior job. Next-branch fix.
+- **F-036 — Project entry should replace "Let's go"**: project-card click should auto-serve lifecycle context to the live voice session.
+- **F-034 — Session-pill scoping**: pills need a `conversation_id` discriminator so each pill opens its own stream.
+- **F-004 / F-005**: document-scope isolation and GitHub-optional local-first project creation remain the top product work after F-037.
+
+A separate CI follow-up will harden the mirror job so a transient platform-build failure can never publish a partial public release again.
+
 ## 6.1.1 (2026-05-01)
 
 ### Continuous Improvement Stabilization
