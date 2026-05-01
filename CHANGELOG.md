@@ -2,6 +2,43 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+## 6.1.1 (2026-05-01)
+
+### Continuous Improvement Stabilization
+
+Forge 6.1.1 is a focused stabilization release following the first production UAT pass on v6.1.0. It fixes the highest-impact regressions discovered in job-mode agent streams, project task scrolling, new-chat clearing, and stale text-agent context. It also captures a detailed handover for the next continuous-improvement branch so follow-up work can continue without rediscovery.
+
+#### Agent Stream Reliability
+
+- **Job-mode text output restored** — Text-agent audit payloads now carry `job_id` alongside `project_id`, so job-scoped text sessions render in the correct job stream instead of falling through to a hidden session bucket. This fixes the family of issues where the Start Text button appeared to hang, job-mode text replies disappeared, and voice-delegated text work looked successful but produced no visible output.
+- **Voice stream leakage fixed** — Voice events are now merged into the visible stream only when they match the active project/job context, preventing a prior voice session from appearing in a newly created project.
+- **New Chat now starts empty** — Starting a new chat clears the sticky voice session pointer and the relevant event bucket, so the visible thread actually resets instead of re-rendering the previous conversation.
+
+#### Project View Usability
+
+- **Task list scrolling restored** — The stage-work task/reference panel now scrolls correctly when content extends below the viewport, so late-stage tasks such as `STEP-032` are reachable.
+
+#### Text Agent Context Isolation
+
+- **Stale CATALYST briefing invalidated on context switch** — The text orchestrator now tracks which project its cached CATALYST briefing belongs to and clears that cache when the user moves to another project, a job-only context, no context, or Mode A. This prevents deleted or previous projects from being reintroduced into new text-agent sessions.
+- **Conversation history reset on project/job switch** — The text orchestrator now resets `ConversationHistory` when `(project_id, job_id)` changes, while preserving legitimate multi-turn memory inside the same project/job. This prevents the text agent from opening a new project with a prior job's persona or memory.
+- **Regression coverage added** — New Rust and Vitest regression tests cover job-id audit payloads, new-chat clearing, voice-event scoping, project task scrolling, CATALYST cache invalidation, and conversation-history resets.
+
+#### Handover For Next Branch
+
+- **Known-issues backlog expanded** — `docs/KNOWN_ISSUES_2026-05-01.md` now includes F-031 through F-038 with live audit evidence and recommended next actions.
+- **Next-branch handover added** — `docs/HANDOVER_2026-05-01.md` consolidates shipped fixes, outstanding critical/high/polish work, verification results, and the recommended next-branch priority order.
+- **Top remaining issue identified** — The next branch should start with F-037: the voice realtime session emits correct prompt-package audit rows on context change, but the live voice model can still answer from the previous job context. The handover includes the exact audit timeline and proposed fix.
+
+#### Known Follow-ups
+
+The following UAT findings are intentionally **not** fixed in 6.1.1 and are ready for the next branch:
+
+- **F-037 — Voice realtime context delivery**: context updates are audited correctly, but the live voice model can still answer from its prior job. Recommended fix: inject an explicit conversation-history context marker on every voice mode/context flip, not only `session.update`.
+- **F-036 — Project entry should replace "Let's go"**: entering a project should automatically serve lifecycle context to the live voice session instead of requiring a second button click.
+- **F-034 — Session-pill scoping**: session pills need their own `conversation_id` discriminator so each pill opens its own stream rather than all pills in a job collapsing into one job-level bucket.
+- **F-004 / F-005**: document-scope isolation and GitHub-optional local-first project creation remain the highest-priority product work after the voice realtime context fix.
+
 ## 6.1.0 (2026-04-27)
 
 ### Unified Agent Stream & UI Polish
