@@ -2,6 +2,31 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+## 6.1.0 (2026-04-27)
+
+### Unified Agent Stream & UI Polish
+
+This release consolidates the agent interaction experience into a single, filterable stream and refines the voice and job workflows introduced in 6.0.
+
+#### Unified Agent Stream (Phase B)
+
+- **Persona labels** — Agent stream messages now display persona name and function. Voice conductor messages show as `conductor (voice)` in purple, text operator messages as `operator (text)` in green.
+- **Stream filters** — New filter bar in the agent stream header. Toggle visibility of Voice Chat, Text Chat, Tool Calls, Tool Responses, System Prompts, Prompt Packages, and Events. Filters persist across sessions via localStorage.
+- **Tenancy-gated filters** — System Prompt and Prompt Package filters are only visible to SCAINET-tenancy users, protecting trade secrets from external users.
+- **Removed ProjectConversation** — The embedded chat box in ProjectDetailView is removed. All agent interaction now flows through the unified AgentStream panel, eliminating the split-attention UX.
+
+#### Job File Structure (Phase A)
+
+- **Directory scaffolding** — Jobs now get a local `jobs/{id}/documents/`, `artifacts/`, `references/` directory tree on creation, mirroring the project file structure pattern.
+- **Job document panel** — JobDetailView now includes a documents section showing files from all three subdirectories with document type icons and a document viewer modal.
+- **IPC commands** — New `job_list_documents` and `job_working_dir` Tauri commands for frontend access to job files.
+
+#### Voice Agent Improvements (Phase E)
+
+- **Human-readable names in prompts** — Voice agent now refers to projects and jobs by their display name, never by UUID. Mode flip acknowledgments resolve the name from the database, and the system prompt includes an explicit directive to use human-readable names.
+- **Job prompt title-first** — Job context sections now lead with the job title (`"My Task" (JOB-001)`) instead of the ID.
+- **Context replay on session renewal** — When the voice session auto-renews after a 5-minute xAI timeout, the system prompt and lifecycle context are fully re-injected via `apply_mode_flip`, preserving conversation continuity.
+
 ## 6.0.0 (2026-04-28)
 
 ### Voice-Native Conductor — A New Way to Build Software
