@@ -2,6 +2,109 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+## 6.2.0 (2026-05-02)
+
+### Voice Conductor "Clara" + Single-Mutator Lifecycle Architecture
+
+Forge 6.2.0 is a substantive UX release built around three architectural shifts plus sixteen issue closures from a full UAT day on the `forge-ux-improvements-2026-05-02` branch. The minor-version bump reflects the new voice persona ("Clara"), the new context-delivery mechanism for the live xAI realtime model, the new single-mutator lifecycle context architecture, and the new recent-conversation injection system that finally gives the voice agent durable memory across context switches and app restarts.
+
+This release is the answer to the entire 6.1.x next-branch list: F-037, F-036, F-034 (architecture in place — pill scoping itself stays open), F-021, F-009, F-027 stragglers, and the voice prompt overhaul the prior handover called out as "the one you wanted to discuss".
+
+#### Voice Realtime Context Delivery (F-037 — Critical, Closed)
+
+The flagship fix. The orchestrator already emitted fresh `system_prompt` + `prompt_package` audit rows on project/job switches, but the live xAI realtime model continued answering from the previous context — only acknowledging the change after explicit user correction. Root cause: `session.update.instructions` updates the model's _configuration_ but does not insert anything into the conversation history the model is actually attending to.
+
+- **Context-reset injected as `conversation.item.create`** — `voice/session.rs::apply_mode_flip` now sends three frames on every context flip: (1) `session.update` with the rebuilt prompt, (2) `conversation.item.create.context_reset` with a clear "[CONTEXT UPDATE] You are now in <project/job label>" system-style item, (3) `response.create` to acknowledge. Verified live by Clara responding to context updates without prompting ("Thanks, I've absorbed the context...").
+- **Mode-suffix removed from the reset message** — `build_context_reset_message` no longer hardcodes "in job mode" / "in project mode" (F-054), which previously crossed wires when a lifecycle project was framed as a job. Negative assertion added to the F-037 regression test.
+- **Voice transport audit attestation** — Every WebSocket frame is now audited as a `voice_transport` event with payload type, byte budget, and rendered hash so future regressions in this class are diagnosable from the audit chain alone (F-042 plumbing partially landed).
+
+#### Clara — Voice Conductor Persona Overhaul (F-062 — High, Partial/Verified)
+
+The voice prompt was bloated with text-agent Constitution tables, Rust crate references, contradictory Mode B / JOB MODE blocks, and PNEUMA tells that hurt spoken flow. Replaced with a structured ~700-word Clara persona authored with the owner.
+
+- **`voice_conductor.rs`** — `VOICE_CONDUCTOR_NAME = "Clara"`, `VOICE_CONDUCTOR_ROLE = "FORGE Voice Conductor"`. New `VOICE_CONDUCTOR_DESCRIPTION` covers Identity & Stance, Hard Rules, Verbal Formatting (read project names, not codes), Verification, Conversational Style, and Boundaries. Tests updated.
+- **`agent/system_prompt.rs`** — `build_voice_system_prompt` restructured. Mode sections renamed `Active Mode: Freeform` and `Active Mode: Lifecycle Project`. Mode-A explicitly tells Clara _"Do not invent or assume a project context"_ — fixes F-041 (freeform fabrication) on the voice surface to match the existing text-side `freeform_preamble`.
+- **Placeholder-owner normalization extended** — `dispatch.rs` and `agent/tools/mod.rs` now treat `"clara"` and `"clara (forge)"` as placeholder owners so audit rows attribute correctly when the model self-identifies.
+
+#### Recent Conversation Injection — Durable Voice Memory (F-063 + F-065 — High, Closed)
+
+A voice session that didn't remember what was said five minutes ago, let alone last week, was the single largest reason users felt the agent was not really an agent. Fixed by injecting the last N audit-chain exchanges into every voice session as a `conversation.item.create.recent_context` frame.
+
+- **`voice/recent_context.rs`** — `RECENT_CONTEXT_TOKEN_BUDGET` raised from 2 000 to 6 000; new `RECENT_CONTEXT_KEEP_LAST = 10` floor guarantees a minimum recall window even under tight budgets.
+- **`fetch_for_active_project` rewritten** — Was querying by `session_id` (which dies on app close) and returning 0 rows for any cross-session recall. Now uses `audit::events_for_project` (payload-based query). UAT 12:33:18 PROJ-MORPHEUSINT recalled an S0 lock from April directly, no tool call needed (F-065).
+- **`fetch_for_active_job` added** — Mirrors the project path. UAT 12:09–12:13: 4 job switches all hit `rows_injected=40` with Clara recalling specific prior content ("we were analyzing the images Grok 3 created", "you were frustrated last time").
+- **Cold-start + mid-session symmetry** — `ipc/voice.rs::voice_realtime_start` injects on startup; `voice/session.rs::apply_mode_flip` injects on every mid-session switch. The audit emits a third `voice_transport` frame so injection is independently observable.
+
+#### Single-Mutator Lifecycle Context Architecture (F-058 — Critical, Fix Landed)
+
+The `set_work_context` agent tool reported success but did not actually clear the lifecycle backend. Five different code paths could mutate `ActiveWorkContext` independently — store-only updates, IPC-only updates, tool-only updates — leading to drift between the UI, the backend, and the voice session. Replaced with a single mutator.
+
+- **New `work_context::apply` is the sole writer** — `work_context_changed` audit variant + `forge:work_context_changed` Tauri event are emitted _before_ the function returns, with `src` distinguishing `ipc_ui`, `tool`, `voice`, `internal` callers.
+- **5 call sites refactored** — `set_active_work_context` IPC, `clear_work_context` IPC, `set_work_context` tool, project/job navigation, session-pill ✕ button.
+- **F-059 (SessionBar pill ✕)** and **F-060 (project click)** verified in UAT 10:13–10:28: every interaction fires the correct `work_context_changed src=ipc_ui` row; user verdict 10:28:42: _"working as expected"_. F-053 closed structurally by the same change.
+- **F-036 (project entry should auto-trigger context)** is now literally how it works — project card click _is_ the lifecycle context update.
+- **F-048 (mode-flip waits for Let's Go)** is closed because mode-flip fires on the project click itself, not on a follow-up button.
+
+#### Agent Stream UX Fixes (F-039, F-044, F-045, F-047, F-049 — Critical/High/Medium)
+
+- **F-039 (Critical, Closed)** — Start Text no longer leaves the user stuck on the splash. `lifecycleModeStore.userSessionStarted` flag introduced; `InstructionPanel.isFreshSession` now also gates on `!userSessionStarted`. Both Start Text and Start Voice handlers call `markUserSessionStarted()` for defensive symmetry. Reset by `clearWorkContext()` so "New Chat" brings the splash back. 3 new unit tests, all 30 lifecycleMode tests green.
+- **F-044 (Critical, Closed)** — Voice session text (both user and assistant) now renders in the Agent Stream when freeform. `auditEventsStore.clearActiveContext` added. UAT 08:23–08:26 verified end-to-end.
+- **F-045 (Critical, Fix Landed)** — "New Chat" no longer produces a blank window in freeform voice mode. Closed structurally by F-044 + F-047, verification deferred to first 6.2.0 freeform UAT.
+- **F-047 (High, Closed)** — Project→project navigation no longer renders a blank stream until the first interaction. Per-bucket loading state added to `auditEventsStore`; `AgentStream.svelte` distinguishes loading-replay / no-prior-conversation / error empty states. UAT 08:37–08:41 verified across three projects, including one untouched for ~3 weeks.
+- **F-049 (Medium, Fix Landed)** — `SystemPromptRow` and `PromptPackageRow` rewritten to surface persona, mode, context, size, and short hash as a parenthetical instead of bare hash strings. `FILTER_STORAGE_KEY` bumped `v1 → v2` to reset stale filter values from prior builds. Visually verified in UAT screenshot — rows now read _"System prompt — Clara (voice) · Mode B · project PROJ-MORPHEUSINT · 12.9 KB (8511c7d9)"_.
+
+#### "Let's Go" Button Cleanup (F-061 — Medium, Fix Landed)
+
+After F-058 + F-060 made project click the canonical context update, the "Let's Go" button became a redundant double-fire and then, after stripping the redundancy in voice mode, a no-op the user could click without feedback.
+
+- **Option B implementation** — Redundant `set_active_work_context` IPC call removed from `ProjectDetailView.svelte::startWorking` and `JobDetailView.svelte::startWorking`. The button is retained for now because it still primes the lifecycle persona and submits stage-start instructions for text agents.
+- **No-op-suppression CTA arm** — In voice mode on a project detail view, the CTA renders as a disabled cyan pill (_"Voice Active — talk to begin"_ / _"Voice Active — speak to start working"_ / _"Voice Session Active — interact via voice"_ by experience level) instead of a clickable button that does nothing. JobDetailView already handles this via its existing `workStarted` swap to _"Working via Voice — speak to the conductor"_.
+- **F-068 design captured** — Auto-prime on first text entry, mandatory persona, full button removal. Top priority next branch alongside F-035.
+
+#### Closures Earned Without Code (F-009, F-017, F-021, F-033, F-036, F-041, F-048, F-050, F-055)
+
+Eight items closed structurally because the architectural work above subsumes them:
+
+- **F-009** (cross-session voice continuity) — F-062 cold-start + F-063 mid-session + F-065 payload-based query give continuity across switches AND across app launches.
+- **F-017** (voice overuses user's name) — Won't Fix (test artifact); user confirmed cause was explicit self-introduction priming the model.
+- **F-021** (system messages unanswered) — superseded by F-037 + F-063; Clara now visibly responds to context updates.
+- **F-033** (bottom-bar "Project Start S0" artefact) — closed pending re-report; not seen since F-058/F-060 landed; user 2026-05-02: _"I think it is gone"_.
+- **F-036** (project card auto-context) — implemented by F-058 + F-060.
+- **F-041** (freeform fabrication) — both surfaces fixed (text-side `freeform_preamble`, voice-side new "Active Mode: Freeform" block).
+- **F-048** (mode-flip waits for Let's Go) — gone by construction (F-058 + F-060 + F-061).
+- **F-050** (voice conductor has no formal name) — superseded by F-062 (Clara). Customisable-persona-with-sliders direction split off as F-067 (Low) so that scope is explicit without holding F-050 open.
+- **F-055** (Let's Go button rename) — subsumed by F-061 + F-068; renaming becomes irrelevant once the button goes.
+
+#### Verification Snapshot
+
+- `npm run verify-version` → OK, all anchors match `VERSION = 6.2.0`.
+- `cargo test --bin scainet-forge` (1 thread) → **1459 passed, 0 failed, 9 ignored**.
+- `npx vitest run` → **489 passed, 0 failed** across **44 test files**.
+- `agent-excellence validate` → PASSED with 17 framework-drift warnings (no functional impact).
+- Live UAT day 2026-05-02 across freeform voice, lifecycle voice, project switching, job switching, session pills, text input, "Let's Go" button, audit-stream rendering, and recent-context recall (PROJ-MORPHEUSINT, PROJ-OPENCLAWGAP, PROJ-LIGHTHOUSE, JOB-009, JOB-013, JOB-015 + multiple ad-hoc projects).
+
+#### Release Files Changed
+
+- `VERSION` → 6.2.0
+- `package.json` / `package-lock.json` → 6.2.0
+- `src-tauri/Cargo.toml` / `Cargo.lock` / `tauri.conf.json` → 6.2.0
+- `docs/CHANGELOG.md` → 6.2.0 release notes
+- `docs/HANDOVER_2026-05-02.md` → updated with end-of-branch state
+- `docs/KNOWN_ISSUES_2026-05-02.md` → final status snapshot
+
+#### Known Follow-ups (Next Branch)
+
+The following are intentionally **not** fixed in 6.2.0 and form the recommended order for the next branch:
+
+1. **F-035 (Critical)** — Text input dropped in voice Mode A / no-context. Top priority. Pairs with F-068.
+2. **F-068 (High)** — Auto-prime stage on first text entry; remove "Let's Go" button entirely; mandatory-persona architecture. Pairs with F-035 (same input handler).
+3. **F-046 reopened (Medium)** — Voice agent still reads stage/gate codes verbatim from `lifecycle_status` / `job_status` tool output. Structural fix is to reshape tool output to translate codes before they reach the model.
+4. **Job CRUD pack** — F-006 (create from UI) / F-007 (delete) / F-008 (move stage backwards) deferred as a focused mini-pack.
+5. **F-064 (High)** — `lifecycle_list` returns empty + voice agent has no project/job SEARCH tool. Add `lifecycle_search(query)` + `job_search(query)`.
+6. **F-004 (Critical)** — Document scope leak. Carried forward.
+7. **F-005 (Critical)** — GitHub-optional local-first project creation. Carried forward.
+8. **F-034 (Critical)** — Session pill switching (filter wiring); F-056 + F-057 (architecture: pills are freeform-only + freeform→project/job conversion tools) are the structural answer.
+
 ## 6.1.2 (2026-05-01)
 
 ### Mirror Recovery Republish
