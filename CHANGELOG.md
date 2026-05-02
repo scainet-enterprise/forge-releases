@@ -2,6 +2,46 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+## 6.3.0 (2026-05-03)
+
+### FORGE Incident Store (local-first telemetry)
+
+This release ships the **FORGE-INCIDENT-STORE** MVP: structured crash/incident capture with a **local SQLite queue** (`incident_cache` in `ego.db`), optional **Firestore** writes to `incidents/{tenantId}/events/{eventId}`, and a **Sentry mirror** only after a successful Firestore write. **Logger** paths with an `Error` argument route through **`captureIncident`** (non-throwing); direct **`captureException`** from the logger is removed in favour of the incident pipeline.
+
+#### Pipeline and storage
+
+- **`$lib/incidents`:** normalise + scrub, SHA-256 **fingerprint**, envelope build, size caps, **Firestore adapter**, **TauriIncidentLocalStore** (`invoke` with **`payload`** wrappers matching Rust IPC), **FirestoreIncidentStore**, **SentryIncidentMirror**.
+- **`IncidentService`:** consent (`crashReportsEnabled`), tenant / **`auth_required`**, **`no_consent`**, exponential backoff and permanent Firestore failure handling; **`processQueue`** for retries.
+- **Sync worker:** interval + **`visibility`** handling, HMR guard, registered service getter to avoid circular imports.
+- **SQLite migrations:** **v34** `incident_cache`; **v35** idempotent repair for **`lifecycle_projects`** prompt-injection v2 columns when schema drifted; **v36** rebuild so **`sync_status`** may be **`dev_disabled`** (CHECK constraint).
+- **Tauri:** `incident_cache_insert`, `incident_cache_list`, `incident_cache_update_status`, `incident_cache_list_needing_sync`.
+
+#### Product and developer experience
+
+- **Settings → Diagnostics:** local crash report list and **Retry sync now**.
+- **Dev cloud gate:** In development, **Firestore and Sentry** are **off** unless **`VITE_FORCE_SENTRY=1`** (same opt-in as Sentry SDK init). Local rows use **`dev_disabled`** so shared staging/prod incident data is not filled by default dev smoke tests. Production behaviour is unchanged (consent + tenant gate cloud).
+- **`window.forgeDevSmokeIncident()`** (dev builds): console-friendly smoke trigger without **`$lib`** imports.
+- **`captureException`** returns **`boolean`** so the mirror can record when Sentry did not actually send; **`__sentryStatus`** helper updated for clarity.
+- **`ProjectPicker`:** **`portalProjectSyncThrottle`** — **`lifecycle_sync_portal`** at most once per 60s unless a mutation forces refresh (link folder, delete project, etc.).
+- **`tryGetTenantId`** (non-throwing) on **`scoped-query`** for incident gating.
+
+#### Docs and ops
+
+- Working docs: **FORGE-INCIDENT-STORE-S2/S4** updates (`sync_status` **`dev_disabled`**, §1.5 dev telemetry, acceptance **A10**); **FURTHER_INVESTIGATION_REQUIRED** observability section; **TECHNICAL_DEBT** incident follow-ups.
+- **Portal `firestore.rules`:** tenant-scoped **`incidents/{tenantId}/events/{eventId}`** rules are tracked in the Portal repo (separate PR); Forge assumes rules allow authenticated tenant writes and deny client **delete** (immutability / Admin SDK for erasure).
+
+#### Verification (pre-merge spot-check)
+
+- `npm run test:run -- src/lib/incidents` — Vitest incident suite green.
+- `cargo test --bin scainet-forge incident_cache` — SQLite **`incident_cache`** / v36 migration tests green.
+- Full repo verification: `npm run test:run`, `cargo test --bin scainet-forge`, `npm run verify-version` as required by your release gate.
+
+#### Release files changed
+
+- `VERSION` → 6.3.0
+- `package.json` / `package-lock.json` → 6.3.0
+- `src-tauri/Cargo.toml` / `Cargo.lock` / `tauri.conf.json` → 6.3.0
+
 ## 6.2.0 (2026-05-02)
 
 ### Voice Conductor "Clara" + Single-Mutator Lifecycle Architecture
