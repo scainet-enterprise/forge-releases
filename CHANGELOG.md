@@ -3,6 +3,21 @@
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
 
+## 6.3.3 (2026-05-03)
+
+
+Direct follow-up to #167. The v6.3.1 manual mirror surfaced the exact edge case I called out as known-follow-up in that PR: a previous `gh release create` succeeded server-side but its response was eaten by a 5xx, leaving the public release present with **zero assets uploaded**. The retry's "release exists, exit success" check then preserved that empty shell on every subsequent re-run.
+
+
+
+## 6.3.2 (2026-05-03)
+
+
+- Adds a 5-attempt exponential-backoff retry around `gh release create` in the `mirror-release` step of `build.yml`. Detects "succeeded but response lost in flight" via `gh release view` between attempts.
+- Adds a new `mirror-release-manual.yml` workflow (`workflow_dispatch`-only) that re-runs the mirror for any tag, downloading assets from the matching private release. Permanent escape hatch for runs that failed under the old (no-retry) workflow — re-running a failed Actions job uses the YAML at the original commit, so this manual path is the only way to recover historical failures.
+
+
+
 ## 6.3.1 (2026-05-03)
 
 - voice connect ipv4-first + bounded TCP, eliminates 43s startup freeze
