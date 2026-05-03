@@ -2,7 +2,7 @@
   <h1 align="center">SCAINET Forge</h1>
   <p align="center"><strong>The development tool for the 99% who aren't developers.</strong></p>
   <p align="center">
-    <a href="https://github.com/scainet-enterprise/forge-releases/releases/latest"><img src="https://img.shields.io/badge/version-6.3.0-blue" alt="Version"></a>
+    <a href="https://github.com/scainet-enterprise/forge-releases/releases/latest"><img src="https://img.shields.io/badge/version-6.3.1-blue" alt="Version"></a>
     <a href="https://github.com/scainet-enterprise/forge-releases/releases/latest"><img src="https://img.shields.io/badge/status-Beta-brightgreen" alt="Beta"></a>
     <img src="https://img.shields.io/badge/platforms-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey" alt="Platforms">
     <a href="https://scainet.io/innovation"><img src="https://img.shields.io/badge/patents-6%20filed-orange" alt="Patents"></a>
@@ -23,11 +23,11 @@ If you can talk, you can build software.
 
 | Platform | Download | Size |
 |----------|----------|------|
-| **Windows** (x64) | [SCAINET-Forge_6.3.0_x64-setup.exe](https://github.com/scainet-enterprise/forge-releases/releases/download/v6.3.0/SCAINET-Forge_6.3.0_x64-setup.exe) | ~9 MB |
-| **macOS** (Apple Silicon) | [SCAINET-Forge_6.3.0_aarch64.dmg](https://github.com/scainet-enterprise/forge-releases/releases/download/v6.3.0/SCAINET-Forge_6.3.0_aarch64.dmg) | ~14 MB |
-| **macOS** (Intel) | [SCAINET-Forge_6.3.0_x64.dmg](https://github.com/scainet-enterprise/forge-releases/releases/download/v6.3.0/SCAINET-Forge_6.3.0_x64.dmg) | ~16 MB |
-| **Linux** (AppImage) | [SCAINET-Forge_6.3.0_amd64.AppImage](https://github.com/scainet-enterprise/forge-releases/releases/download/v6.3.0/SCAINET-Forge_6.3.0_amd64.AppImage) | ~89 MB |
-| **Linux** (Debian) | [SCAINET-Forge_6.3.0_amd64.deb](https://github.com/scainet-enterprise/forge-releases/releases/download/v6.3.0/SCAINET-Forge_6.3.0_amd64.deb) | ~15 MB |
+| **Windows** (x64) | [SCAINET-Forge_6.3.1_x64-setup.exe](https://github.com/scainet-enterprise/forge-releases/releases/download/v6.3.1/SCAINET-Forge_6.3.1_x64-setup.exe) | ~9 MB |
+| **macOS** (Apple Silicon) | [SCAINET-Forge_6.3.1_aarch64.dmg](https://github.com/scainet-enterprise/forge-releases/releases/download/v6.3.1/SCAINET-Forge_6.3.1_aarch64.dmg) | ~14 MB |
+| **macOS** (Intel) | [SCAINET-Forge_6.3.1_x64.dmg](https://github.com/scainet-enterprise/forge-releases/releases/download/v6.3.1/SCAINET-Forge_6.3.1_x64.dmg) | ~16 MB |
+| **Linux** (AppImage) | [SCAINET-Forge_6.3.1_amd64.AppImage](https://github.com/scainet-enterprise/forge-releases/releases/download/v6.3.1/SCAINET-Forge_6.3.1_amd64.AppImage) | ~89 MB |
+| **Linux** (Debian) | [SCAINET-Forge_6.3.1_amd64.deb](https://github.com/scainet-enterprise/forge-releases/releases/download/v6.3.1/SCAINET-Forge_6.3.1_amd64.deb) | ~15 MB |
 
 Or browse [all releases](https://github.com/scainet-enterprise/forge-releases/releases).
 
