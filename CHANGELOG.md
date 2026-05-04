@@ -2,28 +2,51 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+## 6.5.0 (2026-05-04)
+
+### Non-blocking Portal sync (Project Picker)
+
+- **`ProjectPicker.svelte`:** Separates cheap local **`list_user_projects`** from slow **`lifecycle_sync_portal`** so opening the picker, deleting a project, or linking a folder is no longer blocked on a full N-project Portal pull.
+- **`reloadLocalProjects`**, **`schedulePortalReconcile`**, **`flushPortalSegments`:** Serialized promise tail so **`lifecycle_sync_portal`** never overlaps in-flight; **`forcePortalSync`** coalesces after the current segment; **`pickerMounted`** + **`onDestroy`** prevent stale mutations after teardown.
+- **UI/a11y:** Header **“Syncing with cloud…”** / **offline** badges, **`prefers-reduced-motion`**, debounced **`aria-live="polite"`** announcements, **`aria-busy`** on the local-loading skeleton (**Article 1 preserved:** row delete **`disabled`** while **`deletingId`** is set).
+
+### Lifecycle documentation
+
+- Working docs **`S0`/`S1`/`S2`/`S4` — Project Picker Portal sync UX** under **`docs/paul-working-docs/`**; **`FORGE_ARCHITECTURE_DIAGRAMS.md`** — picker local list vs reconcile path.
+
+### Dependencies & Dependabot reliability
+
+- **Tauri 2.11 alignment:** **`tauri`** (Rust crate) **→ 2.11.0** with **`@tauri-apps/api`** and **`@tauri-apps/cli`** **→ 2.11** so **`npm run tauri build`** no longer fails on **minor-version mismatch** (regression from NPM-only bumps).
+- **Dependabot:** Ignores **`@tauri-apps/plugin-*`** (npm) and **`tauri-plugin-*`** (cargo) alongside core **`tauri`** / **`@tauri-apps/api`** / **`@tauri-apps/cli`**; **`tauri-plugins`** auto-merge groups removed so coordinating upgrades stays manual **in one PR**.
+
+## 6.4.0 (2026-05-04)
+
+### W5 commit metadata in Git and conflict brief 1.1
+
+- **Save → Git:** When a project has a lifecycle stage and W5 snapshot or recent decisions, Forge loads a compact **W5 trailer draft** in the same DB read as project save prep and writes **`forge:w5_*`** trailers (mission, stage, decisions, snapshot timestamp). **`forge:intent`** is not written on that path when W5 trailers are present; the subject line stays the file-based summary so chat intent does not override W5 semantics.
+- **Merge conflicts:** The JSON conflict **`brief`** is now **`version` `1.1`**. Each of **`local_commit`** / **`incoming_commit`** may include **`context_kind`** (`w5` \| `intent` \| `none`) plus optional **`w5`** / **`intent`** parsed from Forge trailers. **`vc_show_conflicts`** tool description documents these fields for models.
+- **Implementation:** New modules **`w5/commit_trailer`** (**`load_commit_w5_draft`**, Unicode-safe caps) and **`version_control/conflict/commit_context`** (**`extract_commit_context`**); writer/reader folding rules marked with **`// SYNC:`**. **`truncate_message`** in the conflict brief uses scalar-aware truncation.
+
+### Orchestrator reliability
+
+- **xAI tooling:** **`llm_error_suggests_conversation_repair`** no longer treats **“maximum tools”** / tooling-limit errors as conversation-shape failures that merit an automatic repair retry.
+
+### Documentation
+
+- Lifecycle working docs **S1–S4** and raw research for W5 ↔ version-control integration; **FORGE_ARCHITECTURE_DIAGRAMS** and related working-doc updates.
 
 ## 6.3.4 (2026-05-03)
 
-
 Removes `.github/workflows/mirror-release-manual.yml` — a `workflow_dispatch`-triggered release workflow I introduced in #167 and refined in #168 without it being raised, planned, or approved as a new piece of release infrastructure.
-
-
 
 ## 6.3.3 (2026-05-03)
 
-
 Direct follow-up to #167. The v6.3.1 manual mirror surfaced the exact edge case I called out as known-follow-up in that PR: a previous `gh release create` succeeded server-side but its response was eaten by a 5xx, leaving the public release present with **zero assets uploaded**. The retry's "release exists, exit success" check then preserved that empty shell on every subsequent re-run.
-
-
 
 ## 6.3.2 (2026-05-03)
 
-
 - Adds a 5-attempt exponential-backoff retry around `gh release create` in the `mirror-release` step of `build.yml`. Detects "succeeded but response lost in flight" via `gh release view` between attempts.
 - Adds a new `mirror-release-manual.yml` workflow (`workflow_dispatch`-only) that re-runs the mirror for any tag, downloading assets from the matching private release. Permanent escape hatch for runs that failed under the old (no-retry) workflow — re-running a failed Actions job uses the YAML at the original commit, so this manual path is the only way to recover historical failures.
-
-
 
 ## 6.3.1 (2026-05-03)
 
