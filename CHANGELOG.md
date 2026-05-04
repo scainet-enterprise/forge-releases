@@ -2,6 +2,25 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+## 6.5.2 (2026-05-05)
+
+### Project picker — Recent by last opened
+
+- **DB:** Migration adds `last_opened_at` on `lifecycle_projects` (schema v38).
+- **IPC:** `list_user_projects` returns `lastOpenedAt`; new **`touch_project_last_opened`** updates open time with tenant visibility checks.
+- **Frontend:** `isTouchEligibleProjectId` helper; **`projectContextStore`** and resume path call **`touch_project_last_opened`** for lifecycle project IDs (not freeform / `local-*`).
+- **`ProjectPicker.svelte`:** **Recent** section shows up to five projects with a recorded last-open, sorted by **`lastOpenedAt`** (tie-break by id); **All projects** lists the rest; **`openProject`** always dispatches **`projectId`** for consumers.
+- **Just start building:** Enters freeform immediately using the same default working directory as the existing “use default folder” path; **Start in a different folder…** opens custom folder setup.
+- **Docs:** Working docs **`S0` / `S1` / `S2` — Project Picker recent by last opened** under **`docs/paul-working-docs/`**; lifecycle doc reorg (moves completed SQLite/router artefacts; **`S4-SQLITE-ACCESS-ARCHITECTURE`** retired from active stack).
+
+### Ship — recoverable FSM (no stuck “Shipping…” spinner)
+
+- **`ShipButton.svelte`:** Every **`ship_project`** outcome exits **`SHIPPING`** via **`SHIP_SUCCESS`** or **`SHIP_FAILED`** (no reliance on **`refresh()`** or **`CI_POLL_RESULT`** while shipping, which the FSM ignores).
+- **`no_pr`:** Optional **`get_project_state`** for **`prStatus`** — toast **“Review not merged yet”** when review is **open**; generic **“No active review”** otherwise; always **`SHIP_FAILED`**.
+- **`ci_pending` / `ci_failed`:** **`SHIP_FAILED`** + toasts (parity for future backend variants).
+- **`conflict_with_main` / `syncWithMain`:** **`updated`** path sends **`SHIP_FAILED`** instead of **`refresh()`**; **up_to_date** after sync sends **`SHIP_FAILED`** so the user can retry; defensive **`default`** arm for new Rust result types.
+- **Tests:** **`vcStateMachine.test.ts`** documents **SHIPPING** ignoring stray events; **`ShipButton.svelte.test.ts`** covers ship result → FSM contract.
+- **Docs:** **`S0` / `S1` / `S2` — Ship spinner / FSM stuck** under **`docs/paul-working-docs/`**.
 
 ## 6.5.1 (2026-05-04)
 
@@ -60,12 +79,12 @@ Direct follow-up to #167. The v6.3.1 manual mirror surfaced the exact edge case 
 **What changed.** Two CSS class names referenced across 18 Svelte components did
 not exist in `tailwind.config.js`:
 
-- `bg-forge-bg-primary`  (intended: page / modal background)
+- `bg-forge-bg-primary` (intended: page / modal background)
 - `bg-forge-bg-secondary` (intended: elevated surface — input fields, list rows, panels)
 
 The actual palette tokens defined under `theme.extend.colors.forge` are:
 
-- `forge.bg`     (`#0D1117`) — page background
+- `forge.bg` (`#0D1117`) — page background
 - `forge.surface` (`#161B22`) — elevated surface
 - `forge.border` (`#30363D`)
 - `forge.text.{primary,secondary,muted}`
@@ -95,7 +114,7 @@ No new tokens were introduced — fix uses the existing palette.
 `<div>` will now have their intended dark surface colour. If any UI looks
 visually different after this change (slightly darker panel where there used
 to be no fill), trace back to this CHANGELOG entry. The `<div>` cases are
-expected to look *more* like the original developer's intent. Form fields
+expected to look _more_ like the original developer's intent. Form fields
 (inputs / textareas / selects) are the cases where the change is functional,
 not just cosmetic.
 
