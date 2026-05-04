@@ -2,6 +2,11 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+
+## 6.5.1 (2026-05-04)
+
+- Continuous improvement 2026 05 04
+
 ## 6.5.0 (2026-05-04)
 
 ### Non-blocking Portal sync (Project Picker)
@@ -47,6 +52,85 @@ Direct follow-up to #167. The v6.3.1 manual mirror surfaced the exact edge case 
 
 - Adds a 5-attempt exponential-backoff retry around `gh release create` in the `mirror-release` step of `build.yml`. Detects "succeeded but response lost in flight" via `gh release view` between attempts.
 - Adds a new `mirror-release-manual.yml` workflow (`workflow_dispatch`-only) that re-runs the mirror for any tag, downloading assets from the matching private release. Permanent escape hatch for runs that failed under the old (no-retry) workflow — re-running a failed Actions job uses the YAML at the original commit, so this manual path is the only way to recover historical failures.
+
+## Unreleased — continuous improvement (forge-continuous-improvement-2026-05-04)
+
+### UI palette: replace silently-broken Tailwind class names
+
+**What changed.** Two CSS class names referenced across 18 Svelte components did
+not exist in `tailwind.config.js`:
+
+- `bg-forge-bg-primary`  (intended: page / modal background)
+- `bg-forge-bg-secondary` (intended: elevated surface — input fields, list rows, panels)
+
+The actual palette tokens defined under `theme.extend.colors.forge` are:
+
+- `forge.bg`     (`#0D1117`) — page background
+- `forge.surface` (`#161B22`) — elevated surface
+- `forge.border` (`#30363D`)
+- `forge.text.{primary,secondary,muted}`
+- `forge.accent.{blue,cyan,purple,green,yellow,red}`
+
+Because Tailwind silently produces no CSS for undefined utility class names,
+every `bg-forge-bg-primary` / `bg-forge-bg-secondary` was a no-op. On `<div>`
+elements this rendered as transparent (visually acceptable over the dark
+backdrop), but on `<input>` / `<textarea>` / `<select>` the user-agent default
+white background won — making fields appear as solid white rectangles with
+black-on-near-white text that was unreadable in the dark theme. Most visible
+in the Job Detail "Edit task" / "Add task" / "Task detail" modals, but also
+present in: AgentStream, LifecycleDashboard, ProjectDetailView,
+NotificationBell, DocumentViewerModal, UndoToast, TechniqueLibrary, LostButton,
+BriefingView, ConfirmDialog, GuidedTour, LaunchPad, McpSettings,
+PostStageReview, GateApproval, ActionCardModal, TelemetryConsent.
+
+**Fix.** Global rename across all 18 files:
+
+- `bg-forge-bg-primary` → `bg-forge-bg`
+- `bg-forge-bg-secondary` → `bg-forge-surface`
+- `hover:bg-forge-bg-secondary` → `hover:bg-forge-surface`
+
+No new tokens were introduced — fix uses the existing palette.
+
+**Downstream watch list.** Components that previously rendered transparent on
+`<div>` will now have their intended dark surface colour. If any UI looks
+visually different after this change (slightly darker panel where there used
+to be no fill), trace back to this CHANGELOG entry. The `<div>` cases are
+expected to look *more* like the original developer's intent. Form fields
+(inputs / textareas / selects) are the cases where the change is functional,
+not just cosmetic.
+
+**Out of scope.** A handful of CSS `var(--forge-bg-elevated, #1e293b)`
+references in `ConflictDialog.svelte`, `ConflictDiffViewer.svelte`,
+`CIFailureModal.svelte`, `BranchCleanupDialog.svelte` — those use a CSS-custom-
+property fallback that already renders the intended colour without touching
+the Tailwind palette. Left as-is to avoid unrelated visual churn.
+
+### Job Detail UX
+
+- Per-task 3-dot menu on every task row (was `pending_review`-only).
+  Status-aware actions: Approve / Start / Mark complete / Mark failed /
+  Re-open / Retry, plus universal Edit / Drop. Menu uses `bg-forge-bg` and
+  a thicker cyan border to clearly occlude the task list behind it.
+- Display labels: `pending` → "ready to action", `in_progress` → "in progress"
+  in badges, status dropdown, menu actions, confirm dialogs and toasts. DB
+  status values are unchanged (still `pending` / `in_progress`); display
+  layer only.
+- Lock-failed regression after job revert (F-008 follow-up). `job_lock_plan`
+  IPC was unconditionally re-INSERTing draft-derived tasks, colliding on
+  `JOB-XXX::TASK-NNN` PK because revert preserves the original tasks (now
+  in `pending_review`). IPC now only seeds tasks from the draft when the job
+  has zero existing tasks; re-approval after revert trusts the curated rows
+  and `lock_job_plan_async` flips any `pending_review` back to `pending`.
+- Backend additions: `job_approve_task`, `job_update_task_content`,
+  `job_drop_task` IPC commands + `update_job_task_content_async` /
+  `delete_job_task_async` engine methods. All emit `tasks:changed` for F-015
+  UI auto-refresh.
+
+### Voice persona (F-017 reopened)
+
+- Added a single rule under "Conversational Style" in
+  `persona/voice_conductor.rs` instructing Clara not to overuse the user's
+  name (introductions / formalities only — once or twice per conversation).
 
 ## 6.3.1 (2026-05-03)
 
