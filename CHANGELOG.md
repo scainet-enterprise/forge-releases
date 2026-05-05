@@ -2,6 +2,29 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+## 6.5.3 (2026-05-05)
+
+### Version control — affordances, editor dirty state, and manifest naming
+
+- **Affordances façade (`vcAffordances`):** Derived store consolidates Save / Publish / Ship enablement with IPC-backed `projectStateCache` and explicit `blockedBy` reasons.
+- **P2c-B03 — Publish:** `canPublish` combines FSM state with backend `hasUnpublishedWork` via `canPublishWithIpc`; `CI_FAILED` remains actionable per FSM rules.
+- **Rail idempotency:** `railLocked` / early-return guards on VC actions to avoid duplicate in-flight IPC.
+- **`forge:editor-dirty`:** Debounced (`500ms`) `window` events from the editor bridge; FSM listens and forwards **`FILE_CHANGED`** when the state accepts local changes; suppression during **`SAVING` / `PUBLISHING` / `SHIPPING`** and a short window after **`forge:file-saved`**.
+- **`unsaved_buffers`:** `anyDirtyBuffer` adds **`blockedBy`** and gates **`canPublish`**; **Publish** tooltips for **`unsaved_buffers`**, **`open_pr`**, **`squash_merged_no_new_save`**.
+- **Save before Git:** **`flushDirtyTabsUnderWorkingDir`** (path-safe under working dir) runs before **`save_project`** so disk matches open buffers.
+- **Tests:** `isPathUnderWorkingDir`, `acceptsFileChangedState`, `vcAffordances` dirty-buffer behaviour.
+- **Docs:** `S0`–`S4` for **forge:editor-dirty**; **`docs/architecture/vc-affordances.md`** — editor dirty buffers; **`WORKING-VC-PIPELINE-FSM-ANALYSIS.md`** updated for completed items.
+
+### Project creation — `forge.project.json` (shared repo)
+
+- **Workspace manifest:** If **`forge.project.json`** already exists (e.g. cloned repo), it is **loaded and preserved** instead of overwritten.
+- **`name` field:** New manifests use the **GitHub repository name** parsed from **`repo_url`** (stable when several Forge projects share one repo); falls back to the user **project name** when the repo cannot be parsed. Avoids UUID worktree folder names and conflicting **`name`** values across branches.
+- **`parse_github_url`** is evaluated before manifest creation so owner/repo metadata and manifest naming stay aligned.
+
+### New project flow
+
+- **Custom repository naming** and related UX in the new-project flow.
+
 ## 6.5.2 (2026-05-05)
 
 ### Project picker — Recent by last opened
