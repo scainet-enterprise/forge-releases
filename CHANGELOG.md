@@ -2,6 +2,34 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+## 6.5.4 (2026-05-07)
+
+This release **replaces the hand-rolled VC rail reducer with an XState v5 machine** (`vcRailMachine` + `createActor`) while preserving the existing Svelte store API (`send`, `init`, `refresh`, affordances). The migration spans **XS1–XS6** (model parity, production actor cutover, operation timeouts, CI polling extraction, centralized listener teardown); **6.5.4** also includes Rust publish/branch parity and the editor dirty-bridge follow-up below.
+
+### Version control rail — full XState v5 migration (XS1–XS6)
+
+- **XS1–XS2 — Machine + reducer parity:** `vcStateMachineModel.ts` holds **`transitionVC`** and related guards (`acceptsFileChangedState`, `hasCommitsReadyForPublish`, etc.). `vcRailMachine.ts` uses **`setup().createMachine`** with an **`active`** node; rail events **`assign`** through the same transitions as before.
+- **XS3 — Actor + store adapter:** `vcStateMachine.ts` uses **`createActor(vcRailMachine)`**; public **`send`** → **`dispatchRail`**; **`REFRESH_MERGE`**, **`SHOW_CI_MODAL`**, **`HIDE_CI_MODAL`** avoid spurious history. **`destroy()`** stops the actor; **`dispatchRail`** restarts if stopped (Vitest lifecycle).
+- **XS4 — Operation timeouts:** Parallel **`opTimers`** region, numeric **`after`** delays, **`raise`** for **Save / Publish / Ship / shipped** timers; **`OP_TIMER_SYNC`** in the model; history for actor-driven timeout events (**`historyEventForActorDrivenRailTransition`**).
+- **XS5 — CI polling:** **`vcCiPolling.ts`** (`createVcCiPolling`) — interval, **`pollInFlight`**, max duration, **`ci:status-changed`**; store **`startPolling`** / **`clearTimers`** / **`reset`** / **`destroy`** wired.
+- **XS6 — Teardown:** **`teardownCiAndExternalListeners()`** centralizes detach for CI schedule, editor-dirty, project context, Tauri listeners; **`destroy()`** uses it.
+- **Tests:** **`vcRailMachine.test.ts`**, **`vcStateMachine.test.ts`** (incl. XS4 ordering constraints), **`vcStateMachine.timers.test.ts`** (`vi.resetModules()` isolation), **`vcCiPolling.test.ts`**, destroy/reset lifecycle coverage.
+- **Developer tooling (XState):** **`@statelyai/inspect`** (devDependency); **`forwardVcRailInspect`** from **`createActor(..., { inspect })`**; **`window.__forgeStatelyVcConnect?.()`** opens the browser inspector (dev, allow popups). **`src/app.d.ts`** declares the hook.
+
+### Version control — publish / project-state parity (Rust)
+
+- **`get_commits_since_from_branch`:** Commits-ahead vs **`origin/staging`** can target the **canonical** branch (`lifecycle_projects.working_branch`) instead of only worktree **`HEAD`**, so the pre-publish gate matches the GitHub PR head (avoids **422** _No commits between staging and forge/…_ when checkout and DB branch differ).
+- **`get_project_state`:** Reads **`working_branch`** from SQLite and passes it into **`detect_project_state`** when **`refs/heads/<branch>`** exists so **`commits_ahead_of_staging`**, unpushed counts, and Publish affordances align with the same branch **`publish_project`** uses.
+
+### Editor → VC — dirty bridge after save / ship
+
+- **`forge:editor-dirty`:** If the post-**`forge:file-saved`** suppress window drops a **`dirty: false`** dispatch, a **deferred retry** re-reads **`anyDirtyBuffer`** so **`dirtyBridgeLastDispatched`** cannot stay stuck; **Save** can appear again after **Ship** / **Save** flows when the user edits.
+
+### Documentation
+
+- **`WORKING-VC-PIPELINE-FSM-ANALYSIS.md`:** XS1–XS6 XState migration, timers, history, CI polling, teardown, and follow-on items.
+- **`S4-VC-FSM-XSTATE-MIGRATION.md`:** Detailed action plan / execution summary for the migration phases.
+
 ## 6.5.3 (2026-05-05)
 
 ### Version control — affordances, editor dirty state, and manifest naming
