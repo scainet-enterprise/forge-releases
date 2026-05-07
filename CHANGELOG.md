@@ -2,6 +2,11 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+
+## 6.5.5 (2026-05-07)
+
+- Voice project integration
+
 ## 6.5.4 (2026-05-07)
 
 This release **replaces the hand-rolled VC rail reducer with an XState v5 machine** (`vcRailMachine` + `createActor`) while preserving the existing Svelte store API (`send`, `init`, `refresh`, affordances). The migration spans **XS1–XS6** (model parity, production actor cutover, operation timeouts, CI polling extraction, centralized listener teardown); **6.5.4** also includes Rust publish/branch parity and the editor dirty-bridge follow-up below.
