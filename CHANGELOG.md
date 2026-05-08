@@ -2,6 +2,24 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+## 6.5.6 (2026-05-08)
+
+### VC rail — tamper-evident audit (Phase 1)
+
+- **`AuditEventType::VcRailOperation`:** Records outcomes for **`save_project`**, **`publish_project`**, and **`ship_project`** with a bounded JSON payload (operation, outcome, `result_type`, `error_class`, truncated `message_preview`, conflict path samples, counts — no full test output, PR URLs, or raw conflict file lists beyond caps).
+- **`merged_tool_definitions` path unchanged** for VC; auditing is **`record_vc_operation`** (best-effort, non-blocking) from IPC wrappers after **`try_*`** inner functions return.
+- **`ipc/version_control/helpers.rs`:** Payload builders, **`infer_vc_error_class`** heuristics (ordering fixes for GitHub vs validation), and unit tests for truncation, caps, and schema subset.
+- **`audit/transcript.rs`:** User actor, summary line, and markdown icon for VC rail events in project transcripts.
+- **Working docs:** `WORKING-VC-RAIL-AUDIT-INTEGRATION.md`, `S1` / `S2` / `S4` VC rail audit integration notes under **`docs/paul-working-docs/`**.
+
+### Live Voice — macOS microphone (Info.plist)
+
+- **`NSMicrophoneUsageDescription`** via **`src-tauri/Info.plist`** merged through **`bundle.macOS.infoPlist`** in **`tauri.conf.json`**, so WKWebView can expose **`navigator.mediaDevices`** for **`getUserMedia`** (fixes “Microphone unavailable” when the usage string was missing).
+- **`webview_permission.rs`:** Comment clarifies macOS plist requirement vs WebView2 pre-grant on Windows.
+
+### Hygiene
+
+- **Unused import / re-export cleanup:** `catalyst/flows.rs` (test-only `Arc`/`Mutex`), `version_control/conflict/mod.rs` (unused hunk parser re-export), `w5/mod.rs` + `ipc/w5.rs`, migration and lifecycle tests; removes a batch of compiler warnings without behaviour changes.
 
 ## 6.5.5 (2026-05-07)
 
