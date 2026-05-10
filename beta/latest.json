@@ -1,43 +1,43 @@
 {
-  "version": "6.5.7",
+  "version": "6.6.0",
   "notes": "See the [CHANGELOG](https://github.com/scainet-enterprise/forge-releases/blob/main/CHANGELOG.md) for details.\n\n## Downloads\n| Platform | File |\n|----------|------|\n| Windows (x64) | `.msi` or `.exe` (NSIS installer) |\n| macOS (Apple Silicon) | `.dmg` (M1/M2/M3/M4) |\n| macOS (Intel) | `.dmg` (x86_64) |\n| Linux (x64) | `.deb` or `.AppImage` |",
-  "pub_date": "2026-05-08T04:20:38.538Z",
+  "pub_date": "2026-05-10T00:04:41.453Z",
   "platforms": {
     "darwin-aarch64": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVUM1cyc1VyZTU2aS9kRFdpbVpEV3lISFE5SVVIQmN3NkdENEhqUVNXSERnVHUxN3QwaE9YSHdCTTJJMXVIblB4Tkg2K25vWk9KcTlwcTVaTTlIMktOUlhPYjhtRlZJYkEwPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzc4MjEyMjM5CWZpbGU6U0NBSU5FVC1Gb3JnZS5hcHAudGFyLmd6CmxkY2ZuOGQzN0llTVY1d09Zd2FaOGZnb3ByNFZPQnhKbjIvS2lmcjJpRXFUdVhsM2JyWFA5U2J5M1hoZnBRZGQzMGtnWG9NajNoUkN3YjJPSlhGd0R3PT0K",
-      "url": "https://github.com/scainet-enterprise/forge-releases/releases/download/v6.5.7/SCAINET-Forge_aarch64.app.tar.gz"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVUM1cyc1VyZTU2aTM3QTlnVTM5MjVLUGZERUxBc2o2dVphY3BtSVlIWFlXWjUyZVNXQmlEZll2NngzQjhOTVA3Y2d3Q1lTSmU4aXJMeDlUeTdwcjV1YnZob2dZSGpYU0FNPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzc4MzY5ODE4CWZpbGU6U0NBSU5FVC1Gb3JnZS5hcHAudGFyLmd6CldqOHhBRGtMdDBMVmQ4MitmR2lBUE1odkVTUlJ0NXE3YnRyYWVhd21MOUg1TTYyOC9KT0NPL2NRWWxLSDVJN0ZMRG9NTnI2ZEJhNGF3NGZ0ZUxqVkJBPT0K",
+      "url": "https://github.com/scainet-enterprise/forge-releases/releases/download/v6.6.0/SCAINET-Forge_aarch64.app.tar.gz"
     },
     "darwin-aarch64-app": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVUM1cyc1VyZTU2aS9kRFdpbVpEV3lISFE5SVVIQmN3NkdENEhqUVNXSERnVHUxN3QwaE9YSHdCTTJJMXVIblB4Tkg2K25vWk9KcTlwcTVaTTlIMktOUlhPYjhtRlZJYkEwPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzc4MjEyMjM5CWZpbGU6U0NBSU5FVC1Gb3JnZS5hcHAudGFyLmd6CmxkY2ZuOGQzN0llTVY1d09Zd2FaOGZnb3ByNFZPQnhKbjIvS2lmcjJpRXFUdVhsM2JyWFA5U2J5M1hoZnBRZGQzMGtnWG9NajNoUkN3YjJPSlhGd0R3PT0K",
-      "url": "https://github.com/scainet-enterprise/forge-releases/releases/download/v6.5.7/SCAINET-Forge_aarch64.app.tar.gz"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVUM1cyc1VyZTU2aTM3QTlnVTM5MjVLUGZERUxBc2o2dVphY3BtSVlIWFlXWjUyZVNXQmlEZll2NngzQjhOTVA3Y2d3Q1lTSmU4aXJMeDlUeTdwcjV1YnZob2dZSGpYU0FNPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzc4MzY5ODE4CWZpbGU6U0NBSU5FVC1Gb3JnZS5hcHAudGFyLmd6CldqOHhBRGtMdDBMVmQ4MitmR2lBUE1odkVTUlJ0NXE3YnRyYWVhd21MOUg1TTYyOC9KT0NPL2NRWWxLSDVJN0ZMRG9NTnI2ZEJhNGF3NGZ0ZUxqVkJBPT0K",
+      "url": "https://github.com/scainet-enterprise/forge-releases/releases/download/v6.6.0/SCAINET-Forge_aarch64.app.tar.gz"
     },
     "darwin-x86_64": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVUM1cyc1VyZTU2aXpweTc3VWRXZjI3NE56ZGIydTk1WTNDb2c3R09YTFZvL2RUY0JldGlZUlFVWDZpSEJGRmNVNkxveEt3dXNScHI3ek9jcjNEWkxlVytaQmtob3lISkEwPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzc4MjEyMzQyCWZpbGU6U0NBSU5FVC1Gb3JnZS5hcHAudGFyLmd6Cjl2eXlYbWwxNmRzUmFUb1pvelBmazNwa0podWtUM3F2d1MwdzE3L21vSHYxZks1Y0VhaEVNMnhLaHZ0ZnNOa0JLbDZja21EWVcvL2JWNmhJK0F5b0JRPT0K",
-      "url": "https://github.com/scainet-enterprise/forge-releases/releases/download/v6.5.7/SCAINET-Forge_x64.app.tar.gz"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVUM1cyc1VyZTU2aTQvZDFTSGZwQ0dXZnVwaU9FSFdHU3NUQlg0MUJMeXNjZGdDbjk0RGZ2T2ZuQnZhU0ZLYThkQzBFRVVrUzlpcG5HeEFQRHlyMEd4SlRUTHFzTTE5R2dRPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzc4MzY5ODgwCWZpbGU6U0NBSU5FVC1Gb3JnZS5hcHAudGFyLmd6CndkSWo0UW9Ec3YzTTBpckNzdzJhdC9hSXBZcy9maHgrMmlBUFpldnFacHkyMGtHaUlQK0tLd1U4akE3Sit4clZWV1NTbVVTVW5FNnVlVmlNRmxzNERRPT0K",
+      "url": "https://github.com/scainet-enterprise/forge-releases/releases/download/v6.6.0/SCAINET-Forge_x64.app.tar.gz"
     },
     "darwin-x86_64-app": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVUM1cyc1VyZTU2aXpweTc3VWRXZjI3NE56ZGIydTk1WTNDb2c3R09YTFZvL2RUY0JldGlZUlFVWDZpSEJGRmNVNkxveEt3dXNScHI3ek9jcjNEWkxlVytaQmtob3lISkEwPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzc4MjEyMzQyCWZpbGU6U0NBSU5FVC1Gb3JnZS5hcHAudGFyLmd6Cjl2eXlYbWwxNmRzUmFUb1pvelBmazNwa0podWtUM3F2d1MwdzE3L21vSHYxZks1Y0VhaEVNMnhLaHZ0ZnNOa0JLbDZja21EWVcvL2JWNmhJK0F5b0JRPT0K",
-      "url": "https://github.com/scainet-enterprise/forge-releases/releases/download/v6.5.7/SCAINET-Forge_x64.app.tar.gz"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVUM1cyc1VyZTU2aTQvZDFTSGZwQ0dXZnVwaU9FSFdHU3NUQlg0MUJMeXNjZGdDbjk0RGZ2T2ZuQnZhU0ZLYThkQzBFRVVrUzlpcG5HeEFQRHlyMEd4SlRUTHFzTTE5R2dRPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzc4MzY5ODgwCWZpbGU6U0NBSU5FVC1Gb3JnZS5hcHAudGFyLmd6CndkSWo0UW9Ec3YzTTBpckNzdzJhdC9hSXBZcy9maHgrMmlBUFpldnFacHkyMGtHaUlQK0tLd1U4akE3Sit4clZWV1NTbVVTVW5FNnVlVmlNRmxzNERRPT0K",
+      "url": "https://github.com/scainet-enterprise/forge-releases/releases/download/v6.6.0/SCAINET-Forge_x64.app.tar.gz"
     },
     "linux-x86_64": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVUM1cyc1VyZTU2aXlPRnllKzVrVnJ5dFFTK0JBQmoxL3hLOE13d1JaKzRhdFo0am9QRFNlV2xVRDRFNXdHdXVDQXNTeU43OWM5R0tzamVBV2wydTVDNTl4NHVKWkI0NVFVPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzc4MjEyOTAzCWZpbGU6U0NBSU5FVC1Gb3JnZV82LjUuN19hbWQ2NC5BcHBJbWFnZQp2VVRZcGkzOGpPQjg1SXFhaWp2ZnlkcjIwWWhXNFZwYU9kTDZFenBIT3cvUEpYUnk4cHBLSEV4R0NKUWZqU3pZQzc5ZXNzMW5hdWgzWXV0WWxDaEpEUT09Cg==",
-      "url": "https://github.com/scainet-enterprise/forge-releases/releases/download/v6.5.7/SCAINET-Forge_6.5.7_amd64.AppImage"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVUM1cyc1VyZTU2aTlPOHFvckNxbG4reFlsRG5FRHk4cHh1WFhOd3JzaU9TdEhGMHBHVlhVeHM1d2dMWFM3cUVOa1l4M2w4WXowMzhBR0dPWGVyK1hDMFJEWTJLb25wblEwPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzc4MzcwNjI4CWZpbGU6U0NBSU5FVC1Gb3JnZV82LjYuMF9hbWQ2NC5BcHBJbWFnZQpJWmMyODBUbmhrYlkzaDNNekFSdnNIN1Q5MlQ0YjRGUXJCT1YvZ2RLTEdIRktiREozUlBhL29ab0JDWHJCc1huc0IrN3J3SDFxQmVXdnRzZmUycTNBQT09Cg==",
+      "url": "https://github.com/scainet-enterprise/forge-releases/releases/download/v6.6.0/SCAINET-Forge_6.6.0_amd64.AppImage"
     },
     "linux-x86_64-appimage": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVUM1cyc1VyZTU2aXlPRnllKzVrVnJ5dFFTK0JBQmoxL3hLOE13d1JaKzRhdFo0am9QRFNlV2xVRDRFNXdHdXVDQXNTeU43OWM5R0tzamVBV2wydTVDNTl4NHVKWkI0NVFVPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzc4MjEyOTAzCWZpbGU6U0NBSU5FVC1Gb3JnZV82LjUuN19hbWQ2NC5BcHBJbWFnZQp2VVRZcGkzOGpPQjg1SXFhaWp2ZnlkcjIwWWhXNFZwYU9kTDZFenBIT3cvUEpYUnk4cHBLSEV4R0NKUWZqU3pZQzc5ZXNzMW5hdWgzWXV0WWxDaEpEUT09Cg==",
-      "url": "https://github.com/scainet-enterprise/forge-releases/releases/download/v6.5.7/SCAINET-Forge_6.5.7_amd64.AppImage"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVUM1cyc1VyZTU2aTlPOHFvckNxbG4reFlsRG5FRHk4cHh1WFhOd3JzaU9TdEhGMHBHVlhVeHM1d2dMWFM3cUVOa1l4M2w4WXowMzhBR0dPWGVyK1hDMFJEWTJLb25wblEwPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzc4MzcwNjI4CWZpbGU6U0NBSU5FVC1Gb3JnZV82LjYuMF9hbWQ2NC5BcHBJbWFnZQpJWmMyODBUbmhrYlkzaDNNekFSdnNIN1Q5MlQ0YjRGUXJCT1YvZ2RLTEdIRktiREozUlBhL29ab0JDWHJCc1huc0IrN3J3SDFxQmVXdnRzZmUycTNBQT09Cg==",
+      "url": "https://github.com/scainet-enterprise/forge-releases/releases/download/v6.6.0/SCAINET-Forge_6.6.0_amd64.AppImage"
     },
     "linux-x86_64-deb": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVUM1cyc1VyZTU2aXhzWVJmYWZKK0EzY0pFLzF0Mk12N1YrZ2wvMTZ2VS9SaGpkY1NKcU1ITWU2VFpxMGVCSzd1RGpYWjRhNW9HNFpqZFhYKy9Pb0FnUWVEeXpadWRWTncwPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzc4MjEyOTAzCWZpbGU6U0NBSU5FVC1Gb3JnZV82LjUuN19hbWQ2NC5kZWIKYzE4RnY0R09FdW1FOXJOcm54NkQzaXprTnhuSDdpU291ODZNZkR3OG5WODZISGJHdms2L3pVb2ZxU1VJNnBpRkEzVlRpUXdERjFQUG8vcGU3RVg1RGc9PQo=",
-      "url": "https://github.com/scainet-enterprise/forge-releases/releases/download/v6.5.7/SCAINET-Forge_6.5.7_amd64.deb"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVUM1cyc1VyZTU2aTdzekc3M1VtVHl5eTlObjQ2VHVvRFZiSmdUSmtwcGMvK1BHTVpOYVhWakl2V2t0Z2hLZG11NWppUEtNdzZHZG9xbEFud0NMRnV1cVFKTG14VUxaYmdRPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzc4MzcwNjI4CWZpbGU6U0NBSU5FVC1Gb3JnZV82LjYuMF9hbWQ2NC5kZWIKQ2EwL3ZDdkNRQTIwVUNZZkE2SXFZZVVQYVd2ejZLaml3WGdhT2MvQlBXOVpjR2N6S3ozYzZERnMzMXlIZ1ZxYzdxTlhTS0Vjc09TYlI1TXJNS25vRGc9PQo=",
+      "url": "https://github.com/scainet-enterprise/forge-releases/releases/download/v6.6.0/SCAINET-Forge_6.6.0_amd64.deb"
     },
     "windows-x86_64": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVUM1cyc1VyZTU2aS9pRnFUdzlOQno2TFZZb0xFUUpqUUVMSTZWZmxCS1AxYUovRU82cXdOcVZ0aGhGcFIwN2xmSHI0aG9xTk5INXBnMUpWazM3QUplSTVGVWs4Nlk5L1FJPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzc4MjE0MDE3CWZpbGU6U0NBSU5FVC1Gb3JnZV82LjUuN194NjQtc2V0dXAuZXhlClM0RmI1U1I3MnlIOW1BS1NhSWpka21RWWNaVTlCQ3VDZllwTDZnaGVaSzJsRW1lRjh2TGJrRklyNjVHK0NJODlRc2I5R1dNN3hDVGFsd0RkT2FTZ0R3PT0K",
-      "url": "https://github.com/scainet-enterprise/forge-releases/releases/download/v6.5.7/SCAINET-Forge_6.5.7_x64-setup.exe"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVUM1cyc1VyZTU2aXliWXBRdjdBMjhNeGU0ajl0UnU3Qjc1Mm9BTDMvRTVHUkVERnJXZldWSGxMUStvbU0waUdvRHZRZHRuQzBjZUJWNW9xMDczQXF0d3htNWZIQlVsSEFVPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzc4MzcxNDc2CWZpbGU6U0NBSU5FVC1Gb3JnZV82LjYuMF94NjQtc2V0dXAuZXhlCjJsL3RSejBrNU15bVJlZXJkdE1pN2FpT002M09jNHRJS0FSMi9hZjAyUEo4U3BXSFdOdDI1dmw2RnFrUzdVL0xVSWhjaGtSS29PTHNzbmt6SkJObUJRPT0K",
+      "url": "https://github.com/scainet-enterprise/forge-releases/releases/download/v6.6.0/SCAINET-Forge_6.6.0_x64-setup.exe"
     },
     "windows-x86_64-nsis": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVUM1cyc1VyZTU2aS9pRnFUdzlOQno2TFZZb0xFUUpqUUVMSTZWZmxCS1AxYUovRU82cXdOcVZ0aGhGcFIwN2xmSHI0aG9xTk5INXBnMUpWazM3QUplSTVGVWs4Nlk5L1FJPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzc4MjE0MDE3CWZpbGU6U0NBSU5FVC1Gb3JnZV82LjUuN194NjQtc2V0dXAuZXhlClM0RmI1U1I3MnlIOW1BS1NhSWpka21RWWNaVTlCQ3VDZllwTDZnaGVaSzJsRW1lRjh2TGJrRklyNjVHK0NJODlRc2I5R1dNN3hDVGFsd0RkT2FTZ0R3PT0K",
-      "url": "https://github.com/scainet-enterprise/forge-releases/releases/download/v6.5.7/SCAINET-Forge_6.5.7_x64-setup.exe"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVUM1cyc1VyZTU2aXliWXBRdjdBMjhNeGU0ajl0UnU3Qjc1Mm9BTDMvRTVHUkVERnJXZldWSGxMUStvbU0waUdvRHZRZHRuQzBjZUJWNW9xMDczQXF0d3htNWZIQlVsSEFVPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzc4MzcxNDc2CWZpbGU6U0NBSU5FVC1Gb3JnZV82LjYuMF94NjQtc2V0dXAuZXhlCjJsL3RSejBrNU15bVJlZXJkdE1pN2FpT002M09jNHRJS0FSMi9hZjAyUEo4U3BXSFdOdDI1dmw2RnFrUzdVL0xVSWhjaGtSS29PTHNzbmt6SkJObUJRPT0K",
+      "url": "https://github.com/scainet-enterprise/forge-releases/releases/download/v6.6.0/SCAINET-Forge_6.6.0_x64-setup.exe"
     }
   }
 }

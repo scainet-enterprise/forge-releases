@@ -2,6 +2,30 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+## 6.6.0 (2026-05-10)
+
+### Merge conflicts — AI-assisted resolution enhancement (S0–S4 working docs)
+
+End-to-end improvements for smart conflict suggestions, manifest-driven guardrails, bulk resolve safety, and a clearer conflict UI. Work is aligned with **`docs/paul-working-docs/S0-AI-CONFLICT-RESOLUTION-ENHANCEMENT.md`** and the S4 DAP track.
+
+#### Backend (Rust)
+
+- **Conflict AI enrichment:** Per-file LLM enrichment after analysis; bounded prompts via **`complete_structured_short`** (max tokens / low temperature) to avoid runaway generation; configurable per-file timeout (**`AI_CONFLICT_FILE_TIMEOUT_SECS`**); racing/cancellation support; session token budget and enrichment progress in analysis.
+- **Process kill switch:** **`FORGE_AI_CONFLICT_ENRICHMENT`** env gate to disable enrichment at the IPC layer.
+- **`forge.project.json` — `ai.conflictResolution`:** Optional **`neverAutoResolve`** path globs (globset `**` semantics on the backend) and **`instructions`** merged into enrichment prompts; manifest parsing tests.
+- **Bulk high-confidence resolve:** Respects manifest **`neverAutoResolve`** globs; optional post-bulk lifecycle test via **`run_lifecycle_test_command`**; frontend/backend types for follow-up test results.
+- **Confidence for bulk apply:** **`merged_confidence_for_bulk_apply`** prefers model confidence when the model source succeeded (mirrors UI **`mergedConfidenceForDisplay`**).
+
+#### Frontend
+
+- **Settings:** New **Git** section for conflict AI — modern toggles; defaults **on** for suggestions, consent, and run-tests-after-bulk; user-facing copy (no internal S4/AI.x jargon).
+- **Conflict dialog:** Unified suggestion card with **AI-assisted** vs **pattern-based** badge; AI-first displayed confidence with pattern fallback in the info popover; **`selectedFile` re-synced from store** when enrichment arrives so the detail pane updates without re-selecting the file; single global enrichment banner when no file is selected; modal stacking / scrim fixes for batch dropdown; **InfoPopover** fixed below the trigger and viewport clamped.
+- **Progressive UX:** Header progress and loading copy while enrichment runs; sidebar AI loading affordance.
+- **Types:** **`picomatch`** for manifest never-auto-resolve on the client; tests for bulk exclusion helpers.
+
+#### Dependencies
+
+- **`picomatch`** (+ **`@types/picomatch`**) for path glob matching in TS.
 
 ## 6.5.7 (2026-05-08)
 
