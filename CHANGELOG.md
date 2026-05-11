@@ -2,6 +2,32 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+## 6.7.0 (2026-05-11)
+
+### Merge conflicts — per-hunk AI enrichment and VC planning docs
+
+#### Backend (Rust)
+
+- **Per-hunk AI enrichment:** Structured conflict hunks feed a bounded hunk table in the LLM prompt (soft cap on hunks shown, snippet size caps, rationale length cap); model may return **`regions[]`** aligned to hunk indices with per-hunk strategy, confidence, and rationale; file-level rollup vs per-hunk guidance clarified in the prompt contract.
+- **Types & parsing:** **`HunkAiRecommendation`** and related conflict analysis wiring; caps such as **`AI_CONFLICT_REGIONS_MAX_PARSE`**, **`AI_CONFLICT_HUNKS_PROMPT_SOFT_CAP`**, **`AI_CONFLICT_HUNK_RATIONALE_MAX_CHARS`**.
+- **IPC:** Minor conflict / enrichment session hookups as needed for the new shape.
+
+#### Frontend
+
+- **`ConflictHunkPanel` / `ConflictDialog` / `ConflictSidebar`:** Per-hunk model-assisted rationale and confidence UX; clearer AI vs pattern badges and reading flow for rationales.
+- **Telemetry:** **`conflictAiHunkDivergence`** (+ tests) for hunk/file recommendation drift visibility.
+- **`TreeNode` / file explorer:** **`gitDecorationStore`** (ancestor roll-up for changed paths) and **`pathUtils`** (compare normalization, e.g. backslashes) with tests; row lookups stay in sync with absolute paths returned from **`list_directory`** and **`get_git_working_tree_status`**.
+
+#### Git
+
+- **Working tree (`get_git_working_tree_status`):** `git status --porcelain=v2` is invoked with **`-uall`** so untracked **directories** are expanded to **per-file** paths in porcelain (default Git only emits a single `? docs/` line, which left nested explorer rows undecorated). Rust unit test covers nested untracked paths in **`-uall`** form.
+
+#### Documentation (working docs)
+
+- **GitHub App → Firestore VC mirror:** New / updated **`S0`–`S4`** under **`docs/paul-working-docs/`** (`S*-FORGE-GITHUB-WEBHOOK-FIRESTORE-VC.md`) — shared **`repoMirrors`** model, **`branchDocId`** normalization (§4.7), resolver, security, and DAP tasks **GH-VC.\*** .
+- **Per-hunk AI conflict enrichment:** **`S0`–`S4`** track (`S*-PER-HUNK-AI-CONFLICT-ENRICHMENT.md`); **enrichment cache / session reset** notes in **`S0-CONFLICT-AI-ENRICHMENT-CACHE.md`**.
+- **AI conflict resolution enhancement** and **membership / RBAC** working docs refreshed; **`ACTIONABLE_IMPROVEMENTS`** and partial **VC abstraction** pointers updated.
+
 ## 6.6.0 (2026-05-10)
 
 ### Merge conflicts — AI-assisted resolution enhancement (S0–S4 working docs)
