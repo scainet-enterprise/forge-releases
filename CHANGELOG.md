@@ -2,10 +2,38 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+## 6.7.2 (2026-05-12)
 
-## 6.7.1 (2026-05-12)
+> **Note on 6.7.1:** A 6.7.1 tag was auto-created during a CI race but no release was ever published (the release-build job was cancelled by an immediately-following push). 6.7.2 is the first published successor to 6.7.0 and supersedes the orphan 6.7.1 tag. There are no 6.7.1 artifacts on `forge-releases`.
 
-- read_file returns full content; remove 100 KB cap
+### Agent tooling — `read_file` returns full content (no truncation)
+
+- **Removed the hardcoded 100 KB cap** in **`agent/tools/mod.rs::read_file`**. The previous behaviour silently truncated any file larger than 100 KB and appended a `[File truncated. Total size: ... bytes. ...]` tail with no agent-facing opt-out. This forced agents to assume content past the cut point — a direct **Article 2 (VERIFY)** violation that produced exactly the failure mode of agents inventing content they could not see.
+- **New contract (Cursor-style):** full file by default, no truncation. **`offset`** (0-based starting line) and **`limit`** (max lines) remain available as **opt-in** pagination for agents that genuinely only want a slice of a very large file.
+- **Tool description updated** so callers understand the new contract (no behavioural surprise; descriptions surface in the tool registry sent to LLMs).
+- **Two latent panics fixed in the same function:**
+  - **UTF-8 boundary panic:** the old `&content[..100_000]` byte-slice could panic on a multi-byte character boundary. Removed entirely with the cap.
+  - **Out-of-range panic:** `lines[start..end]` panicked when `offset > lines.len()`. Now returns an empty string safely via `start >= total` short-circuit.
+- **Tests (all green):**
+  - **`test_read_file_returns_full_content_no_truncation`** — round-trips a ~250 KB file byte-exact, asserts no truncation marker.
+  - **`test_read_file_offset_limit_returns_requested_range`** — `offset=5, limit=3` returns exactly the three requested lines.
+  - **`test_read_file_offset_past_end_returns_empty_not_panic`** — `offset=999` on a 1-line file returns `""`, no panic.
+  - **`test_read_file_offset_only_reads_to_end`** — `offset` without `limit` reads to EOF.
+  - The three pre-existing `read_file` tests (param required, nonexistent file, schema) all still pass.
+- **PR:** [#189](https://github.com/scainet-enterprise/scainet-forge/pull/189).
+
+### Release pipeline — `ship-it` test stability
+
+- **`FORGE_AI_CONFLICT_ENRICHMENT` env-var tests serialized:** `version_control::conflict::feature_flags` now guards temporary process-env mutation with a test-local mutex and restores the prior value even if an assertion panics. This removes the race where `env_falsey_values_disable_enrichment` could fail under the full parallel Rust test suite while passing in isolation.
+- **Why it matters for this release:** `npx agent-excellence ship-it` runs the Rust suite before opening the release PR. The flaky env test was blocking the proper Ship It process, so this release includes the root fix instead of bypassing the guard.
+- **Verification:** `cargo test --bin scainet-forge` passes locally (`1580 passed; 0 failed; 9 ignored`).
+
+### Documentation — Daily Flow & Persona Cast S2 (G2-stamped)
+
+- **`docs/S2-FF-DAILY-FLOW-AND-PERSONA-CAST.md` revision 2 — G2 (F&F Lock) stamped 2026-05-12.** Internal planning artifact, not a user-facing change, but included here so the release record reflects what shipped to `main`.
+- Cuts at G2: Echo persona deleted (cast 7→6), reflective wrap-up survey removed, calibration suggestion engine deferred to v1.1+, avatars cut entirely from v1, voice-sample selection UX simplified to top-3 confirmation.
+- Locks at G2: Daily Flow data is local-first SQLite synced via the existing **`src-tauri/src/sync/`** channel (no new transport); tier scope = paid Forge tiers only; Daily Flow is a Forge feature distinct from SCAINET tenant portals (`/staff`, `/customers`).
+- **PR:** [#190](https://github.com/scainet-enterprise/scainet-forge/pull/190).
 
 ## 6.7.0 (2026-05-11)
 
