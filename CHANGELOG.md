@@ -2,6 +2,189 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+## 6.8.0 (2026-05-14)
+
+A large feature drop covering five connected workstreams: a new **Daily Flow** operating layer with a **named Persona Cast**, the internal voice **Hindsight Protocol** rename, the **Grok F-070** provider work (`reasoning_effort` + `tool_choice` + `grok-4.3` auto-routing + image-gen + 1M context window), **frontend agent-stream regressions** fixed (voice chat history leak, freeform thinking disappearance, voice-pill accumulation), and a round of conflict / W5 / Gmail / audit polish.
+
+### Daily Flow & Persona Cast (PROJ-DAILYFLOW)
+
+A day-scoped operating layer built on top of the existing lifecycle infrastructure. Each day progresses through five phases — **Briefing → Planning → Executing → Wrapping → Closed** — with a named cast of personas handling specific roles.
+
+**Persona Cast — five named personas with hard rules and emotional sliders:**
+
+- **Atlas (Research)** — sources every claim, surfaces uncertainty explicitly, never presents inference as fact. Output format: Finding → Source → Confidence Level.
+- **Aurora (Briefing)** — voice-first morning persona. Routes to voice mode automatically when a `voice_assignment` exists; falls back to text otherwise.
+- **Lens (Review)** — end-of-day review and pattern surfacing.
+- **Quill (Writing)** — prose synthesis, leveraging the new `writing_voice` per-persona overrides.
+- **Sigma (Strategy)** — multi-day pattern analysis and strategic framing.
+
+Each persona is defined under `src-tauri/src/persona/cast/{atlas,aurora,lens,quill,sigma}.rs` following the `voice_conductor.rs` structural pattern (constants for ID/NAME/ROLE, sliders function, `CreatePersonaRequest` builder, `PersonaDefinition` factory). FLINT-38 invariant tests guard the contracts.
+
+**Calibration overlays.** Per-user slider tuning without modifying canonical persona definitions. Overlays are partial JSON (only the fields the user changed); merge applies the overlay on top of the canonical sliders. An LRU-backed `CalibrationCache` keys rendered prompts by `(persona_id, user_id, slider_hash)` so the same calibrated state never re-renders. Stored in the new `persona_calibrations` and `slider_presets` tables.
+
+**Output signal tracking.** Every persona-generated output carries a `slider_state_hash` linking it back to the exact slider configuration that produced it. The audit hook (`record_signal`) writes to `persona_output_signals` with optional `quality_score`, enabling quality correlation across calibration variants over time.
+
+**Voice assignment.** New `voice_assignments` table maps persona × user → voice provider + voice ID + optional `voice_clone_source_ref` and `consent_grant_id`. Briefing routes Aurora to voice mode when an assignment exists; clean text fallback otherwise.
+
+**Daily Flow domain.** New SQLite tables `day_records` (day-level state, doc refs, opened/closed timestamps) and `day_tasks` (per-day tasks with status / persona assignment / dependencies). Phase transitions through `DayPhase::{Briefing, Planning, Executing, Wrapping, Closed}` with `next()` / `prev()` enforcement.
+
+**Frontend.** New `DailyFlow.svelte` (day-level dashboard) and `DailyFlowDetail.svelte` (task-level view), plus generic `EscalationModal.svelte` and `PermissionModal.svelte` reused across the cast for human-in-the-loop checkpoints.
+
+**EGO migrations:** v39 (`daily_flow_calibration`), v40 (`daily_flow_signals`), v41 (`daily_flow_domain`), and follow-on migrations for `voice_assignments` and writing-voice overrides. All idempotent (`CREATE TABLE IF NOT EXISTS`), forward-only.
+
+**New code:** `src-tauri/src/daily_flow/{mod,delegation,tasks}.rs`, `src-tauri/src/ipc/daily_flow.rs`, `src-tauri/src/persona/{calibration,signal,voice_assignment,writing_voice}.rs`, `src-tauri/src/persona/cast/`, `src/lib/components/{DailyFlow,DailyFlowDetail,EscalationModal,PermissionModal}.svelte`.
+
+**Supporting refactors:** `lifecycle/{jobs,mod,project_creation}.rs`, `ipc/{jobs,lifecycle}.rs`, `work_context.rs` extended for day-scoped context. `persona/{templates,process_scales,mod,voice_conductor}.rs` updated to slot into the cast model. `data/persona_profiles.toml` extended (+104 lines) with the five-persona seed data.
+
+**Dependency:** `lru = "0.12"` added to `src-tauri/Cargo.toml` for `CalibrationCache`.
+
+**Planning docs (committed):** `docs/S3-HLP-DAILY-FLOW-AND-PERSONA-CAST.md` (HLP V2, DIAMOND-hardened) and `docs/S4-DAP-DAILY-FLOW-AND-PERSONA-CAST.md` (DAP V3, DIAMOND-hardened + UX wiring pass) — both source-of-truth for the build.
+
+### Voice — Hindsight Protocol (internal rename + barge-in fix + conductor wiring)
+
+**Hindsight Protocol** is the new internal name for the bounded recent-conversation injection that makes "close voice session, reopen in the same project" feel like the same conversation. The mechanism, behaviour, hardening history (F-065, HELIX-38), and on-disk audit shape are unchanged — this is a naming alignment so the in-code vocabulary matches the customer-facing product name.
+
+**Code-side renames:**
+
+- File: `src-tauri/src/voice/recent_context.rs` → `src-tauri/src/voice/hindsight.rs`
+- Module path: `crate::voice::recent_context` → `crate::voice::hindsight`
+- Constants: `RECENT_CONTEXT_ROW_LIMIT` (40) → `HINDSIGHT_ROW_LIMIT`; `RECENT_CONTEXT_TOKEN_BUDGET` (6 000) → `HINDSIGHT_TOKEN_BUDGET`; `RECENT_CONTEXT_KEEP_LAST` (10) → `HINDSIGHT_KEEP_LAST`
+- Struct: `RecentContext` → `Hindsight`
+- Functions: `render_recent_context()` → `render_hindsight()`; `render_voice_conductor_system_prompt_with_recent_context()` → `render_voice_conductor_system_prompt_with_hindsight()`
+
+**Preserved unchanged (Article 1 PRESERVE — durable contracts):**
+
+- `VoiceTransport` audit row `frame_type = "conversation.item.create.recent_context"` is intentionally NOT renamed — every existing voice-session audit chain in any user's audit DB continues to verify, and replay tooling that greps for the historical `frame_type` keeps working.
+- Audit JSON keys `recent_context_rows`, `recent_context_byte_size`, and `resumed_from_session` are preserved on disk for the same reason.
+- `agent/system_prompt.rs` keeps its generic `recent_context: Option<&str>` parameter — that file is the generic system-prompt builder used by non-voice paths too; "Hindsight" is the voice-product naming, not the generic primitive.
+
+**Voice barge-in (F-069 — Owner-reported regression).** `RealtimeEvent::SpeechStarted` is now wired through `voice/session.rs` to send `response.cancel` to xAI mid-stream, clear pending text, and audit the `VoiceTransport` cancel + W5 conductor transition. Previously `voice/conductor.rs` had the logic but no caller — interrupting the assistant mid-utterance failed silently.
+
+**Conductor + dispatch.** `voice/dispatch.rs` (+227 lines) and `voice/session.rs` (+557 lines) extended for cleaner state-machine integration with the conductor. `voice/over_promise.rs` and `voice/tools.rs` updated to align.
+
+### Grok provider — F-070 (`reasoning_effort` + `tool_choice` + `grok-4.3` auto-routing + image-gen routing + context windows corrected)
+
+**`reasoning_effort` plumbing.** Forge previously left two `/v1/chat/completions` parameters at xAI defaults: `reasoning_effort` (defaulted to `"low"` for every reasoning model) and `tool_choice` (defaulted to `"auto"` with no override path). Owner uses `grok-4.3` in manual mode daily; the lack of an effort knob meant complex multi-step problems silently got the same thinking-token budget as a "say hi" prompt. Both parameters are now plumbed end-to-end so the orchestrator can opt in per call.
+
+- New types in `agent/providers/mod.rs`: `ReasoningEffort` (`None` / `Low` / `Medium` / `High` — serializes lowercase as xAI expects), `ToolChoice` (`Auto` / `Required` / `None` / `Function(name)` — `to_json()` renders the OpenAI-compatible shape), and `RequestOptions { reasoning_effort, tool_choice }` with `Default::default()` = both `None`.
+- New trait method `LLMProvider::complete_conversation_streaming_with_options` whose default implementation **delegates to the existing `complete_conversation_streaming`** — every non-Grok provider keeps working unchanged with zero touches.
+- `GrokProvider` refactored: both streaming trait methods route through one private `streaming_call(...)` so the legacy entry point and the new opt-in entry point share exactly one HTTP path. No code duplication, no risk of drift.
+
+**Reasoning-effort whitelist verified live against the xAI API (`scripts/probe_xai_reasoning_effort.py`, committed).** Probed 2026-05-14:
+
+- **ACCEPTS:** `grok-4.3`, `grok-3-mini`.
+- **REJECTS:** `grok-3`, `grok-4`, `grok-4-0709`, `grok-4-latest`, `grok-4.20-reasoning`, `grok-4.20-non-reasoning`, `grok-4.20-0309-reasoning` / `-non-reasoning`, `grok-4-1-fast-reasoning` / `-non-reasoning`, `grok-4-fast-reasoning` / `-non-reasoning`, `grok-code-fast-1`, `grok-4.20-multi-agent-0309` ("Multi Agent requests are not allowed on chat completions").
+
+**Counterintuitive lesson** (now documented in `grok.rs` and pinned by the `whitelist_excludes_models_proven_to_reject_via_live_api` regression test): a model id containing `"reasoning"` does **NOT** imply the `reasoning_effort` knob is accepted. The "reasoning" / "non-reasoning" suffix is xAI's signal for internal reasoning, not for the user-visible effort knob.
+
+**Effort mapping** (`router::classifier::compute_complexity_score` → effort):
+
+| Score    | Effort   | Best for                                                |
+| -------- | -------- | ------------------------------------------------------- |
+| 0 – 60   | `Low`    | xAI's untuned default; general agentic + tool-call work |
+| 61 – 85  | `Medium` | Complex data analysis, multi-file refactors, debugging  |
+| 86 – 100 | `High`   | Challenging problems, deep architecture, math proofs    |
+
+`None` is deliberately not used — it disables reasoning entirely on xAI's side, too aggressive for general chat.
+
+**`tool_choice` wire — RESERVED.** The wire flows end-to-end and is testable, but the orchestrator passes `None` today, preserving xAI's `"auto"` default (Article 1 PRESERVE). Investigation in this branch confirmed the existing **reject-after-call delegation policy** + **system-prompt tool enumeration** (`agent/system_prompt::get_tool_documentation`) handle stray tool calls in lived experience — Owner explicitly verified the model accurately recognises "I do not have that tool" from the prompt and the post-call gate catches the residual misses. The wire stays so a future `Function(name)` pin (e.g. when the user explicitly names a tool) can be added without re-plumbing every provider. Doc on `providers::ToolChoice` documents the RESERVED status so the next agent doesn't try to "fix" the dormant wire or assume the allowlist is doing more than it actually does.
+
+**`grok-4.3` auto-routing enabled.**
+
+- New entry in `src-tauri/resources/model_capabilities.json` (bumped to **v1.4.0**): `grok-4.3` at perception 85, reasoning 92, code 90, instruction 90, creativity 80 — ranked above `grok-4.20-reasoning` so the router prefers it for hard CloudHeavy work.
+- `classify_grok_capabilities` in `registry.rs`: reasoning flag matches `grok-4.3`; vision flag expanded across the `grok-4.x` family (per xAI docs all modern grok-4 models accept `image_url` content parts; the previous code only matched legacy `grok-2-vision-1212`).
+- `classify_tier` correctly promotes `grok-4.3` to `CloudHeavy`.
+
+**Image-gen routing fixed (Owner-reported: "model picker selects grok 3 for image generation etc which is obviously wrong").** Root cause: every Grok model in `model_capabilities.json` had `generation: 0`. On a Grok-only registry, no model passed the dimension threshold (50), the router fell through to tier-default selection, and tier default returned the first/weakest Grok in the tier (typically `grok-3`). The `generation` dimension is **TOOL-MEDIATED** in Forge — chat models invoke the `image_generate` tool (`agent/tools/image.rs`), which posts to xAI's `/v1/images/generations` with `model: "grok-imagine-image"`. The chat model's job is just to recognise intent and call the tool with a sensible prompt — basic tool-calling competency.
+
+Calibrated generation scores reflecting tool-mediated capability:
+
+| Model                          | Score | Rationale                                                                                                    |
+| ------------------------------ | ----- | ------------------------------------------------------------------------------------------------------------ |
+| `grok-4.3`                     | 72    | Top instruction (90), Owner's daily driver, slight edge over gpt-4o (70) so it wins ties on mixed registries |
+| `grok-4.20-reasoning`          | 65    | Strong tool-caller, instruction 88                                                                           |
+| `grok-4.20-non-reasoning`      | 60    | Same family, slightly lower reasoning                                                                        |
+| `grok-4` / `-latest` / `-0709` | 55    | Older flagship, retiring 2026-05-15                                                                          |
+| `grok-3`                       | 35    | Below threshold by design — basic tool-calling, falls back to tier default if it's all that's available      |
+| `grok-3-mini`                  | 25    | Below threshold by design — lighter                                                                          |
+
+The `dimensions.generation` description and `_meta.scoring_note` were both updated to document the tool-mediated semantics so future contributors understand why a model with no native image output (grok-4.3) can score above one with native DALL-E integration (gpt-4o).
+
+**Article 1 PRESERVE — what was NOT done.** Owner initially green-lit removing the `id.contains("image")` filter from `GrokDiscovery` so `grok-imagine-*` models would surface in the registry. Investigation revealed this would expose **broken endpoints** to the chat orchestrator: imagine models live at `/v1/images/generations`, not `/v1/chat/completions`, and would 400 every time the auto-router picked one. Filter retained; defence-in-depth `None` return added to `classify_grok_context_window` for any imagine id that ever leaks through.
+
+**Grok context windows — corrected against authoritative xAI source.** `agent::providers::registry::classify_grok_context_window` returned wrong values for half the Grok family. The most consequential miss: **`grok-4.3` was reported as 256k when xAI's pricing table lists it as 1M.** Owner noticed: "the context we quote is totally wrong. please correct it, grok 4.3 is 1m for example but many are wrong". Refetched `https://docs.x.ai/docs/models` (2026-05-14) and rebuilt the lookup against the actual pricing table:
+
+| Model                                     | Was                           | Now                                                          |
+| ----------------------------------------- | ----------------------------- | ------------------------------------------------------------ |
+| `grok-4.3`                                | 256,000                       | **1,000,000**                                                |
+| `grok-4.20-0309-reasoning`                | 256,000 (via grok-4 fallback) | **2,000,000**                                                |
+| `grok-4.20-0309-non-reasoning`            | 256,000                       | **2,000,000**                                                |
+| `grok-4.20-multi-agent-0309`              | 256,000                       | **2,000,000**                                                |
+| `grok-4-1-fast-{reasoning,non-reasoning}` | 2,000,000                     | 2,000,000 (unchanged — was right)                            |
+| `grok-4-fast-{reasoning,non-reasoning}`   | (no entry)                    | **2,000,000**                                                |
+| `grok-4` / `grok-4-0709`                  | 256,000                       | 256,000 (unchanged — last published value before retirement) |
+| `grok-code-fast-1`                        | 256,000                       | 256,000 (unchanged)                                          |
+| `grok-imagine-*`                          | 256,000 (matched grok-4!)     | **None** (defence in depth — not chat-completions)           |
+
+**Heads-up — xAI model retirement 2026-05-15 12:00 PT.** `grok-4-1-fast`, `grok-4-fast`, `grok-4`, `grok-code-fast-1`, and `grok-imagine-image-pro` retire on the day this release ships. xAI server-side redirects deprecated text-model slugs to `grok-4.3` (charged at grok-4.3 pricing). Forge keeps the retired entries in the lookup so any late requests still get a sensible context size; the auto-router's tier classification already favours `grok-4.3` when available.
+
+**Tests (Owner UAT 2026-05-14 — all green):** 16 new `grok::tests` (whitelist coverage, ReasoningEffort/ToolChoice serialization, forbidden-params regression guard, `RequestOptions::default()` mutates nothing); 7 new `agent::providers::request_options_tests` (complexity-score-to-effort mapping at every band boundary, `ToolChoice::to_json()` shape pinning); 5 new `classify_grok_context_window` tests (1M for grok-4.3, 2M for grok-4.20 family, 2M for grok-4-1-fast family, PRESERVE for unaffected models, `None` for imagine variants); 8 new `classify_grok_capabilities` tests; `bundled_capability_scores_grok_generation_above_threshold` pinning the image-gen score floor.
+
+### Frontend — agent-stream regressions fixed (F-067 + F-068 + voice-pill resume)
+
+Three connected Owner-reported regressions were diagnosed and fixed in this branch:
+
+**F-067 — voice chat history leaking across jobs.** The `auditDrivenAgentState` filter in `src/lib/stores/agent.ts` was too broad in freeform mode. Restructured the logic so the no-tag filter only applies in true freeform-voice mode, restoring correct bucketing for project / job contexts. `src/lib/stores/auditEvents.ts` updated to cross-bucket non-voice freeform events under the active voice session ID so freeform text-agent activity remains visible in the stream.
+
+**F-068 — text-agent thinking disappears on reasoning models.** Diagnosed that reasoning models (e.g. `grok-grok-3`) put conversational content in `reasoning_content`, leaving `delta.content` empty. The frontend's `promote_thinking_to_response` was for the legacy store, causing the audit-driven UI to show blank messages where the prior session showed thinking. Fix: backend `CompletionResponse` extended with `reasoning_content`; providers accumulate it; `is_empty_response` updated; orchestrator `select_assistant_text` uses `reasoning_content` as a fallback so the model's actual conversational output reaches the UI.
+
+**Voice / chat pills — resume the latest matching pill instead of accumulating new ones.** Owner UAT showed four pills accumulating in a single day from just navigating in and out of the same project. New `enterContext({ projectId, jobId })` function in `src/lib/stores/session.ts`:
+
+1. Filters existing in-memory sessions by `(projectId, jobId)` match (both nullable; `null === null` so freeform vs project don't collide).
+2. If one or more match, picks the highest `Session.number` (a monotonic creation counter — deterministic tiebreaker even when multiple sessions share a wall-clock start time), marks any other active session `completed`, flips the matched session back to `running`, and reuses its existing `id`.
+3. If nothing matches, falls back to `startNewChat(context)` — old behaviour for first-time entry.
+
+Wired in `src/routes/+page.svelte`. Freeform-entry path is intentionally NOT switched — it still calls `startNewChat() + agentStore.clearForNewChat()` because `clearForNewChat()` invokes `endConversation()` and the two don't compose; revisiting freeform clears the active conversation by design. The "create a brand-new chat" intent (HUMAN command, explicit Plus button) still calls `startNewChat()` directly. Audit chains stay intact — pills are a frontend display concept.
+
+**Tests:** new `src/lib/stores/session.test.ts` with 9 regression tests (same-context resume keeps id, different-context creates new, freeform → project marks freeform completed, project → project resume picks the higher `number` deterministically when timestamps collide, no-match falls back to `startNewChat`). Frontend Vitest suite: **623 / 624 pass** (the single failure is a pre-existing `vcStateMachine.timers.test.ts` flake under parallel-build CPU pressure — passes 8/8 in isolation, file unchanged in this branch).
+
+**Misc UI updates:** `LifecycleDashboard.svelte`, `ModelPanel.svelte`, `SessionBar.svelte`, `agentStream/{PromptPackageRow,SystemPromptRow}.svelte` aligned with the above. `lib/types/conflict.ts` extended for the conflict-system updates below.
+
+### Version control — conflict enrichment polish + W5 commit metadata refinements
+
+Continued cleanup from the per-hunk AI conflict enrichment work that landed in 6.7.0:
+
+- `version_control/conflict/{analysis,bulk_resolve,commit_context,enrichment,enrichment_session,feature_flags,mod,summary,types}.rs` — touch-ups across the conflict pipeline: tighter `enrichment_session` lifecycles, cleaner `bulk_resolve` IPC contract, additional metadata on conflict summaries.
+- `version_control/{git_ops,operations_test,state}.rs` — small fixes shaken out by the conflict-system polish.
+- `ipc/version_control/{conflict,helpers,save,workspace}.rs` — IPC surface aligned with the new conflict types.
+- `w5/commit_trailer.rs` — minor tightening on the `forge:w5_*` trailer parsing.
+- `lib/types/conflict.ts` — frontend types extended (+62 lines) to mirror the backend changes.
+
+### Gmail integration — auth + tool surface tightening
+
+`integrations/gmail/{api,mod,oauth,tools}.rs` updated for cleaner OAuth flow, additional API coverage, and a tighter tool surface for the agent. Internal-only — no user-facing flow change.
+
+### Audit + IPC + Sync infrastructure
+
+- `audit/{events,mod,store}.rs` — new event types (Daily Flow phase transitions, persona output signals) and storage extensions to support them.
+- `ipc/{arbiter,audit,environment,git_working_tree,incidents,mod}.rs`, `cs/profiles.rs` — IPC plumbing aligned with new domain events; misc fixes.
+- `sync/{mod,pull,types}.rs` (+115 / +29 / +60) — sync layer extended for Daily Flow data.
+- `agent/orchestrator/{display,escalation,events,hints,mod}.rs` — orchestrator updates for persona / Daily Flow integration; `display.rs` extended (+153 lines) for richer in-stream rendering of persona events.
+- `agent/{system_prompt,tools/{baseline,mod,vc_conflict}}.rs` — tool surface extended (`agent/tools/mod.rs` +832 lines) for Daily Flow / persona tools; system prompt updates aligned with persona cast.
+- `router/mod.rs`, `main.rs` — minor wiring changes for the above.
+
+### Repo hygiene
+
+- `.gitignore` extended with `.tmp_*` and `audit_*_dump.txt` patterns to prevent throwaway probe scripts and debug dumps from being staged accidentally (cleaned three such files from the working tree as part of this release).
+- New utility scripts: `scripts/probe_xai_reasoning_effort.py` (read-only xAI capability probe — re-run before adding any new model id to the `reasoning_effort` whitelist) and `scripts/audit_today_full.py` (local-only audit DB dump utility).
+
+### Project learnings captured
+
+`PROJECT_LEARNINGS.md` extended (+69 lines) with two new entries:
+
+- **Learning #41 — xAI modern API (`/v1/responses`) — strategic gap; X integration is a near-term marketing offering.** Frames the legacy `/v1/chat/completions` → modern `/v1/responses` migration as a strategic workstream blocked behind the marketing-management offering's spec. Sequencing recommendation locked by Owner.
+- **Learning #42 — Verify docs by FETCHING, not by recall.** Article 6 (VALIDATE) failure analysis from this session: a docs claim about `grok-4.3`'s context window was asserted from recall instead of fetching `https://docs.x.ai/docs/models`. Discrepancy was 256k vs the actual 1M. Captured so the next agent doesn't repeat it.
+
 ## 6.7.2 (2026-05-12)
 
 > **Note on 6.7.1:** A 6.7.1 tag was auto-created during a CI race but no release was ever published (the release-build job was cancelled by an immediately-following push). 6.7.2 is the first published successor to 6.7.0 and supersedes the orphan 6.7.1 tag. There are no 6.7.1 artifacts on `forge-releases`.
