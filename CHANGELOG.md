@@ -2,6 +2,29 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+## 6.8.1 (2026-05-15)
+
+Settings-first MCP, a slimmer project header, stage context on the title, and a self-healing database migration.
+
+### MCP in Settings
+
+- **MCP Servers** is now under **Settings** with **My Servers** and **Marketplace** sub-tabs (the former right-panel MCP tab is removed).
+- **Command Palette → MCP Servers** opens **Preferences** on that section via the new `settingsNavigation` store (`requestOpenSettings('mcp')`).
+- **TitleBar** no longer shows a live MCP tool-count indicator; onboarding copy points to **Settings → MCP Servers**.
+
+### Project detail header
+
+- **Overflow menu (⋮)** replaces the wide experience dropdown and separate refresh control: **View mode** (Guided / Standard / Professional), **Refresh**, and **Settings…** (global preferences).
+- **Stage** is shown as an emoji before the project name, with a rich **InfoPopover** tooltip (headline + stage coaching text). **InfoPopover** adds **`triggerInline`** for compact triggers.
+
+### Reliability
+
+- **EGO SQLite migration v44** (`day_id` on `w5_conductor_transitions`) is **idempotent**: ensures the table exists (per earlier schema) before altering, so databases that skipped a prior migration no longer fail on startup.
+
+### Documentation
+
+- **`docs/paul-working-docs/S1-MCP-TO-SETTINGS.md`** — implementation spec for the Settings move.
+
 ## 6.8.0 (2026-05-14)
 
 A large feature drop covering five connected workstreams: a new **Daily Flow** operating layer with a **named Persona Cast**, the internal voice **Hindsight Protocol** rename, the **Grok F-070** provider work (`reasoning_effort` + `tool_choice` + `grok-4.3` auto-routing + image-gen + 1M context window), **frontend agent-stream regressions** fixed (voice chat history leak, freeform thinking disappearance, voice-pill accumulation), and a round of conflict / W5 / Gmail / audit polish.
