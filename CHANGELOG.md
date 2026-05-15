@@ -2,6 +2,40 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+## 6.9.0 (2026-05-15)
+
+GitHub lifecycle integration hardening: **app install status**, **automatic repository linking (Flow C)**, **smarter link prompts**, **settings-based GitHub sign-in / reconnect**, and clearer UX when the **signed-in GitHub user does not match the repository owner**.
+
+### GitHub App & repository linking
+
+- **Settings — GitHub App:** Installation check with clearer **installed / checking** feedback and a heuristic **installed** badge when API status is ambiguous but a prior install hint exists.
+- **Flow C auto-link:** Attempts to auto-link when opening a project whose remote is already covered by the installed app; **`no_access`** surfaces a warning toast with actionable guidance.
+- **Retry after browser changes:** Auto-link retries on **window focus** and **document visibility** (returning from GitHub after granting repo access) without wiping unrelated cached `no_access` state — fixes focus retry that previously invalidated the cache too early.
+- **Link prompt modal (feature-flagged):** Shows when the app is **known not installed**, or when the app is installed but **lacks access to this repo** (`no_access`), without racing a successful auto-link (modal gated on skip / `no_access` outcome).
+- **Access verification:** Helpers and UI paths for verifying GitHub access (`verify-access`, `AccessLostModal`), Firestore VC listener merge behaviour, and branch normalization utilities with tests.
+- **Project UI:** Link repository control and inline link affordances when **Save / Publish / Ship** are allowed for unlinked projects (Phase B flags).
+
+### Settings & account identity
+
+- **GitHub account card:** **Sign in with GitHub** (device flow) when not authenticated, **Disconnect** when connected, and inline **user code / cancel** during device flow — not only after disconnect.
+- **Removed** the in-app **“remove project webhook / Firestore linkage”** control; users manage hooks and installation from GitHub.
+- **Identity tracking:** `identity-change` and **last-known username** persistence; **`githubAppStore`** centralizes installation/repo list/account login state; GitHub device-auth wiring updates.
+- **Rust (`github_auth`):** Device-flow / persistence improvements used by the frontend.
+
+### Account mismatch warning (project detail)
+
+- **Banner** when the lifecycle remote is GitHub, **`repoOwner`** is known, and the signed-in GitHub user (from the app store or last-known username) **differs** from that owner — explains why linking / VC may fail.
+- **Save / Publish / Ship** are **non-interactive** (disabled styling + tooltip) when there is a mismatch **and** webhook linkage is not complete, avoiding failed operations with no explanation.
+
+### Tooling & docs
+
+- **`tauri:dev:quiet:mac`** and **`tauri:dev:quiet:windows`** npm scripts for reduced log noise during local dev.
+- **Planning / working docs** under `docs/paul-working-docs/` for GitHub app lifecycle, auto-link, MCP-to-settings, manifest gitops, and related S1/S2/S4 references; **EGO_REGISTRY** and **TECHNICAL_DEBT** touch-ups.
+
+### Tests
+
+- New / extended tests for **link-repository** (including flow cases), **webhook-linkage**, **forge-vc-listener** merge, **branch-normalize**, **polling**, **verify-access**, **projectState** effective PR state, and related modules.
+
 ## 6.8.1 (2026-05-15)
 
 Settings-first MCP, a slimmer project header, stage context on the title, and a self-healing database migration.
