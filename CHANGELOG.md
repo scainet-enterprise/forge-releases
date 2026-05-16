@@ -2,6 +2,34 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+## 6.9.1 (2026-05-16)
+
+**Projects tab navigation parity** with the Project Picker (Path A): opening a lifecycle project from **Projects → project row** now applies the same frontend workspace bundle as **picker → `projectSelected`** (explorer, recents, lifecycle mode, backend work context, agent session context), with guards for races and legacy folder linking.
+
+### Path B parity (`ProjectDetailView` + shared module)
+
+- **`src/lib/lifecycle/projectDetailWorkspace.ts` (new):**
+  - **`pickFolderAndTryPersistWorkingDir`** — native `pick_folder`, then persists via **`link_folder_to_project`** (same IPC as `ProjectPicker.svelte` for portal/legacy rows without git), with trim/cancel/error shaping (`path`, `persistedToDb`, `pickerFailed`).
+  - **`applyLifecycleWorkspaceParity`** — ordered bundle: `projectContextStore.setProject` → `recentProjectsStore.addProject` → `lifecycleModeStore.setActiveProject` → `set_active_work_context` → `new_conversation` + `enterContext`; optional **`isStale`** for overlapping `loadData` calls; lifecycle/agent steps remain best-effort if `setProject` fails (matches `+page.svelte` pattern).
+- **`ProjectDetailView.svelte`:**
+  - **`loadData`** — stale-flight epoch (`loadDataGeneration`); legacy **`working_dir` null** flows prompt for folder, persist with picker-aligned IPC, show success vs **“Folder selected but not saved”** when DB write fails but session path is still applied; **`loadReferenceDocs()`** after workspace attempt; **`workspaceReady`** flag.
+  - **`workspaceReady`** — starts `false`, set `true` only after **`parity.kind === 'ok'`** so **`ProjectStateIndicator`** mounts **after** `projectContextStore` reflects the current project (fixes **AutoLink / Link Conflict** firing on stale context while the folder dialog was still open).
+  - **`vcStateMachine.init(projectId)`** — removed from **`onMount`**; called from **`loadData`** only after successful parity (avoids **PROJECT_SWITCHED** / VC/automation racing the folder picker for legacy projects).
+  - **`changeProjectDirectory`** — uses the same pick + parity helpers; after success calls **`vcStateMachine.init(project.id)`** so VC state tracks the new working directory (fixes stale Save/Publish/Ship / CI affordances after directory change).
+  - Local **`project.working_dir`** updated when the user selects a folder even if persist fails (explorer + UI stay aligned for the session).
+
+### Tests
+
+- **`src/lib/lifecycle/projectDetailWorkspace.test.ts`** — picker cancel/throw, persist success/fail, trim, parity order, stale checks, `setProject` failure still runs downstream best-effort steps, no direct `set_working_directory` invoke in parity.
+
+### Documentation
+
+- **`docs/paul-working-docs/S0-PROJECTS-FEATURE-FLAG.md`** — **§10** lists remaining low-severity Path A vs Path B differences (recents ordering on `setProject` failure, picker portal refresh after link, early `onMount` work-context, DB uniqueness vs `lifecycle_set_project_working_dir`) and summarizes fixes shipped in this release.
+
+### Related planning
+
+- **`docs/paul-working-docs/S0-PROJECT-LIFECYCLE-NAVIGATION-PARITY.md`** — scope and acceptance context for lifecycle navigation parity (Path A / Path B).
+
 ## 6.9.0 (2026-05-15)
 
 GitHub lifecycle integration hardening: **app install status**, **automatic repository linking (Flow C)**, **smarter link prompts**, **settings-based GitHub sign-in / reconnect**, and clearer UX when the **signed-in GitHub user does not match the repository owner**.
