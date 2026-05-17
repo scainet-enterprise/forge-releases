@@ -2,6 +2,42 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+## 6.9.6 (2026-05-18)
+
+**CI, quality gates, and Rust hygiene:** stable **`CI Passed`** aggregation for branch protection; **`cargo clippy --all-targets`** on the Ubuntu PR gate; **`pr-quality-gate`** workflow for Windows + macOS cross-platform smoke (Linux diagnostics only, non-blocking); **`mirror-release`** only when the multi-platform **`build`** matrix fully succeeds. Rust dead-code / Clippy fixes, more reliable voice audit tests, architecture and S0 operator docs.
+
+### GitHub Actions
+
+- **`build.yml`:** After **`cargo test`**, run **`cargo clippy --all-targets`** (fails on deny-by-default lints; warnings allowed per **`docs/paul-working-docs/S0-RUST-DEAD-CODE-WARNINGS.md`**). New **`ci-passed`** job (**name: CI Passed**) requires **`test` (Ubuntu)** **`success`** — use this as the stable required check for branch protection. **`auto-tag`** now **`needs: [ci-passed]`**. **`mirror-release`** runs only when **`needs.build.result == 'success'`** (no mirror on partial matrix failure); see S0 §13 for recovery.
+- **`pr-quality-gate.yml` (new):** On **`pull_request`** to **`main`** (+ **`workflow_dispatch`**): **`Smoke (Windows)`** / **`Smoke (macOS)`** run **`cargo test --test cross_platform`**; **`Smoke (Linux — diagnostics only)`** uses **`continue-on-error: true`**.
+- **`cross-platform-smoke.yml` (removed):** superseded by **`pr-quality-gate.yml`**.
+
+### Contributor docs
+
+- **`CONTRIBUTING.md`:** CI overview table ( **`build.yml`** vs **`pr-quality-gate.yml`** ), required checks (**`CI Passed`** + Win/mac smoke, not Linux diagnostics), mirror-only-on-success pointer to S0.
+
+### Rust (`src-tauri`)
+
+- **`version_control/manifest_sync.rs`:** Test assertion covers real manifest drift (removes tautology; fixes **`clippy::overly_complex_bool_expr`**).
+- **`integrations/gmail/api.rs`:** Unused deserialized fields kept for Serde with **`#[serde(rename = …)]`** and **`_`-prefixed** Rust field names.
+- **`db/error.rs`:** Drop unused **`ReadPoolTimeout`** enum variant (nothing constructed it).
+- **`config/mod.rs`:** Remove unused **`ConfigEngine::db_handle`**.
+- **`ego/mod.rs`:** Remove unused **`db_handle`** and superseded async helpers; canonical paths remain for session / ledger behavior.
+- **`audit/store.rs`:** **`append`** / **`last_event`** limited to **`#[cfg(test)]`**; production continues to use **`record_chained`**.
+- **`voice/session.rs`:** Test **`AUDIT_BARRIER_WAIT`** **5s → 10s**; F-091 coalesce test waits **`UserMessage`** then **`AssistantMessage`** before assertions; **`flush_pending_user_message_audit`** **`tracing::warn!`** when **`AuditEngine::record`** errors.
+
+### Documentation
+
+- **`docs/paul-working-docs/S0-CI-RELEASE-GATING-AND-SMOKE.md`:** CI charter / runbook (jobs, branch protection, mirror policy).
+- **`docs/paul-working-docs/S0-RUST-DEAD-CODE-WARNINGS.md`:** Rust warning / Clippy triage.
+- **`docs/paul-working-docs/INTEGRATION_TESTING_AUDIT.md`**, **`TECHNICAL_DEBT.md`**, **`TEST_COVERAGE_AUDIT.md`**, **`FRONTEND_COMPONENT_SIZE_AND_REFACTOR_CANDIDATES.md`:** Updates and additions.
+- **`docs/architecture/`:** Large expansion — C4 views, system stack, conduit / VC / W5 Mermaid diagrams, EGO ER, sequences, walkthroughs; **`FORGE_ARCHITECTURE_DIAGRAMS.md`** and **`README.md`** refactored.
+- **`docs/FORGE_UNDERSTANDING_COURSE.md`**, **`scainet-test/docs/FORGE_*.md`**, **`raw-research/W5-VERSION-CONTROL-CONTEXT-S0.md`:** Small edits.
+
+### Housekeeping
+
+- Removed an erroneously tracked screenshot under **`src-tauri/`** with an invalid Windows path segment.
+
 ## 6.9.5 (2026-05-17)
 
 **Free tier unblocked:** the `start` HUMAN command (and the lifecycle navigation set) is now available on the **Free** plan. Previously a free user clicking **Start Text** — or typing any HUMAN command trigger — received `"start" requires a Basic or Pro subscription. Available commands: \`status\`, \`who\`, \`version\`.`, even though the **Basic** tier no longer exists in the codebase. Free users could not get past the entry splash, could not run the naming ceremony, and could not experience FORGE at all without paying — directly contradicting the **Free forever** pricing message.
