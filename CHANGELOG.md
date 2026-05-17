@@ -2,6 +2,29 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+## 6.9.5 (2026-05-17)
+
+**Free tier unblocked:** the `start` HUMAN command (and the lifecycle navigation set) is now available on the **Free** plan. Previously a free user clicking **Start Text** — or typing any HUMAN command trigger — received `"start" requires a Basic or Pro subscription. Available commands: \`status\`, \`who\`, \`version\`.`, even though the **Basic** tier no longer exists in the codebase. Free users could not get past the entry splash, could not run the naming ceremony, and could not experience FORGE at all without paying — directly contradicting the **Free forever** pricing message.
+
+This release opens the door to the product. Pro+ differentiation now lives where it always belonged — automation (Daily Flow), scale (unlimited projects, Catalyst dispatch), and infrastructure-touching git/release commands (`stage it`, `ship it`, `quick save`, `handover`) which are also actively being migrated to dedicated toolbar buttons (Save / Publish / etc.). The HUMAN command surface will be revisited once those buttons are dialled in; until then the gate is kept on commands whose UX is mid-migration.
+
+### `src/lib/stores/entitlements.ts`
+
+- **`FEATURE_MATRIX.scainet.free.humanCommands`:** expanded from `['status', 'who', 'version']` to include `start`, `rules`, `tasks`, and the lifecycle navigation commands `advance_to S0` through `advance_to S6`. Free now has 13 HUMAN commands (was 3) — covering the full onboarding path (`start` → naming ceremony → lifecycle navigation → discovery) without leaving anything that costs us infrastructure exposed.
+- Kept Pro+ gated: `stage it`, `ship it`, `quick save`, `handover`, `framework version`. These touch git/deploy infrastructure AND are being replaced with toolbar buttons — no churn on their gate until that migration completes.
+
+### `src/lib/components/InstructionPanel.svelte`
+
+- **Stale message text removed:** the blocked-command warning hardcoded `"Basic or Pro subscription"` and an `allowed` string of `` `\`status\`, \`who\`, \`version\`` ``. Both were stale — `Basic`tier was removed long ago, and the`allowed`list no longer matches the (now expanded) free command set. Replaced with`"X" requires a Pro subscription. Upgrade to unlock the full HUMAN command set.` — accurate, non-stale, no per-tier interpolation.
+
+### Tests
+
+- **`entitlements.test.ts`:** all 29 tests pass unchanged. Existing assertions (`canRunCommand('handover') === false` for free, `canRunCommand('ship it') === true` for pro) still hold — the change is additive to free, not subtractive from gated commands.
+
+### Why now (release context)
+
+A user-facing Stripe Cloud Function regression earlier today produced the misleading error `Invalid tier: pro. Valid: pro` for paying customers attempting to upgrade — root cause was missing `STRIPE_PRICE_PRO` / `STRIPE_SECRET_KEY` env in the deployed `billingCreateCheckout` function, fixed server-side independent of this release. While investigating, the `start` gate surfaced as a secondary blocker — even users who _could_ pay couldn't experience the product enough to want to. This release unblocks the door.
+
 ## 6.9.4 (2026-05-17)
 
 **Work tab inner IA (S4):** unified **Projects | Jobs | Daily Flow** chrome on **`LifecycleDashboard`**, **`signalNavigateState`** helper for **`signal:navigate`** / **`+page`** navigation parity, **SessionBar** + backend **work context** cleared when leaving project, job, daily, or **LaunchPad** drill-in views, **project-archive** UI scoped to **Projects** only, and **Daily Flow** creation from the shared toolbar.
