@@ -2,6 +2,16 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+## 6.9.3 (2026-05-17)
+
+**Rust dependency security:** bump the HTTP, error-reporting, and WebSocket stacks so TLS resolves through maintained **`rustls` / `rustls-webpki`** versions, and known-vulnerable transitive crates (including older **`rustls-webpki`** and **`rand` 0.7**) are no longer pulled in via Forge’s direct dependencies.
+
+### `src-tauri`
+
+- **`Cargo.toml` / `Cargo.lock`:** **`reqwest`** `0.11` → **`0.12`** (rustls TLS unchanged); **`sentry`** `0.34` → **`0.48`**; **`tokio-tungstenite`** `0.21` → **`0.29`** (`connect`, `handshake`, **`rustls-tls-native-roots`**).
+- **`voice/grok_realtime.rs`:** Adapt to **`tungstenite`** **`Message::Text`** using **`Utf8Bytes`** (`.into()` on send, **`text.as_str()`** when deserializing JSON).
+- **`voice/reconnect.rs`:** Tests and mock servers store **`Utf8Bytes`** text as **`String`** where the harness expects owned **`String`** logs.
+
 ## 6.9.2 (2026-05-17)
 
 ESLint tightening across the frontend, safer unknown-error handling, EGO repair for drifted **`prompt_package_metadata`** schemas, and MCP settings/marketplace UX plus **persisted “don’t auto-start”** when the user disconnects a server.
