@@ -2,6 +2,47 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+## 6.9.2 (2026-05-17)
+
+ESLint tightening across the frontend, safer unknown-error handling, EGO repair for drifted **`prompt_package_metadata`** schemas, and MCP settings/marketplace UX plus **persisted “don’t auto-start”** when the user disconnects a server.
+
+### ESLint and TypeScript
+
+- **`eslint.config.mjs`:** **`@typescript-eslint/no-explicit-any`** is **error**; `reportUnusedDisableDirectives` enabled; continues gradual **warn** posture for selected Svelte a11y / reactivity rules.
+- **`eslint-any-report.txt`:** Reference sweep of `any` usage after the rule change (for reviewers and follow-up cleanup).
+- **`src/app.d.ts`:** App-wide typing / `Window` augmentations aligned with stricter linting.
+- **`src/lib/utils/unknownError.ts` (new):** Shared helpers to normalize **`unknown`** caught values for logging and UI (`cause.message` chaining, `AggregateError`).
+- **`src/lib/types/sliderPanelValues.ts` (new):** Typed helpers for slider panel values instead of loose `any`.
+
+### Components and stores (lint + correctness)
+
+Wide touch across Svelte components and TS modules for explicit types, safer `unknown` handling, and minor logic cleanups, including: **`AgentStream`**, **`AuthGate`**, **`AuthPanel`**, **`FileExplorer`**, **`InstructionPanel`**, **`DailyFlow`** / **`DailyFlowDetail`**, **`VoiceButton`**, **`SliderPanel`**, **`LifecycleDashboard`**, **`JobDetailView`**, audit / gate / persona modals, agent-stream rows, **`+page.svelte`**, and stores **`agent`**, **`auth`**, **`sync`**, **`updater`**, **`protocols`**, plus **`firebase`** and Firestore modules (**`scoped-query`**, **`documents`**, **`projects`**, etc.).
+
+### MCP — Rust (`src-tauri/src/protocols/mod.rs`)
+
+- **`McpServerStatus.enabled`** exposed to the UI; **`start_all`** only connects servers with **`enabled: true`** in persisted config.
+- **User Connect** sets **`enabled: true`** and saves; **user Disconnect** stops the client, sets **`enabled: false`**, and saves so the server stays off across restarts until re-enabled.
+- **`protocol:server_disconnected`** includes a **`reason`** (`user_requested` | `server_removed` | `app_shutdown`) so the frontend only treats **explicit user disconnect** as disabling auto-start.
+
+### MCP — Frontend
+
+- **`src/lib/stores/protocols.ts`:** **`serversListHydrated`** / **`serversListLoading`** with refcounted in-flight **`loadServers`**; **`finally`** always marks hydrated after the first completed fetch (fixes perpetual skeleton when **`mcp_get_servers`** succeeds); **`initProtocolListeners`** wrapped in **try/catch** so listener setup failures still hydrate; merge preserves **event-ahead** connected servers.
+- **`McpSettings.svelte`:** Add/edit in a **modal**; connect/disconnect feedback (**toasts**); **“manual start”** indication when **`enabled === false`**; list **skeleton** until first load completes.
+- **`McpMarketplace.svelte`:** **Skeleton** until hydrated; **`onMount`** triggers **`loadServers()`**.
+
+### EGO database
+
+- **Migration v47** **`prompt_package_metadata_repair`:** Re-applies the PI v2 batch so **`prompt_package_metadata`** exists on databases that partially applied earlier migrations (fixes **`no such table`** / persist failures).
+
+### Documentation
+
+- **`PROJECT_LEARNINGS.md`** updates.
+- **`docs/paul-working-docs/`:** Work tab IA refactor series (S1–S4), **S0** right-rail / work-surface notes, **S0-VC-BUGS**, **S1-AUDIT-WIRING-AND-ENTRY-POINTS**.
+
+### Tests
+
+- Adjustments in **`auditEvents.test`**, **`vcCiPolling.test`**, **`vcStateMachine.integration.test`**, **`voice/toggle.test`**.
+
 ## 6.9.1 (2026-05-16)
 
 **Projects tab navigation parity** with the Project Picker (Path A): opening a lifecycle project from **Projects → project row** now applies the same frontend workspace bundle as **picker → `projectSelected`** (explorer, recents, lifecycle mode, backend work context, agent session context), with guards for races and legacy folder linking.
