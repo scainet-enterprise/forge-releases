@@ -2,6 +2,51 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+## 6.9.4 (2026-05-17)
+
+**Work tab inner IA (S4):** unified **Projects | Jobs | Daily Flow** chrome on **`LifecycleDashboard`**, **`signalNavigateState`** helper for **`signal:navigate`** / **`+page`** navigation parity, **SessionBar** + backend **work context** cleared when leaving project, job, daily, or **LaunchPad** drill-in views, **project-archive** UI scoped to **Projects** only, and **Daily Flow** creation from the shared toolbar.
+
+### Navigation and work context (`+page.svelte`)
+
+- **`signalNavigateState` integration:** Centralized patch application for lifecycle panel state (project/job/day/launch-pad selection, **`lifecycleDashboardTab`**, **`projectWorkingDirBeforeJob`**, refresh keys) while preserving documented edge cases (e.g. job_tab without **`jobId`**).
+- **`handleLifecycleBack`:** **`lifecycleModeStore.clearWorkContext()`** + **`clear_active_work_context`** when leaving **ProjectDetailView**.
+- **Job back:** same clear after restoring the pre-job working directory.
+- **DailyFlowDetail back:** **`clear_active_work_context`** (aligned with other exits).
+- **LaunchPad back:** clear store + **`clear_active_work_context`** when returning to the dashboard list.
+- **`handleLifecycleBack`:** **`console.warn`** on **`clear_active_work_context`** failure.
+
+### `LifecycleDashboard.svelte`
+
+- **Single primary band:** segment **tablist** + trailing toolbar (overflow **More**, per-tab primary CTA).
+- **CTAs:** **+ New Project** / **+ New Job** / **+ Start Today** per segment (fixes **+ New Job** / **+ Start Today** disappearing when **showArchived** was true on Projects).
+- **Archived projects:** **“N archived”** toggle, **Sort**, and archived banner only when **Projects** is active.
+- **Daily Flow:** **`bind:this`** to **`DailyFlow.startTodayFromToolbar()`**.
+- **Stable `data-testid` hooks** for segments and panels (tests / a11y).
+
+### `DailyFlow.svelte`
+
+- Removed redundant in-panel header (**toolbar** owns **+ Start Today**).
+- Exported **`startTodayFromToolbar`**; **`startToday`** ignores re-entrancy while **`creating`**.
+
+### `signalNavigateState.ts` (new)
+
+- Pure **`applyNavigatePatch`** + **`createLifecycleNavigateState`** for **`CustomEvent<NavigateDetail>`** handling; used by **`onSignalNavigate`**.
+- Tests in **`signalNavigateState.test.ts`**.
+
+### Accessibility and lint
+
+- **`eslint.config.mjs`:** a11y-related adjustments.
+- **Components:** removed unnecessary **`svelte-ignore` a11y** suppressions where roles/handlers are correct (**AuthGate**, **BranchCleanupDialog**, **TabBar**, **McpSettings**, etc.).
+
+### Documentation
+
+- **`docs/paul-working-docs/S4-WORK-TAB-IA-DAP.md`:** expanded DAP traceability and execution notes.
+
+### Tests
+
+- **`LifecycleDashboard.work-tab.test.ts`:** panel visibility, **`aria-selected`**, archived chip vs tab, CTA labels.
+- **`signalNavigateState.test.ts`:** navigation patch behaviour.
+
 ## 6.9.3 (2026-05-17)
 
 **Rust dependency security:** bump the HTTP, error-reporting, and WebSocket stacks so TLS resolves through maintained **`rustls` / `rustls-webpki`** versions, and known-vulnerable transitive crates (including older **`rustls-webpki`** and **`rand` 0.7**) are no longer pulled in via Forge’s direct dependencies.
