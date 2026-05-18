@@ -2,6 +2,65 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+## 6.9.8 (2026-05-19)
+
+**Work surface hub refactor + IPC integration tests:** frontend **`ProjectPicker`** split into a thin shell (**`ProjectPickerWorkspace`** + child panels/modals), Portal reconcile logic consolidated in **`createPortalScheduler`** with Vitest coverage, XState hub state renamed **`project_picker` → `work_surface_hub`** with **`loadSnapshot`** migration for persisted snapshots. Backend **`src-tauri`**: mock-runtime wiring in **`main`** for integration-style IPC tests, incident-cache coverage, audit IPC contract tests (**`record_ui_action`**, **`audit_get_events`**, **`audit_verify_chain`**), orchestrator loop / stream tweaks and **`level_b_harness`** (**`read_file`** + **`write_file`** Level-B scenarios), lifecycle and work-context touch-ups. **PR quality gate** now also runs filtered **`scainet-forge`** tests (**`tauri_invoke_contract`**, **`level_b`**) on Windows/macOS. Repo **`TESTING.md`** documents **`#[ignore]`** policy and opt-in commands; **`INTEGRATION_TESTING_AUDIT`** §11c / §12 updated. Working docs for the hub epic (S0–S4) and integration audit.
+
+### Frontend — work surface picker (`src/lib/components`)
+
+- **`ProjectPicker.svelte`:** Shell only — forwards **`projectSelected`**, **`freeformMode`**, **`resumePreviousProject`**, **`signOut`**, **`upgrade`** from **`ProjectPickerWorkspace`**.
+- **`projectPicker/ProjectPickerWorkspace.svelte`:** Orchestrator (list load, Portal chain, modals, navigation).
+- **`projectPicker/ProjectPickerHome.svelte`**, **`ProjectPickerHeader.svelte`**, **`ProjectPickerFreeformSetup.svelte`**, **`ProjectPickerDeleteModal.svelte`**, **`ProjectPickerLimitModal.svelte`:** Extracted UI.
+- **`projectPicker/portalScheduler.ts`:** Single surface for throttle + **`schedulePortalReconcile`** (replaces **`src/lib/stores/portalProjectSyncThrottle.ts`**, deleted).
+- **`projectPicker/portalScheduler.test.ts`:** Scheduler behaviour tests (force, throttle, unmount, follow-up coalesce, announcements, etc.).
+- **`projectPicker/loadHubSegment.ts`:** Hub segment façade — real projects loader + jobs/daily stubs (**`@internal`**).
+- **`projectPicker/projectPickerTypes.ts`**, **`projectPicker/projectPickerUtils.ts`:** Shared types and pure helpers.
+
+### Frontend — app state (`src/lib/stores`, `src/routes`)
+
+- **`appState.ts`:** Machine state **`work_surface_hub`**; **`loadSnapshot()`** runs **`migrateAppStateSnapshotForMachine`**.
+- **`migrateAppStateSnapshot.ts`** + **`migrateAppStateSnapshot.test.ts`:** Legacy snapshot **`value: 'project_picker'` → `'work_surface_hub'`** (no other context mutation).
+- **`+page.svelte`:** Renders hub when **`appState === 'work_surface_hub'`**.
+
+### Frontend — tests
+
+- **`ProjectDetailView.gate-approval-cta.test.ts`:** Gate approval CTA coverage.
+
+### Rust — IPC and integration harness (`src-tauri`)
+
+- **`main.rs`:** **`#[cfg(test)]`** mock **`Runtime`** + command dispatch helpers for integration-style IPC tests.
+- **`ipc/incidents.rs`:** Incident cache IPC tests (`invoke` round-trips).
+- **`ipc/config.rs`:** Config-related IPC tests with mock runtime.
+- **`ipc/audit.rs`:** Audit IPC contract tests — **`record_ui_action`**, **`audit_get_events`**, **`audit_verify_chain`**.
+- **`audit/store.rs`:** **`ChainVerification`** derives **`Deserialize`** (IPC JSON round-trip in tests); other visibility tweaks aligned with audit IPC tests.
+
+### Rust — agent orchestrator (`src-tauri`)
+
+- **`agent/orchestrator/mod.rs`**, **`loop_run/mod.rs`**, **`loop_run/stream.rs`:** Agent loop / stream handling updates.
+- **`agent/orchestrator/level_b_harness.rs`:** Orchestrator **Level B** — deterministic **`read_file`** and **`write_file`** round-trips (queued mock LLM, real **`ToolExecutor`**, temp workspace, conversation assertions).
+
+### Rust — lifecycle and work context
+
+- **`lifecycle/mod.rs`**, **`work_context.rs`:** Adjustments alongside IPC / orchestrator work.
+
+### Rust — integration test crate (`src-tauri/tests`)
+
+- **`integration/harness.rs`:** Doc pointer to repo **`TESTING.md`** for **`#[ignore]`** Chromium lifecycle hook.
+
+### CI (`.github/workflows`)
+
+- **`pr-quality-gate.yml`:** After **`cross_platform`**, runs **`cargo test --bin scainet-forge tauri_invoke_contract`** and **`cargo test --bin scainet-forge level_b`** (Windows + macOS required path; Linux job remains diagnostics-only).
+
+### Documentation (`docs/paul-working-docs`)
+
+- **`INTEGRATION_TESTING_AUDIT.md`:** **`#[ignore]`** policy §11c → **`TESTING.md`**; §12 adds filtered **`cargo test`** for P1-g + Level-B; prioritized backlog row **4** (ignore policy) marked done; §11a–c section order cleanup.
+- **`S2-TEST-COVERAGE-P2-BREADTH-AND-UX.md`:** P2 coverage notes.
+- **Work surface / hub refactor chain:** **`S0-WORK-SURFACE-PICKER-REFACTOR.md`**, **`S1-WORK-SURFACE-PICKER-REFACTOR.md`**, **`S2-WORK-SURFACE-PICKER-REFACTOR.md`**, **`S4-WORK-SURFACE-PICKER-REFACTOR.md`**, **`S0-WORK-SURFACE-PICKER-PROJECTS-JOBS-DAILY.md`**, **`S0-WORKSPACE-ROOTS-PROJECTS-JOBS-DAILY.md`**; **`WORK-WORKSPACE-ROOTS-PROJECTS-JOBS-DAILY.md`** touch-up.
+
+### Documentation (repo root)
+
+- **`TESTING.md`:** **`#[ignore]`** inventory table (Chromium headless, live Grok latency, deferred tool-count gate), opt-in **`--ignored`** commands, policy for new ignores; notes PR quality gate coverage for P1-g / Level-B filters.
+
 ## 6.9.7 (2026-05-18)
 
 **Version control stability + P2 test breadth:** offload synchronous **libgit2** / **`git_ops`** work from Tokio async IPC handlers via **`tokio::task::spawn_blocking`** (mitigates **nested-runtime** / worker blocking seen in production). New **Vitest** coverage for onboarding/settings UI and **Rust** integration-style tests for **EgoEngine** session ledger + memory persistence. Working docs for Sentry RCA, S2 VC IPC blocking scope, test-coverage S0/S2, Tauri IPC performance, and voice transcript UX.
