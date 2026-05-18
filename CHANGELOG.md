@@ -2,6 +2,39 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+## 6.9.7 (2026-05-18)
+
+**Version control stability + P2 test breadth:** offload synchronous **libgit2** / **`git_ops`** work from Tokio async IPC handlers via **`tokio::task::spawn_blocking`** (mitigates **nested-runtime** / worker blocking seen in production). New **Vitest** coverage for onboarding/settings UI and **Rust** integration-style tests for **EgoEngine** session ledger + memory persistence. Working docs for Sentry RCA, S2 VC IPC blocking scope, test-coverage S0/S2, Tauri IPC performance, and voice transcript UX.
+
+### Rust — version control (`src-tauri`)
+
+- **`version_control/operations.rs`:** **`save_project`** split into blocking **`save_project_phase1`** / **`save_project_phase2_sync`** with **`spawn_blocking`** around each phase; async **lifecycle test** step remains between phases.
+- **`ipc/version_control/project.rs`:** **`get_project_state`**, **`check_project_staleness`**, **`sync_project_remote_on_open`** run heavy git/state work on the blocking pool (**`sync_project_remote_on_open_blocking`** helper).
+- **`ipc/version_control/publish.rs`:** Status, push, fetch, conflict check, and commit enumeration moved into blocking closures / **`publish_blocking_finish_local_git`**.
+- **`ipc/version_control/save.rs`:** **`discard_project_changes`** wraps **`discard_changes`** in **`spawn_blocking`**.
+- **`ipc/version_control/workspace.rs`:** Worktree create/checkout/list/remove wrapped in **`spawn_blocking`**.
+- **`ipc/version_control/branch.rs`:** **`list_stale_branches`** runs **`current_branch`** on the blocking pool after GitHub HTTP listing.
+- **`ipc/version_control/manifest_sync.rs`:** **`apply_manifest_drift`** tail (stage / commit / push) in **`apply_manifest_drift_git_tail`** + **`spawn_blocking`**.
+- **`ipc/version_control/conflict.rs`:** Conflict IPCs that touch the repo use **`spawn_blocking`** (detect, AI prelude, resolve, undo, abort, complete, lockfile regeneration, sync with staging/main); **`resolve_high_confidence_conflicts`** already used blocking.
+
+### Rust — tests (`src-tauri`)
+
+- **`ego/mod.rs`:** **`#[cfg(test)]`** **`ego_engine_persistence_tests`** — session start + tool action ledger round-trip, memory **`store_memory`** / **`recent_memories_async`**, failure outcome persistence (traces to audit-trail doc + **S2-TEST-COVERAGE-P2**).
+
+### Frontend — tests (`src/lib`, `src/tests/mocks`)
+
+- **`ApiKeySetup.test.ts`, `GateApproval.test.ts`, `InstructionPanel.test.ts`, `SettingsDialog.test.ts`:** P2 breadth coverage (mocks per **S2-TEST-COVERAGE-P2-BREADTH-AND-UX**).
+- **`auditEvents.test.ts`:** Adjustments aligned with store behaviour.
+- **`tests/mocks/tauri.ts`:** Minor mock updates for new tests.
+
+### Documentation (`docs/paul-working-docs`)
+
+- **`SENTRY-NESTED-RUNTIME-GIT-PANIC.md`:** Expanded incident / RCA / inventory.
+- **`S2-VC-IPC-LIBGIT2-SPAWN-BLOCKING.md`:** S2 scope for VC IPC offload (**G2**).
+- **`S0-TEST-COVERAGE-P2-BREADTH-AND-UX.md`**, **`S2-TEST-COVERAGE-P2-BREADTH-AND-UX.md`:** P2 test breadth S0/S2.
+- **`S0-TAURI-IPC-PERFORMANCE-AND-BINARY-PAYLOADS.md`**, **`S0-VOICE-LIVE-USER-TRANSCRIPT-UX.md`:** Working notes.
+- **`TEST_COVERAGE_AUDIT.md`:** P2 pointer updates.
+
 ## 6.9.6 (2026-05-18)
 
 **CI, quality gates, and Rust hygiene:** stable **`CI Passed`** aggregation for branch protection; **`cargo clippy --all-targets`** on the Ubuntu PR gate; **`pr-quality-gate`** workflow for Windows + macOS cross-platform smoke (Linux diagnostics only, non-blocking); **`mirror-release`** only when the multi-platform **`build`** matrix fully succeeds. Rust dead-code / Clippy fixes, more reliable voice audit tests, architecture and S0 operator docs.
