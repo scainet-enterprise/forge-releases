@@ -2,6 +2,18 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+## 6.10.0 (2026-05-19)
+
+**Workspace roots + Portal sync hardening:** Resolves project and worktree locations through a single **`workspace_resolver`** (workspace-root discipline) with **`project_worktree_persist`** for durable, single-writer worktree metadata; lifecycle **`project_creation`** and version-control **`workspace`** IPC paths updated accordingly, including optional **`skipFilesystemInit`** for creation flows. Repo script **`scripts/check-workspace-paths.sh`** (also **`npm run check:workspace-paths`**) guards against ad-hoc **`join("projects" | "jobs" | "daily")`** patterns in **`src-tauri/src`**.
+
+**Portal / scainet.io client:** **`sync/http::request_with_retry`** now logs a **`request_label`** (full URL), captures a truncated error body on **5xx**, and **does not retry** when the response body suggests **quota / rate exhaustion** (e.g. Firestore **`RESOURCE_EXHAUSTED`**, “quota exceeded”, common rate-limit phrasing), reducing load amplification when the backend is already failing. All Portal **`request_with_retry`** call sites pass the URL as the label.
+
+**Frontend — lifecycle + picker:** **`LifecycleDashboard`** uses the same **60s** global cooldown as the work-surface picker (**`shouldThrottlePortalProjectSync`** / **`markPortalProjectSyncRan`**) so **`lifecycle_sync_portal`** (which fans out to **`/api/tasks`** and **`/api/subtasks`** per project) is not re-fired on every dashboard visit right after a picker sync. **`projectContext`** / **`FileExplorer`** / **`NewProjectFlow`** / **`+page.svelte`** updated for workspace-root and freeform entry behaviour; **`ProjectPickerWorkspace`** / **`ProjectPickerHome`** adjusted (including disabled **Just Start Creating** styling **`.action-card:disabled`**).
+
+**Rust — supporting changes:** **`workspace_resolver.rs`** (+ tests); **`lifecycle/jobs`**, **`daily_flow`**, and related IPC tweaks; **`git_fixtures`** / **`workspace_test`** updates.
+
+**Documentation:** **`docs/paul-working-docs/TECHNICAL_DEBT.md`** — Portal sync **1 + 2N** HTTP fan-out, mitigations, and long-term items (batch APIs, **429** semantics, incremental sync); **`S4-WORKSPACE-ROOTS-PROJECTS-JOBS-DAILY.md`** for the workspace-roots epic.
+
 ## 6.9.8 (2026-05-19)
 
 **Work surface hub refactor + IPC integration tests:** frontend **`ProjectPicker`** split into a thin shell (**`ProjectPickerWorkspace`** + child panels/modals), Portal reconcile logic consolidated in **`createPortalScheduler`** with Vitest coverage, XState hub state renamed **`project_picker` → `work_surface_hub`** with **`loadSnapshot`** migration for persisted snapshots. Backend **`src-tauri`**: mock-runtime wiring in **`main`** for integration-style IPC tests, incident-cache coverage, audit IPC contract tests (**`record_ui_action`**, **`audit_get_events`**, **`audit_verify_chain`**), orchestrator loop / stream tweaks and **`level_b_harness`** (**`read_file`** + **`write_file`** Level-B scenarios), lifecycle and work-context touch-ups. **PR quality gate** now also runs filtered **`scainet-forge`** tests (**`tauri_invoke_contract`**, **`level_b`**) on Windows/macOS. Repo **`TESTING.md`** documents **`#[ignore]`** policy and opt-in commands; **`INTEGRATION_TESTING_AUDIT`** §11c / §12 updated. Working docs for the hub epic (S0–S4) and integration audit.
