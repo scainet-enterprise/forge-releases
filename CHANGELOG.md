@@ -2,6 +2,16 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+
+## 6.11.0 (2026-05-20)
+
+- generate_spreadsheet tool — native .xlsx output
+
+
+## 6.10.1 (2026-05-20)
+
+- bump protobufjs from 7.5.7 to 7.6.0 in the npm_and_yarn group across 1 directory
+
 ## 6.10.0 (2026-05-19)
 
 **Workspace roots + Portal sync hardening:** Resolves project and worktree locations through a single **`workspace_resolver`** (workspace-root discipline) with **`project_worktree_persist`** for durable, single-writer worktree metadata; lifecycle **`project_creation`** and version-control **`workspace`** IPC paths updated accordingly, including optional **`skipFilesystemInit`** for creation flows. Repo script **`scripts/check-workspace-paths.sh`** (also **`npm run check:workspace-paths`**) guards against ad-hoc **`join("projects" | "jobs" | "daily")`** patterns in **`src-tauri/src`**.
