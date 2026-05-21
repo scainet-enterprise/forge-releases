@@ -2,15 +2,70 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+## 6.12.0 (2026-05-21)
+
+**Work Hub Train 1 — Projects, Jobs, Daily:** The Work Surface Hub now provides a unified entry point for creating and opening projects, jobs, and daily flows. New action cards replace the previous project-only picker with a 2×2 grid: **New Project**, **New Job**, **Daily**, and **Just Start Creating**. Jobs are listed alongside projects with delete support, and clicking **Daily** opens (or creates) today's daily flow using the host's local timezone.
+
+### Frontend — Work Hub (`src/lib/workHub`, `src/lib/components/projectPicker`)
+
+- **`EntityTypePicker.svelte` (new):** Generic picker for project/job types with ARIA `radiogroup`, loading/error states, and "Coming soon" disabled entries.
+- **`HubJobCreateForm.svelte` (new):** Job creation form with title/reason inputs; wrapped in `<form>` for Enter-key submission.
+- **`entityTypeRegistry.ts` (new):** Frontend registry for project/job kinds; fetches from `list_project_kinds` / `list_job_kinds` IPCs with session-scoped cache; `invalidateKindCache()` called on sign-out.
+- **`ProjectPickerHome.svelte`:** Refactored to 2×2 action grid; renders job list with delete button; terminology updated ("Create a job" not "task").
+- **`ProjectPickerWorkspace.svelte`:** Routes hub views (`home`, `pick_project_type`, `new_project`, `pick_job_type`, `new_job`); manages `deletingJobId` state; wires `onJobSelected` / `onDailyOpened` callbacks.
+- **`ProjectPickerDeleteModal.svelte`:** Generalized with `entityLabel` prop for project/job deletion; ARIA `role="presentation"` on overlay.
+- **`ProjectPicker.svelte`:** Forwards `onJobSelected` / `onDailyOpened` to workspace.
+
+### Frontend — App State (`src/routes`, `src/lib/stores`)
+
+- **`+page.svelte`:** `handleHubJobSelected` / `handleHubDailyOpened` handlers; `clearLifecycleDrillIn()` ensures single active drill-in (day vs job vs project); `JOB_SELECTED` / `DAILY_OPENED` XState events; sign-out invalidates kind cache.
+- **`appState.ts`:** Added `JOB_SELECTED` and `DAILY_OPENED` event types to `AppEvent` union; transitions from `work_surface_hub` → `ide`.
+
+### Frontend — Daily Flow (`src/lib/dailyFlow`, `src/lib/components`)
+
+- **`dayDisplay.ts` (new):** Helpers for daily flow date formatting — `calendarDateFromDayId`, `dailyFlowDayLabel`, `formatLocalDate` (uses `'en-CA'` locale for ISO format), `formatLocalDateTime`.
+- **`dayDisplay.test.ts` (new):** 9 tests covering valid/invalid day_id parsing, fallback behavior, and date formatting.
+- **`DailyFlowDetail.svelte`:** Uses `dailyFlowDayLabel` / `formatLocalDateTime` for consistent date display in header and metadata.
+
+### Rust — Project Kind Registry (`src-tauri/src/lifecycle/project_kind`)
+
+- **`mod.rs`, `registry.rs`, `coding.rs` (new):** Backend-first extensible pattern for project types; `ProjectKindRegistry` held on `AppState`; `CodingProjectKind` implements the `ProjectKind` trait.
+- **`lifecycle/mod.rs`:** Embedded SQL migration for `lifecycle_kind` column with index.
+- **`project_creation.rs`:** `CreateProjectParams` includes `lifecycle_kind`; `create_project_full` validates against registry.
+
+### Rust — Daily Flow (`src-tauri/src/daily_flow`)
+
+- **`mod.rs`:** `local_calendar_date()` uses `chrono::Local::now()` (host timezone) for deterministic `day_id` generation — fixes off-by-one day issue for users ahead of UTC.
+
+### Rust — IPC (`src-tauri/src/ipc`)
+
+- **`mod.rs`:** `KindEntry` struct with `#[serde(rename_all = "camelCase")]` for frontend-backend consistency.
+- **`lifecycle.rs`:** `lifecycle_create_project` accepts optional `lifecycle_kind`; `list_project_kinds` IPC returns registry entries.
+- **`jobs.rs`:** `list_job_kinds` IPC returns `general` (enabled) and `code` (disabled, FD-WH-01 deferred until WS-D).
+- **`main.rs`:** Registers `list_project_kinds` / `list_job_kinds` IPCs; initializes `project_kind_registry` on `AppState`.
+
+### Rust — Agent Tools (`src-tauri/src/agent`)
+
+- **`orchestrator/mod.rs`, `tools/mod.rs`:** `lifecycle_create_tool` passes `lifecycle_kind` and registry to `create_project_full`.
+
+### Frontend — Sync (`src/lib/stores`)
+
+- **`sync.ts`:** `pullChanges()` calls `pushRustAuthTokenIfLoggedIn()` before `sync_pull_changes` to address Firebase ID token expiry (R3 fix from Portal sync audit).
+
+### Documentation (`docs/paul-working-docs`)
+
+- **`TECHNICAL_DEBT.md`:** Added "Work Hub: naming inconsistency" section documenting `lifecycle_kind` vs `job_type`, "task" vs "job" terminology, and "IDE" vs "workspace" UI copy.
+- **`S0-PORTAL-SYNC-HTTP-FANOUT-AND-QUOTA.md`:** Updated to v2 with cross-repo senior review summary; R3 marked done.
+- # **`S4-WORK-SURFACE-PICKER-PROJECTS-JOBS-DAILY.md`:** Updated to v7 reflecting Train 1 completion (WS-M, WS-K, WS-A, WS-B mostly done); outlines WS-C, WS-E, WS-D for future trains.
 
 ## 6.11.0 (2026-05-20)
 
 - generate_spreadsheet tool — native .xlsx output
 
-
 ## 6.10.1 (2026-05-20)
 
 - bump protobufjs from 7.5.7 to 7.6.0 in the npm_and_yarn group across 1 directory
+  > > > > > > > main
 
 ## 6.10.0 (2026-05-19)
 
