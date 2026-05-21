@@ -2,6 +2,33 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+## 6.12.1 (2026-05-21)
+
+**Work Hub Train 2 + Train 3:** Mixed Recent list, initiative (artifact-only) projects, and a cleaner Projects | Jobs browse experience on the Work Hub picker.
+
+### Train 2 — Mixed Recent (WS-C)
+
+- **`ego/db.rs`:** Migration V49 — `forge_jobs.last_opened_at` column + index.
+- **`ipc/jobs.rs`:** `touch_job_last_opened` IPC; job list stub icon updated to 💼.
+- **`+page.svelte`:** Touches job `last_opened_at` when opening from hub or Lifecycle dashboard.
+- **`loadHubSegment.ts`:** `loadHubRecentSegment()` merges projects and jobs by `last_opened_at`.
+- **`HubWorkItemRow.svelte` (new):** Unified row for mixed Recent items.
+- **`projectPickerUtils.ts`:** `HubWorkItem` type and `sortHubWorkItemsByLastOpenedDesc`.
+- **`ProjectPickerHome.svelte`:** Unified search placeholder; **Projects | Jobs** tabs below Recent (replaces stacked “All projects” + “Jobs” sections).
+
+### Train 3 — Initiative projects (WS-E)
+
+- **`initiative.rs` (new):** `InitiativeProjectKind` — artifact-only, no Git repo required.
+- **`registry.rs`:** Registers `initiative` alongside `coding`; registry unit tests.
+- **`project_creation.rs`:** Initiative create tests; unknown `lifecycle_kind` rejected before DB write (AC-WH-14).
+- **`lifecycle.rs`:** `lifecycle_create_project` returns full `CreateProjectResult` (`project` + `working_dir`) so artifact-only kinds open without `create_project_workspace`.
+- **`HubInitiativeCreateForm.svelte` (new):** Name-only create wizard; opens explorer at artifact root with `isWorktree: false`.
+
+### Refactors & tests
+
+- **`hubCreateForm.css` (new):** Shared styles for `HubJobCreateForm` and `HubInitiativeCreateForm`.
+- **`entityTypeRegistry.test.ts`, `projectPickerUtils.test.ts` (new):** Vitest coverage for kind registry cache and Recent sort.
+
 ## 6.12.0 (2026-05-21)
 
 **Work Hub Train 1 — Projects, Jobs, Daily:** The Work Surface Hub now provides a unified entry point for creating and opening projects, jobs, and daily flows. New action cards replace the previous project-only picker with a 2×2 grid: **New Project**, **New Job**, **Daily**, and **Just Start Creating**. Jobs are listed alongside projects with delete support, and clicking **Daily** opens (or creates) today's daily flow using the host's local timezone.
