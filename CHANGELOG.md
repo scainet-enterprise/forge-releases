@@ -2,6 +2,47 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+## 6.14.1 (2026-05-24)
+
+**Data access Train 2 — sync façade + agent promote paths:** Completes the `ProjectRepository` migration by moving all remaining production mutating SQL on `lifecycle_projects` out of sync and agent-tool modules. Portal purge/tombstone/upsert, recent-projects backfill, and job/idea promotion now delegate to canonical repo helpers with explicit transaction boundaries.
+
+**Why:** Train 1 centralised IPC and engine paths but left sprawl in `sync/pull.rs`, `migrate_recent_projects.rs`, and agent promote tools — violating the DA-P0 guard goal and risking partial commits (project row without link). Train 2 makes `project_repo.rs` the single owner of lifecycle project mutations, shrinks the CI allow-list from 7 paths to 3, and aligns agent dispatch with `DbHandle` async read/write (no nested `db().lock()` deadlocks).
+
+### Repository extensions (`project_repo.rs`)
+
+- **`delete_cascade_on_conn` / `delete_cascade`:** Composed 21-table cascade delete (sync purge + user delete parity).
+- **`upsert_from_portal_batch_on_conn` / `upsert_from_portal_batch`:** Portal batch upsert with frozen merge policy (`COALESCE` preserves local `working_dir`, empty-string `repo_url`, and null `tenant_id` on resync).
+- **`insert_backfill_row_on_conn`:** Startup `recent-projects.json` backfill INSERT shape.
+- **`insert_project_on_conn`:** Canonical INSERT for agent promote and engine create paths.
+- **DTOs:** `PortalProjectEntry`, `BackfillProjectRow`, `DeleteCascadeResult`, `UpsertBatchResult`.
+- **20+ new unit tests** for cascade delete, portal upsert edge cases, and backfill shape.
+
+### Sync façade migration
+
+- **`sync/pull.rs`:** Purge, tombstone enforcement, and portal upsert call `delete_cascade_on_conn` and `upsert_from_portal_batch_on_conn`; zero inline mutating SQL in production code.
+- **`sync/migrate_recent_projects.rs`:** Production INSERT via `insert_backfill_row_on_conn`.
+- **Tests extracted** to `pull_sync_test.rs` and `migrate_recent_projects_test.rs` (DA-SYNC guard exempt path).
+
+### Agent promote paths (transactional)
+
+- **`services_create_project_from_job`:** Single `db.write` transaction — project INSERT + `forge_job_project_links` + `forge_jobs.project_id` update; rolls back on link failure (#220).
+- **`morpheus_auto_s0`:** Same transactional pattern — project INSERT + `forge_morpheus_idea_projects` link.
+- **Dispatch (`agent/tools/mod.rs`):** Promote tools use `engine.db_handle().write/read` directly; `exists()` pre-check prevents duplicate project ids; W5 and services read paths migrated off `spawn_blocking` + mutex.
+
+### Engine & catalyst
+
+- **`lifecycle/mod.rs`:** `delete_project_async` delegates to `project_repo.delete_cascade()` (21-table parity with sync purge).
+- **`catalyst/flows.rs`:** Transition lookup via `db_arc().read` (async-safe).
+
+### CI guard
+
+- **`check-lifecycle-sql-allowlist.txt`:** Reduced from 7 to 3 paths — `project_repo.rs`, `ego/db.rs`, `ipc/w5.rs` only.
+- **`check-lifecycle-sql.sh`:** Passes clean on this branch.
+
+### Docs
+
+- **`DATA-ACCESS-INVENTORY.md`, S1/S2/S4 DAP docs:** Train 2 phases marked complete; production DELETE/mutating counts updated.
+
 ## 6.14.0 (2026-05-22)
 
 **Project List Parity (PLP / WS-B) + sync integrity:** One authoritative project-list path via `ProjectRepository::list_projects` and shared SQL in `project_list.rs`, so the Work Hub picker, lifecycle IPC, agent tools, voice, and Arbiter no longer diverge on auth, filters, or tombstones. Fixes stale Work Hub search after archive, Arbiter IPC deadlocks, and false “at risk” health on new S0 projects.
