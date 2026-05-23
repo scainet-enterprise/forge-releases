@@ -2,6 +2,79 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+## 6.14.0 (2026-05-22)
+
+**Project List Parity (PLP / WS-B) + sync integrity:** One authoritative project-list path via `ProjectRepository::list_projects` and shared SQL in `project_list.rs`, so the Work Hub picker, lifecycle IPC, agent tools, voice, and Arbiter no longer diverge on auth, filters, or tombstones. Fixes stale Work Hub search after archive, Arbiter IPC deadlocks, and false “at risk” health on new S0 projects.
+
+**Why:** Grep-verified UAT showed the same user could see different project sets in Work Hub vs Work panel; portal sync and list filters were fixed in one path but not others. PLP centralises listing so membership, tenant, job exclusion, and archive state apply consistently — while keeping intentional **UserVisible** (picker) vs **TenantWide** (Arbiter board view) policies.
+
+### Shared list layer (`project_list.rs`, `project_repo.rs`)
+
+- **`ProjectListAuth` / `ProjectListParams` / `ProjectListPolicy`:** Explicit auth (uid, tenant, admin) and flags (`include_archived`, `include_jobs`, `UserVisible` vs `TenantWide`).
+- **`ProjectRepository::list_projects`:** Canonical async list API; shared `build_list_query`, visibility exists, tombstone guard, job exclusion.
+- **`rows_to_project_summaries`:** Moved to `lifecycle/mod.rs` to break module cycle with `project_repo`.
+- **Branch 6 tenant isolation:** Non-admin with tenant but no uid resolves correctly in `build_from_where` (legacy list filter parity).
+- **11+ unit tests** on list visibility (member, non-member, admin, guest, archived, jobs, tenant-wide).
+
+### IPC & consumers migrated to repo
+
+- **`list_user_projects` / `lifecycle_list_projects`:** Thin wrappers over repo + policy (picker vs lifecycle enrichment preserved).
+- **Agent tools, voice dispatch, orchestrator hints:** `UserVisible` + membership-scoped lists.
+- **Arbiter monitor:** `TenantWide` for board-style tenant snapshots; IPC via `spawn_blocking` to avoid async-runtime deadlock with nested `block_on`.
+- **Lifecycle backfill / version-control project IPC:** Auth-aware list and touch paths.
+
+### Arbiter health & briefing
+
+- **Health assessment:** Gate counts scoped to **current stage** only (fixes false `at_risk` on new S0 projects counting all unapproved G1–G5 gates).
+- **`Blocked`:** Only when pre-approval tasks are complete and the current gate is unapproved.
+- **`all_gate_statuses`:** Includes **G0** through G5 for pattern detection and gate lookups.
+- **Dev UAT:** `window.forgeUat` helpers (`plpParityCheck`, `arbiterSnapshots`, `arbiterBriefing`, `logArbiterBriefing`) wired in dev layout.
+
+### Lifecycle UI sync
+
+- **Archive / unarchive:** `lifecycle_archive_project` and `lifecycle_unarchive_project` now emit **`projects:changed`** so Work Hub picker search refreshes without full reload (same as delete path).
+
+### Portal sync & auth (WS-A follow-through)
+
+- **`pullChanges`:** Idle sync when unauthenticated; guarded portal purge (`should_purge_local_project_missing_from_portal`) preserves linked `working_dir`.
+- **Job IPC:** Tenant resolution from authenticated user for create/list.
+- **Tests:** Portal sync `working_dir` integrity (WS-A A2/A3) in `pull.rs`.
+
+### Docs & debt
+
+- **PLP S1/S2/S4 DAP, UAT guide, WORKING-PROJECT-LIST-SYNC-INTEGRITY, TECHNICAL_DEBT:** WS-B progress, UAT scripts, arbiter pattern inflation and follow-ups tracked.
+
+## 6.13.0 (2026-05-21)
+
+**Data access Train 1 — `ProjectRepository`:** Centralises all `lifecycle_projects` mutating SQL behind an async repository layer. Version-control IPC, engine lifecycle helpers, and project creation ownership stamping now route through `ProjectRepository` instead of scattered inline SQL.
+
+### Repository layer (`src-tauri/src/lifecycle/project_repo.rs`)
+
+- **`ProjectRepository` (new):** Async CRUD and domain updates for `lifecycle_projects` + owner `project_members` rows via `DbHandle`.
+- **Worktree / workspace:** `persist_worktree_and_stamp_owner`, `update_download_workspace`, `update_worktree_columns` (factory parity — preserves tier, `lifecycle_kind`, PI v2).
+- **VC / GitHub:** `update_after_save`, PR metadata/status, conflict snapshot, `get_vc_context`, `get_github_pr_context`, github linkage, manifest, backfill ownership.
+- **Engine helpers:** `archive`, `unarchive`, `set_working_dir`, `stamp_project_ownership`, `delete_project`.
+- **21 unit tests** covering save/push counters, PR round-trips, conflict flags, archive idempotency, download vs worktree column contract, and ownership stamping edge cases.
+
+### IPC & engine migrations
+
+- **VC IPC (`ipc/version_control/*`):** `workspace`, `github_repo`, `save`, `publish`, `pr_status`, `ship`, `conflict`, `project` — zero inline `lifecycle_projects` SQL remaining.
+- **`ipc/environment.rs`:** Auth backfill uses `backfill_local_project_ownership`.
+- **`lifecycle/mod.rs`:** Engine create/archive/unarchive/working-dir/stage-advance delegates to repo; `ProjectRepository` wired on `AppState` and `LifecycleEngine`.
+- **`project_creation.rs`:** `create_project_full` ownership stamp → `stamp_project_ownership`; persistence verify uses `project_repo.exists()`.
+- **`version_control/conflict/summary.rs`:** Conflict snapshot persistence via repo.
+
+### CI guard & docs
+
+- **`scripts/check-lifecycle-sql.sh` (new):** Fails CI when mutating `lifecycle_projects` SQL appears outside an allow-list (`pr-quality-gate.yml`).
+- **`DATA-ACCESS-INVENTORY.md`, `S4-DATA-ACCESS-REPOSITORY-AND-PATH-STRATEGY.md`:** Train 1 marked **Done**; inventory tracks remaining Train 2+ sprawl (agent tools, sync).
+- **`TECHNICAL_DEBT.md`:** Logged follow-ups (silent IPC error ignores, workspace TOCTOU messaging, PR number typing).
+
+### Tests
+
+- **`project_creation_tests.rs` (new):** 35 integration tests extracted from `project_creation.rs` (exempt `*test*.rs` guard path).
+- **`github_flow` / `project_worktree` parity tests** remain green (tier + subtask preservation).
+
 ## 6.12.1 (2026-05-21)
 
 **Work Hub Train 2 + Train 3:** Mixed Recent list, initiative (artifact-only) projects, and a cleaner Projects | Jobs browse experience on the Work Hub picker.
