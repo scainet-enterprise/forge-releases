@@ -2,11 +2,74 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+## 6.14.5 (2026-05-25)
+
+**Navigation Coordinator — symmetric enter/exit shell policy (F-NC-01–05):** Closes the architecture gap where backend work-context updates (voice agent, signal navigate, lifecycle create) updated the SessionBar pill but left the Work panel on the wrong view. Introduces a single Navigation Coordinator that reacts to `forge:work_context_changed` and shared enter bundles for day/job/project drill-in, mirroring the existing F-OE-01 exit policy.
+
+**Why:** Enter logic was scattered across 8+ handlers across three state planes (backend `ActiveWorkContext`, explorer cwd, shell drill-in locals). Exit was unified in F-OE-01; this release completes symmetric consolidation and closes **TD-P2-02** (agent daily-flow drill-in) and **TD-P2-06** (stale drill-in after hub delete).
+
+### Navigation Coordinator (`workContextNavigation.ts`)
+
+- **`bindNavigationCoordinator()`:** Single policy owner in `initAgentEventListeners` — subscribes to `forge:work_context_changed`, `job:deleted`, and `project:deleted`.
+- **Enter policy (F-NC-02):** Reacts to `voice_tool`, `lifecycle_create`, and `signal_navigate` sources; invokes canonical enter bundles with `syncBackend: false` (backend already mutated).
+- **Exit policy (F-OE-01):** Full-clear shell navigation for agent/human clears, signal list targets, and delete sources; respects `ipc_drill_in_release` (backend sync only, no shell teardown).
+- **Delete-aware teardown (F-NC-05):** Tears down jobs/projects drill-in (including launch pad) when the actively viewed entity is deleted.
+- **Idempotency:** Skips redundant enter when shell tab + selected ID already match.
+- **Init race handling:** Queues enter payloads (max 10) when `+page.svelte` callbacks not yet registered; flushes on mount.
+- **Payload validation:** Type guards for malformed `work_context_changed` and delete event payloads.
+- **98 frontend unit tests** across enter bundles, signal state, and coordinator policies.
+
+### Canonical enter bundles (`lifecycleEnterNavigation.ts`, F-NC-01)
+
+- **`enterDailyFlowDay` / `enterJob` / `enterProject`:** Ordered shell steps — clear drill-in, set tab/selection, optional backend sync, lifecycle pill update, explorer cwd switch, app machine events.
+- **`EnterOptions`:** `syncBackend` (prevents IPC feedback loops), `emitAppMachineEvent`, hub job agent priming, cwd stash before switch.
+- **`+page.svelte`:** Human list clicks and hub handlers delegate to enter bundles; `onSignalNavigate` thinned to bundles + list-only local tab/clear.
+
+### Signal navigate parity (F-NC-03)
+
+- **`dayId`** in `SignalNavigateDetail`, `signal-navigation.ts` bridge, and Rust `signal_navigate_ui` / orchestrator paths.
+- **`next_context_for_signal_navigate`:** Pure Rust resolver — day > job > project priority (CR-3); list targets clear all context.
+- **`set_work_context` tool:** Accepts `day_id` with mutual-exclusivity validation (at most one of project/job/day).
+- **Coordinator enter** enabled for `signal_navigate` source after `onSignalNavigate` migration.
+
+### Backend work context (`work_context.rs`)
+
+- **`WorkContextSource::IpcDrillInRelease`:** Drill-in back clears backend context without triggering shell list navigation or explorer teardown.
+- **`next_context_for_signal_navigate`:** Shared resolver for voice dispatch and orchestrator signal paths.
+- **Unit tests:** List-target clear, entity navigation, day context stamping, voice tool `day_id`.
+
+### Lifecycle mode store (F-NC-04 SRP)
+
+- **Shell navigation extracted** from `lifecycleModeStore.bindBackendEvents` — store now mirrors SessionBar pill IDs only.
+- **`userSessionStarted` preserved** on work-context clear (SessionBar ✕, drill-in back, agent clear) so in-progress chat is not interrupted by Start Text/Voice splash.
+
+### Project context
+
+- **`clearProject({ syncBackend })`:** Optional Rust cwd reset on clear (F-OE-02 / INTRO-01 parity).
+
+### Lifecycle events (`lifecycle/events.rs`)
+
+- **`emit_projects_changed` / `emit_jobs_changed`:** Canonical Tauri emitters with `source` + entity ID payload for Work Hub list invalidation.
+
+### Job / project delete integration
+
+- **`job:deleted` / `project:deleted`:** Coordinator listens and tears down matching drill-in; complements existing work-context clear from delete handlers.
+
+### Docs
+
+- **S2-NAVIGATION-COORDINATOR-ARCHITECTURE.md** — full F&F spec (v1.3, NC-01–05 complete).
+- **S0/S1 navigation review docs**, **OPERATOR-EXPERIENCE-FOLLOWUP-WORK.md**, **TECHNICAL_DEBT.md** triage updates.
+
+### Manual UAT (pending)
+
+- UAT-NC-07: Agent navigate to job (signal) → job detail + Let's Go state
+- UAT-NC-08: Historical day drill-in via `daily_flow_tab` + `dayId`
+- UAT-NC-10: Delete active job from hub while drilled in → jobs list
+- UAT-NC-11: Voice open daily flow from Work Hub → IDE + detail
 
 ## 6.14.4 (2026-05-25)
 
 - deps(cargo): bump the production-deps group in /src-tauri with 2 updates
-
 
 ## 6.14.3 (2026-05-25)
 
