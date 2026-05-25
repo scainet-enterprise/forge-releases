@@ -2,6 +2,54 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+## 6.14.2 (2026-05-25)
+
+**Data access Train 3 — `JobRepository` + `DailyFlowRepository` + delete lifecycle:** Completes the repository-layer migration for jobs and daily flow. All production mutating SQL on `forge_jobs` / job link tables and `day_*` tables now lives in canonical repo modules; engines and IPC are thin delegates. Active-project and active-job delete paths emit frontend events and clear work context without leaving stale SessionBar state.
+
+**Why:** Train 2 centralised `lifecycle_projects`; Train 3 applies the same pattern to P4 (jobs) and P5 (daily flow), adds CI guards so sprawl cannot return, and closes [#218](https://github.com/scainet-enterprise/scainet-forge/issues/218) / [#219](https://github.com/scainet-enterprise/scainet-forge/issues/219) delete-degrade gaps for projects and jobs.
+
+### JobRepository (`job_repo.rs`, `jobs.rs`)
+
+- **`JobRepository`:** Canonical async repo on `DbHandle` — insert/update/delete, stage transitions, `link_project_on_conn`, `touch_last_opened`, task/draft helpers.
+- **`JobEngine` refactor:** Business rules and audit emission stay in engine; **zero production DML** left in `jobs.rs`.
+- **`job_deleted.rs`:** On delete, clears active work context when the deleted job was active; emits **`job:deleted`** / **`jobs:changed`** for UI refresh.
+- **Agent promote:** `services_create_project_from_job` uses `link_project_on_conn` inside existing transactional promote path ([#220](https://github.com/scainet-enterprise/scainet-forge/issues/220)).
+- **IPC:** `ipc/jobs.rs` delegates to `AppState.job_repo` / `job_engine`.
+- **20+ unit tests** on repo insert, link, stage update, delete cascade shapes.
+
+### DailyFlowRepository (`day_repo.rs`, `mod.rs`, `tasks.rs`)
+
+- **`DailyFlowRepository`:** All `day_records` / `day_tasks` / dependency mutating SQL consolidated in `day_repo.rs`.
+- **Engine/module refactor:** Phase orchestration and read helpers in `mod.rs` / `tasks.rs`; **zero production DML** outside repo.
+- **IPC:** `ipc/daily_flow.rs` delegates to `AppState.daily_flow_repo`.
+- **Unit tests** on day create, task CRUD, cascade delete, plan lock paths.
+
+### Project delete degrade ([#218](https://github.com/scainet-enterprise/scainet-forge/issues/218))
+
+- **`project_deleted.rs`:** When the active project is deleted (hub or Portal tombstone), clears work context and emits **`project:deleted`** so SessionBar / explorer do not reference a removed workspace.
+- **Sync pull:** Tombstone path integrated with repo cascade delete (Train 2 parity preserved).
+
+### Frontend event wiring
+
+- **`agent.ts`:** Listeners for **`job:deleted`**, **`jobs:changed`**, **`project:deleted`** — refresh agent context and clear stale pills.
+- **`ProjectPickerWorkspace.svelte`**, **`LifecycleDashboard.svelte`:** Hub list refresh on job/project lifecycle events.
+
+### CI guards (Train 3)
+
+- **`check-forge-jobs-sql.sh`** + allow-list (**1 path:** `job_repo.rs`) — enforced in `pr-quality-gate.yml`.
+- **`check-daily-flow-sql.sh`** + allow-list (**2 paths:** `day_repo.rs`, `ego/db.rs`) — enforced in CI.
+- **`check-lifecycle-sql-allowlist.txt`:** Trimmed sprawl entries; **3 paths** remain (`project_repo.rs`, `ego/db.rs`, `ipc/w5.rs`).
+
+### Catalyst, voice, W5
+
+- **Catalyst / agent tools:** Job and daily-flow dispatch paths use repo injection; reduced `engine.db().lock()` on lifecycle mutations.
+- **Voice session:** Work-context hints aligned with repo-backed job list reads.
+
+### Docs & UAT
+
+- **S4 Train 3 DAP**, **DATA-ACCESS-INVENTORY** §3.3–§3.5, Work Surface feature-flag S0–S4 docs updated.
+- **`TECHNICAL_DEBT.md`:** Job/Daily Flow UAT (A/B) + Project/context UAT (C-series) findings — no Train 3 regressions; C3 agent daily-flow UI drill-in logged as pre-existing gap.
+
 ## 6.14.1 (2026-05-24)
 
 **Data access Train 2 — sync façade + agent promote paths:** Completes the `ProjectRepository` migration by moving all remaining production mutating SQL on `lifecycle_projects` out of sync and agent-tool modules. Portal purge/tombstone/upsert, recent-projects backfill, and job/idea promotion now delegate to canonical repo helpers with explicit transaction boundaries.
