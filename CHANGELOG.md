@@ -2,6 +2,11 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+
+## 6.14.3 (2026-05-25)
+
+- deps(npm): bump the production-deps group with 5 updates
+
 ## 6.14.2 (2026-05-25)
 
 **Data access Train 3 — `JobRepository` + `DailyFlowRepository` + delete lifecycle:** Completes the repository-layer migration for jobs and daily flow. All production mutating SQL on `forge_jobs` / job link tables and `day_*` tables now lives in canonical repo modules; engines and IPC are thin delegates. Active-project and active-job delete paths emit frontend events and clear work context without leaving stale SessionBar state.
