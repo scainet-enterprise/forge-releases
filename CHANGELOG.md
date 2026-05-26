@@ -2,6 +2,45 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+## 6.15.3 (2026-05-26)
+
+**Sprint 2 maintainability (B-LC-04 + F-LC-02) + voice connect latency fix:** Centralises voice/agent tool wiring via **`ToolContextCore`**, consolidates frontend shell event subscriptions into **`ForgeEventRegistry`**, and fixes Mode B / daily-flow voice connect delays caused by unbounded audit history scans during hindsight fetch.
+
+**Why:** Voice connect in project and daily-flow contexts blocked the UI for 10–15s while `voice_realtime_start` scanned the entire `audit_events` table and serially loaded origin voice sessions. Tool executor wiring in `voice/dispatch.rs` duplicated ~100 lines of deps assembly per call site. Frontend event listeners (`work_context`, `project:deleted`, `agent:file_changed`) were scattered across `agent.ts` and `+layout.svelte` with no single registration point — hard to test and easy to drift. This release fixes the hindsight hot path without changing export/IPC audit semantics.
+
+### Voice connect / hindsight performance (`src-tauri/src/audit/`, `src-tauri/src/voice/hindsight.rs`)
+
+- **Indexed audit queries:** `events_by_project`, `events_by_job`, and `events_by_day` now use `session_id` index + `json_extract(payload, …)` predicates instead of full-table scans; partial expression indexes added via `AuditStore::migrate()`.
+- **Hindsight-specific capped reads:** `RowLimit` + `events_for_hindsight_*` APIs cap payload reads at 200 rows (render only needs ~40 user/assistant turns).
+- **Parallel daily-flow bundle:** `day_loader` uses `tokio::join!` + `join_all` for current day, user lookup, and prior 2 days.
+- **Batch origin-session enrichment:** Single `events_by_sessions_capped` IN-query replaces N serial `audit.events()` calls; max 8 origin sessions.
+- **`assembly` module:** DRY merge/enrich/compile pipeline shared by project, job, and day hindsight fetchers.
+- **Tests:** 19 store regression tests (legacy parity + edge cases) + 4 hindsight tests.
+
+### Tool context builder (B-LC-04)
+
+- **`src-tauri/src/agent/tools/tool_context.rs`:** `ToolContextCore` + `ToolDeps` builder — single source for voice and orchestrator tool executor wiring.
+- **`src-tauri/src/voice/dispatch.rs`:** Migrated to `build_voice_executor()`; `VoiceToolCallOverlay` preserved.
+- **`src-tauri/src/main.rs`:** `ToolContextCore::apply_to_orchestrator()` at startup.
+- **CI:** `scripts/check-voice-dispatch-wiring.sh` guard.
+
+### Forge Event Registry (F-LC-02)
+
+- **`src/lib/events/forgeEventRegistry.ts`:** Priority-ordered, typed shell event registry with IoC options.
+- **`shellEventHandlers.ts`:** Extracted delete-degrade handlers (avoids `agent.ts` circular imports).
+- **`+layout.svelte`:** Registry init gates downstream listener setup.
+- **`agent.ts`:** Migrated `agent:file_changed` to registry fan-out; removed inline delete listeners.
+- **CI:** `scripts/check-forge-event-listeners.sh` + `forgeEventRegistry.test.ts` (180 lines).
+
+### Voice realtime handshake (`src-tauri/src/voice/grok_realtime.rs`)
+
+- **30s wall-clock timeout** on pre-session readiness handshake — prevents infinite "Connecting…" when xAI sends only pings.
+
+### Docs
+
+- **`S2-TOOL-CONTEXT-B-LC-04.md`**, **`S2-FORGE-EVENT-REGISTRY-F-LC-02.md`**, sprint planning docs updated.
+- **`TECHNICAL_DEBT.md`:** TD-P2-21 voice connect latency partially addressed; TD-P2-22 backpressure UX remains open.
+
 ## 6.15.2 (2026-05-26)
 
 **Fix — legacy jobs invisible after tenant isolation:** Work Hub job lists now include pre-tenant-isolation rows stored with default `tenant_id = 'scainet'`, matching the permissive legacy visibility used for projects.
