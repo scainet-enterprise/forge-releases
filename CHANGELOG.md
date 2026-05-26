@@ -2,6 +2,54 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+## 6.15.1 (2026-05-26)
+
+**Lifecycle IPC Facade (F-LC-01) + project lifecycle UAT fixes:** Migrates lifecycle-domain UI from scattered direct `invoke()` calls to a typed **`lifecycleApi`** module (queries/commands separation). Closes UAT defects where gate approval locked panels on **Loading**, naming ceremony fired mid-flow, S0 task proceed UI was missing after AgentStream unification, and S0 task 3 received the wrong agent posture.
+
+**Why:** Detail views (`ProjectDetailView`, `JobDetailView`, `DailyFlowDetail`, etc.) each owned their own Tauri IPC wiring — untestable, duplicate, and easy to drift from backend contracts. This release lands the F-LC-01 strangler migration for §4.2 consumers plus CI enforcement so new direct invokes cannot reappear. Lifecycle refresh paths now distinguish initial load from background event refresh so agent sessions are not reset during gate approval and task completion.
+
+### Lifecycle IPC facade (`src/lib/lifecycle/ipc/`)
+
+- **`lifecycleApi`:** Single entry — `queries` (reads) and `commands` (writes) with injectable **`LifecycleIpcTransport`** for unit tests.
+- **Typed surfaces:** `types/project.ts`, `types/job.ts`, `types/dailyFlow.ts` mirroring Rust IPC contracts.
+- **`surfaceRegistry.ts`:** Command/query inventory aligned with S2 F-LC-01 §2.1.
+- **`lifecycleApi.test.ts`:** 230-line transport mock suite — verifies query/command delegation without Tauri runtime.
+
+### Component migration (direct `invoke` → `lifecycleApi`)
+
+Migrated §4.2 registry consumers:
+
+- **`ProjectDetailView.svelte`**, **`JobDetailView.svelte`**, **`DailyFlowDetail.svelte`**, **`DailyFlow.svelte`**
+- **`LifecycleDashboard.svelte`**, **`StageView.svelte`**, **`GateApproval.svelte`**, **`LifecycleStepList.svelte`**, **`LifecycleStepContext.svelte`**
+- **`EscalationModal.svelte`**, **`NewProjectFlow.svelte`**, **`ProjectPickerWorkspace.svelte`**, **`LiveVoiceController.svelte`**
+
+§2.4 deferred consumers also migrated where in scope: **`LaunchPad.svelte`**, **`DocumentViewerModal.svelte`**, **`NotificationBell.svelte`**, **`HubJobCreateForm.svelte`**, **`entityTypeRegistry.ts`**, **`loadHubSegment.ts`**, **`+page.svelte`**, **`ProjectConversation.svelte`**.
+
+### Project lifecycle UAT fixes
+
+- **`loadData({ silent: true, resetAgentSession: false })`:** All lifecycle event listeners, gate approval `onComplete`, advance stage, task complete, lock draft, and Ship/Publish wrappers — prevents full-panel loading overlay and spurious **`new_conversation`** naming ceremony after gate approval (~~TD-P1-06~~).
+- **`projectDetailWorkspace.ts`:** `resetAgentSession` option gates `new_conversation` IPC; test coverage in **`projectDetailWorkspace.test.ts`**.
+- **`LifecycleTaskProceedBar.svelte`:** New component — task proceed / complete affordances for unified **AgentStream** path after F-LC-12 **`ProjectConversation`** removal (~~TD-P2-18~~).
+- **`lifecycle_posture_for_task` (`lifecycle/mod.rs`):** Task-type-aware agent posture — S0 task 3 (GateApproval) receives **GATE DOCUMENT POSTURE** instead of stage-default listener posture (~~TD-P2-19~~).
+
+### CI, ESLint & guard scripts
+
+- **`scripts/check-lifecycle-ipc-invoke.sh`:** Multiline-aware ripgrep guard for lifecycle-domain `invoke()` in UI files; `--all` enforces §4.2 + §2.4 deferred registry.
+- **`.github/workflows/pr-quality-gate.yml`:** `check-lifecycle-ipc-invoke.sh --all` on smoke jobs.
+- **`eslint.config.mjs`:** `no-restricted-imports` rule — lifecycle components must use `lifecycleApi`, not `@tauri-apps/api/core` invoke for lifecycle commands.
+
+### Docs & learnings
+
+- **`TECHNICAL_DEBT.md`:** Resolved ~~TD-P1-06~~, ~~TD-P2-18~~, ~~TD-P2-19~~; partial TD-P2-02/05; new open **TD-P2-14** (daily-flow navigate exit policy), **TD-P2-15** (job vs daily-flow agent tools).
+- **`PROJECT_LEARNINGS.md`:** #48–#50 (loadData refresh policy, signal_navigate exit vs destination, job/daily tool surface); **Deprecated Patterns** table.
+- **`S2-LIFECYCLE-IPC-FACADE-F-LC-01.md`:** Status sync for migration completion.
+
+### Known follow-ups (not in this release)
+
+- **TD-P2-14:** Agent `signal_navigate_ui` → `daily_flow_tab` from project/job detail may land on source list without `dayId`.
+- **TD-P2-15:** Job context agent may default to `daily_flow_*` tools; no `job_drop_task` agent wrapper.
+- **TD-P2-05 (partial):** Granular in-place task refresh vs full `loadData()` on `tasks:changed`.
+
 ## 6.15.0 (2026-05-26)
 
 **Domain Event Emitter (B-LC-01) — canonical backend refresh signals:** Consolidates scattered Tauri emit logic for entity-scoped UI refresh into a single `domain::events` module. Closes the stale-UI class where agent and IPC mutations succeeded on the backend but detail views did not reload until leave/re-enter — especially daily-flow IPC paths that previously emitted nothing (except delegate).
