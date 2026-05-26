@@ -2,6 +2,47 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+## 6.15.0 (2026-05-26)
+
+**Domain Event Emitter (B-LC-01) — canonical backend refresh signals:** Consolidates scattered Tauri emit logic for entity-scoped UI refresh into a single `domain::events` module. Closes the stale-UI class where agent and IPC mutations succeeded on the backend but detail views did not reload until leave/re-enter — especially daily-flow IPC paths that previously emitted nothing (except delegate).
+
+**Why:** Emit calls for `tasks:changed`, `job:changed`, `projects:changed`, and `jobs:changed` were duplicated across `ipc/jobs.rs`, `ipc/lifecycle.rs`, `ipc/daily_flow.rs`, and `ToolExecutor` with inline JSON and no payload contract. Daily-flow IPC mutators had no parity with agent tools. This release centralises emission, locks payload shapes with snapshot tests, and enforces an allowlist in CI so new drift cannot reappear.
+
+### Canonical emitter (`src-tauri/src/domain/events/`)
+
+- **`emit_tasks_changed` / `emit_job_changed` / `emit_projects_changed` / `emit_jobs_changed`:** Single emit site per event name; failures logged via `tracing::warn!`.
+- **`emit_*_opt` variants:** No-op when `AppHandle` is absent (unit tests, headless agent dispatch).
+- **Typed payloads + builders:** `TasksChangedPayload`, `JobChangedPayload`, `ProjectsChangedPayload`, `JobsChangedPayload` with scoped builders (`tasks_changed_for_day`, `tasks_changed_for_job`, `tasks_changed_for_project`, `tasks_changed_wildcard_subtask`).
+- **`source.rs` registry:** Canonical `source` string constants for IPC, agent (`voice:` prefix at call sites), and list-invalidation paths.
+- **`lifecycle/events.rs` shim:** Re-exports list emitters for backward-compatible imports during strangler migration.
+
+### IPC migration
+
+- **`ipc/jobs.rs`:** All job task and metadata mutators delegate to `domain::events` with `source::*` constants (9 call sites).
+- **`ipc/lifecycle.rs`:** Project task refresh emits use domain builders; wildcard `lifecycle_complete_step` preserved.
+- **`ipc/daily_flow.rs`:** **12 mutating IPC commands** now emit `tasks:changed { dayId, source }` after successful DB writes (advance/revert phase, create/update/defer/drop/delegate/escalate tasks, save/lock plan, complete day, roll day). Shared `emit_daily_flow_tasks_changed` helper; emits placed before fire-and-forget sync.
+
+### Agent tools (`ToolExecutor`)
+
+- Private `emit_*_changed` helpers refactored to one-line delegators to `domain::events` `_opt` functions — preserves all existing call sites while routing through the canonical module.
+
+### Frontend contract (`src/lib/domain/events.ts`)
+
+- TypeScript interfaces mirroring Rust payloads; `DOMAIN_EVENTS` constants; `DAILY_FLOW_IPC_SOURCES` registry and `dailyFlowVoiceSource()` helper for F-LC-04 Entity refresh coordinator.
+
+### Testing & CI
+
+- **`domain_event_payload_contract.rs`:** 20 frozen JSON snapshot tests (SN-01–SN-07 variants, job/daily-flow source registries, structural invariants).
+- **`domain/events/tests.rs`:** 20 unit/integration tests including mock-runtime delivery (I-01–I-04) and shim re-export verification.
+- **`scripts/check-domain-event-emits.sh`:** Allowlist guard — only `src-tauri/src/domain/events` may `.emit()` the four domain events; multiline-aware ripgrep matching.
+- **`.github/workflows/pr-quality-gate.yml`:** Inventory + contract test steps on smoke jobs.
+
+### Docs & learnings
+
+- **S2-DOMAIN-EVENT-EMITTER-B-LC-01.md** — implementation-ready F&F (v1.3).
+- **S0 backend/frontend SOLID architecture reviews** — B-LC-01 / F-LC-04 context.
+- **PROJECT_LEARNINGS.md** — domain event patterns and CI gate notes.
+
 ## 6.14.5 (2026-05-25)
 
 **Navigation Coordinator — symmetric enter/exit shell policy (F-NC-01–05):** Closes the architecture gap where backend work-context updates (voice agent, signal navigate, lifecycle create) updated the SessionBar pill but left the Work panel on the wrong view. Introduces a single Navigation Coordinator that reacts to `forge:work_context_changed` and shared enter bundles for day/job/project drill-in, mirroring the existing F-OE-01 exit policy.
