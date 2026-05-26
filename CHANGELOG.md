@@ -2,6 +2,17 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+## 6.15.2 (2026-05-26)
+
+**Fix — legacy jobs invisible after tenant isolation:** Work Hub job lists now include pre-tenant-isolation rows stored with default `tenant_id = 'scainet'`, matching the permissive legacy visibility used for projects.
+
+**Why:** v6.14.0 tightened `list_jobs` to strict tenant equality. Jobs created before auth/tenant stamping remained in `ego.db` but were filtered out when the signed-in user's resolved tenant did not match `'scainet'`. Users reported all jobs "lost" after upgrade; data was present locally but hidden.
+
+### Job listing (`src-tauri/src/lifecycle/jobs.rs`)
+
+- **`list_jobs_async`:** Query now uses `(tenant_id = ?1 OR tenant_id = 'scainet') AND deleted_at IS NULL` so legacy default-tenant jobs remain visible to authenticated users.
+- **Test:** `list_jobs_async_includes_legacy_scainet_tenant_rows` locks in the regression guard.
+
 ## 6.15.1 (2026-05-26)
 
 **Lifecycle IPC Facade (F-LC-01) + project lifecycle UAT fixes:** Migrates lifecycle-domain UI from scattered direct `invoke()` calls to a typed **`lifecycleApi`** module (queries/commands separation). Closes UAT defects where gate approval locked panels on **Loading**, naming ceremony fired mid-flow, S0 task proceed UI was missing after AgentStream unification, and S0 task 3 received the wrong agent posture.
