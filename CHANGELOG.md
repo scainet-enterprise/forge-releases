@@ -2,6 +2,11 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+
+## 6.15.4 (2026-05-27)
+
+- scope brief to assigned task, not the full plan
+
 ## 6.15.3 (2026-05-26)
 
 **Sprint 2 maintainability (B-LC-04 + F-LC-02) + voice connect latency fix:** Centralises voice/agent tool wiring via **`ToolContextCore`**, consolidates frontend shell event subscriptions into **`ForgeEventRegistry`**, and fixes Mode B / daily-flow voice connect delays caused by unbounded audit history scans during hindsight fetch.
