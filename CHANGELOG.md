@@ -3,9 +3,46 @@
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
 
-## 6.15.4 (2026-05-27)
+## 6.16.0 (2026-05-28)
 
-- scope brief to assigned task, not the full plan
+- Introduces **Strangler Fig registry façade** (`registry::try_execute_registered`) in `ToolExecutor::execute` — registered tools dispatch before the legacy match, unmigrated tools fall through unchanged.
+- Extracts **Wave 1 domain modules** from `mod.rs`:
+  - `daily_flow.rs` — 15 daily flow tools
+  - `work_context_tool.rs` — `set_work_context` (full impl move)
+  - `lifecycle_create` — registry delegate (body stays in `mod.rs` until Wave 2)
+- Adds **`scripts/check-tool-registry.sh`** CI guard — prevents migrated impls/dispatch arms from reappearing in `mod.rs`; cross-syncs registered tool name constants.
+- Wires guard into **`pr-quality-gate.yml`**.
+- Adds regression tests (RT-B matrix) for registry routing, error propagation, and daily_flow/work_context behaviour.
+- **Version 6.15.4** — CHANGELOG updated; `sync-version` propagated.
+
+## 6.15.4 (2026-05-28)
+
+**Tool Registry Scaffold (B-LC-02 Wave 1):** Introduces a Strangler Fig registry façade in `ToolExecutor::execute` and extracts the first domain clusters out of the 8,800+ line `mod.rs` god module — **15 daily_flow tools**, **`set_work_context`**, and **`lifecycle_create`** (delegate). Behaviour-preserving move-only refactor; voice and text dispatch paths unchanged.
+
+**Why:** Every new tool previously required editing the monolithic `execute()` match in `mod.rs`, violating OCP and increasing regression risk. Wave 1 establishes the registry pattern, domain modules, and a CI guard so migrated tools cannot reappear in the god file. Prerequisites B-LC-04 (ToolContextCore) and B-LC-01 (domain events) were already merged in 6.15.3.
+
+### Tool registry (`src-tauri/src/agent/tools/`)
+
+- **`registry.rs`:** `try_execute_registered` — routes registered tool names after entitlements and `requested_by` patching, before legacy match; returns `None` for unmigrated tools.
+- **`daily_flow.rs`:** All 15 `daily_flow_*` execute implementations moved from `mod.rs` (~500 LOC).
+- **`work_context_tool.rs`:** Full `set_work_context` impl moved from `mod.rs`.
+- **`lifecycle_create`:** Registry delegate to existing `run_lifecycle_create` (body stays in `mod.rs` until Wave 2).
+- **`pub(crate)` accessors** on `ToolExecutor` for emit/db/context helpers used by domain modules.
+
+### CI guard
+
+- **`scripts/check-tool-registry.sh`:** Fails if migrated tool impls or execute dispatch arms reappear in `mod.rs`; cross-syncs `REGISTERED_TOOL_NAMES` with domain module constants.
+- **`pr-quality-gate.yml`:** Tool registry guard step added.
+
+### Tests
+
+- Regression matrix RT-B01–B20 (registry routing, error propagation, daily_flow persistence, work_context validation).
+- Existing tool parity tests preserved (`tool_context.rs`, baseline tool inventory).
+
+### Docs
+
+- **`S2-TOOL-REGISTRY-B-LC-02.md`:** Implementation-ready spec (v1.4).
+- **`TECHNICAL_DEBT.md`:** TD-P2-24 — voice job ID case sensitivity (pre-existing; not a registry regression).
 
 ## 6.15.3 (2026-05-26)
 
