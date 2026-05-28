@@ -2,6 +2,35 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+## 6.18.0 (2026-05-28)
+
+**Grok on xAI Responses API:** Upgrades every Grok text, streaming, and vision call from the legacy Chat Completions endpoint to xAI’s modern **`/v1/responses`** API. You get stronger live-web answers, optional X (Twitter) search and hosted code execution on Grok models, and a new **`grok-build-0.1`** option in the model registry — without changing how Anthropic, OpenAI, Gemini, or other providers work.
+
+**Why:** Chat Completions is deprecated on xAI and cannot expose server-side tools (native `web_search`, `x_search`, `code_interpreter`). Forge previously ran a client-side DuckDuckGo `web_search` for all providers; on Grok that meant extra round-trips, weaker grounding, and no access to xAI-only capabilities. This release keeps multi-provider architecture intact while giving Grok users the API surface xAI actually ships today.
+
+### Grok provider (`src-tauri/src/agent/providers/grok/`)
+
+- **`responses/` translator:** Request shaping, completed-response parsing, and SSE streaming for `/v1/responses`; reasoning-effort whitelist pinned to live probe data (`scripts/probe_xai_responses_api.py`).
+- **All Grok LLM paths migrated:** Non-streaming, streaming, and follow-up turns use the new endpoint; legacy `grok.rs` removed.
+- **Vision:** `analyze_xai()` image understanding now posts to `/v1/responses` (same API key and transport as chat).
+
+### Server-side tools (Grok only)
+
+- **`web_search`:** On Grok, Forge emits xAI’s built-in web search instead of the local DuckDuckGo scraper — multi-step searches can complete in one model turn with better grounding.
+- **`x_search`:** Search recent X (Twitter) posts (no Forge client equivalent).
+- **`code_interpreter`:** Sandboxed Python on xAI’s infrastructure for quick calculations without touching your machine (distinct from local `terminal_execute`).
+- **Orchestrator guard:** Persona policy is checked _before_ augmenting Grok tool lists so disallowed server-side tools are never offered.
+- **Audit trail:** Provider-executed tool usage is recorded with `executed_by: provider` so session history shows what ran on xAI vs locally.
+
+### Model registry & routing
+
+- **`grok-build-0.1`:** New model entry with server-side tool support (live-probed 2026-05-28).
+- **`_server_side_tools` metadata:** Capabilities JSON documents which tools each Grok model runs server-side; the router prefers these models for fresh-info / current-events style instructions.
+
+### Developer probes
+
+- **`scripts/probe_xai_responses_api.py`**, **`probe_xai_responses_shapes.py`**, **`probe_xai_websearch_behaviour.py`:** Optional live API shape checks for regression against xAI wire format changes.
+
 ## 6.17.0 (2026-05-28)
 
 **Tool Registry Waves 2 & 3 (B-LC-02):** Extracts **14 lifecycle** and **15 job** agent tools from `mod.rs` into domain modules, bringing the registry to **45 registered tools**. Adds job workflow agent tools missing from Wave 1 (`job_lock_plan`, `job_drop_task`), fixes delegation task completion, and hardens job task mutations.
