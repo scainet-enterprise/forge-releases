@@ -2,6 +2,44 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+## 6.17.0 (2026-05-28)
+
+**Tool Registry Waves 2 & 3 (B-LC-02):** Extracts **14 lifecycle** and **15 job** agent tools from `mod.rs` into domain modules, bringing the registry to **45 registered tools**. Adds job workflow agent tools missing from Wave 1 (`job_lock_plan`, `job_drop_task`), fixes delegation task completion, and hardens job task mutations.
+
+**Why:** Wave 1 (6.16.0) proved the Strangler Fig pattern; Waves 2–3 complete the lifecycle and tiered-work (job) clusters so voice/text agents can run full job plans without falling through to legacy `mod.rs` match arms. UAT on this branch surfaced plan-lock gaps, drop-task asymmetry, and delegated text agents omitting `job_complete_task` — all addressed here.
+
+### Tool registry (`src-tauri/src/agent/tools/`)
+
+- **`lifecycle_tools.rs` (Wave 2):** All 14 `lifecycle_*` execute implementations moved from `mod.rs` (~990 LOC) — list, search, create, status, advance, gates, drafts, documents, steps, tasks.
+- **`job_tools.rs` (Wave 3):** All 15 `job_*` / `delegate_task` execute implementations moved from `mod.rs` (~1250 LOC).
+- **`registry.rs`:** `REGISTERED_TOOL_NAMES` expanded 17 → 45; dispatch routes lifecycle and job modules before legacy fall-through.
+- **`scripts/check-tool-registry.sh`:** Guard arrays and expected count updated for Waves 2–3.
+
+### Job workflow (agent + engine)
+
+- **`job_lock_plan`:** New agent tool — parses Quick Plan draft into job tasks and locks plan (fixes JOB-018 voice/text plan→tasks regression).
+- **`job_drop_task`:** New agent tool — hard-delete parity with `daily_flow_drop_task` and IPC `job_drop_task` (replaces incorrect `job_complete_task` + `failed` workaround).
+- **`append_job_task_async`:** Atomic sequence + task-id allocation under DB write lock (fixes parallel `job_add_task` race).
+- **`resolve_job_engine()`:** AppState fallback when executor field unset (voice dispatch legacy path).
+- **F-058 on `job_create`:** Auto-promotes new job into active work context so voice can reach Mode B tools.
+- **F-084 guards:** `job_complete_task` / `job_drop_task` verify task lives in `job_tasks` before mutating.
+
+### Delegation
+
+- **`agent/delegation.rs`:** Delegation brief embeds machine-readable `task_id`; orchestrator auto-finalizes `in_progress` job tasks when text agent session ends without calling `job_complete_task`.
+- **Delegation brief:** Explicit required final step calling `job_complete_task`.
+
+### Tests
+
+- Job tools: tenant scoping, `job_lock_plan`, `job_add_task`, `job_drop_task`, F-084 rejection, registry routing (RT-D matrix).
+- Delegation: brief parsing, completion detection, drop-task exclusion from auto-complete.
+- Lifecycle tools: tenant isolation, F-058 status defaults, sync-engine guards.
+- Engine: concurrent `append_job_task_async` uniqueness test.
+
+### Docs / debt
+
+- **`TECHNICAL_DEBT.md`:** TD-P2-15 → Partial (`job_drop_task` shipped); new TD-P3-16/17/18 (active-context parity, event source tags, `mod.rs` LOC advisory).
+- **`S0-AGENT-STREAM-CHANGED-FILES-SCOPING.md`:** Changed Files panel context-scoping intake.
 
 ## 6.16.0 (2026-05-28)
 
