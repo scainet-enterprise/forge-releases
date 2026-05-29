@@ -2,6 +2,14 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+## 6.19.2 (2026-05-29)
+
+**`read_file` delivers full content to the agent again:** The tool has returned complete file bodies since 6.7.2, but the orchestrator still capped **all** tool results at 10 KB before the LLM saw them. Agents calling `read_file` on files like `homepage-branded.html` (~27 KB) received `[Output truncated. N bytes total]` and could not see nav markup or other content past the cut. **`read_file` is now exempt** from that cap; other tools keep the 10 KB guardrail.
+
+### Orchestrator (`src-tauri/src/agent/orchestrator/loop_run/mod.rs`)
+
+- **`tool_output_for_llm`:** Passes `read_file` results through unchanged; other tools still use `truncate_tool_output_for_llm` at `TOOL_OUTPUT_LLM_MAX_BYTES` (10_000).
+
 ## 6.19.1 (2026-05-29)
 
 **Grok Build context window:** Corrects the reported context budget for **`grok-build-0.1`** from **131k** (discovery fallback) to **256k**, matching the [xAI models pricing table](https://docs.x.ai/docs/models). The Agent Stream CTX bar and truncation logic now reflect the real limit for this model.
