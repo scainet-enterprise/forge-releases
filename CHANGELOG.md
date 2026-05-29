@@ -2,6 +2,11 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+
+## 6.18.1 (2026-05-29)
+
+- Daily flow calendar picker
+
 ## 6.18.0 (2026-05-28)
 
 **Grok on xAI Responses API:** Upgrades every Grok text, streaming, and vision call from the legacy Chat Completions endpoint to xAI’s modern **`/v1/responses`** API. You get stronger live-web answers, optional X (Twitter) search and hosted code execution on Grok models, and a new **`grok-build-0.1`** option in the model registry — without changing how Anthropic, OpenAI, Gemini, or other providers work.
