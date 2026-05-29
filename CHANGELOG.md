@@ -2,6 +2,31 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+## 6.19.3 (2026-05-29)
+
+**Tool Registry Waves 6–8 (B-LC-02):** Extracts **computer-use** (4), **system/terminal/clipboard** (8), **MCP** (6), and **memory/database** (5) agent tools from `mod.rs` into domain modules, bringing the registry to **103 registered tools**. Legacy execute match arms for these clusters are removed; routing is exclusively through `registry::try_execute_registered`.
+
+**Why:** Waves 4–5 (6.19.0) migrated filesystem, git, and browser/vision clusters. Waves 6–8 complete the remaining general-purpose inline execute impls in the god file — desktop/FORGE computer use, shell/process/clipboard, MCP server management, and long-term memory / SQLite tools — while preserving Article 1 routing and the Strangler Fig pattern.
+
+### Tool registry (`src-tauri/src/agent/tools/`)
+
+- **`computer_use_tools.rs` (Wave 6):** 4 tools — `computer_perceive`, `computer_act`, `forge_perceive`, `forge_act`. Image attachments queue on `ToolExecutor` via new `push_pending_tool_image()` accessor.
+- **`system_tools.rs` (Wave 7):** 8 tools — `terminal_execute`, `process_list`, `process_launch`, `system_info`, `clipboard_read`, `clipboard_write`, `clipboard_read_image`, `clipboard_write_image`.
+- **`mcp_tools.rs` (Wave 8):** 6 tools — `mcp_list_servers`, `mcp_connect`, `mcp_disconnect`, `mcp_add_server`, `mcp_remove_server`, `mcp_list_tools`.
+- **`memory_db_tools.rs` (Wave 8):** 5 tools — `memory_store`, `memory_recall`, `memory_context`, `db_query`, `db_write`.
+- **`registry.rs`:** `REGISTERED_TOOL_NAMES` expanded 80 → **103**; dispatch routes memory/db, MCP, system, and computer-use modules before legacy fall-through.
+- **`mod.rs`:** ~600 LOC of execute impls removed for Waves 6–8 clusters.
+- **`scripts/check-tool-registry.sh`:** Guard arrays, sync blocks, and expected count updated for Waves 6–8; LOC budget check retained.
+
+### Tests
+
+- Registry routing and error-propagation tests for computer-use, system, MCP, and memory/db clusters (RT-G04–G06, RT-H02–H08, RT-I02–I06, RT-J02–J07, RT-K01).
+- Module-level unit tests for parameter validation and safety paths.
+
+### Docs / debt
+
+- **`TECHNICAL_DEBT.md`:** TD-P3-21 → Resolved (computer-use extraction); Wave 6–8 UAT audit verification matrices; new TD-P2-28/29 (freeform Start Text hijack), TD-P2-30–33 and TD-P3-22 (pre-existing agent/tool behaviour surfaced during UAT — not fixed in this release).
+
 ## 6.19.2 (2026-05-29)
 
 **`read_file` delivers full content to the agent again:** The tool has returned complete file bodies since 6.7.2, but the orchestrator still capped **all** tool results at 10 KB before the LLM saw them. Agents calling `read_file` on files like `homepage-branded.html` (~27 KB) received `[Output truncated. N bytes total]` and could not see nav markup or other content past the cut. **`read_file` is now exempt** from that cap; other tools keep the 10 KB guardrail.
