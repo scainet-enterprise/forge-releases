@@ -2,6 +2,14 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+## 6.19.1 (2026-05-29)
+
+**Grok Build context window:** Corrects the reported context budget for **`grok-build-0.1`** from **131k** (discovery fallback) to **256k**, matching the [xAI models pricing table](https://docs.x.ai/docs/models). The Agent Stream CTX bar and truncation logic now reflect the real limit for this model.
+
+### Model registry (`src-tauri/src/agent/providers/registry.rs`)
+
+- **`classify_grok_context_window`:** New `grok-build` branch (256,000 tokens) before generic fallbacks; xAI `/v1/models` does not return `context_length` for Grok models.
+
 ## 6.19.0 (2026-05-29)
 
 **Tool Registry Waves 4 & 5 (B-LC-02):** Extracts **filesystem** (10), **git** (11), and **browser/vision/web** (14) agent tools from `mod.rs` into domain modules, bringing the registry to **80 registered tools**. Consolidates job delegation onto `build_job_delegation_brief()` so delegated text agents receive a single-task scope (no full Quick Plan dump).
@@ -35,7 +43,7 @@
 
 ## 6.18.1 (2026-05-29)
 
-- Daily flow calendar picker
+**Daily Flow — calendar picker and M-series:** Month calendar for day selection (replacing the flat day list), calendar date API with past-day write guard, explore/begin-day work area fixes, defer/escalate/roll wiring, shared delegation brief and delegate UI, M4/M5 persona cast and delegation, wrap-up and audit fixes.
 
 ## 6.18.0 (2026-05-28)
 
@@ -59,7 +67,7 @@
 
 ### Model registry & routing
 
-- **`grok-build-0.1`:** New model entry with server-side tool support (live-probed 2026-05-28).
+- **`grok-build-0.1`:** New model entry with server-side tool support (live-probed 2026-05-28). Context window sizing corrected in **6.19.1** (was shown as 131k; authoritative value is **256k**).
 - **`_server_side_tools` metadata:** Capabilities JSON documents which tools each Grok model runs server-side; the router prefers these models for fresh-info / current-events style instructions.
 
 ### Developer probes
