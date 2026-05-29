@@ -2,6 +2,36 @@
 
 > **Maintainers:** This file is copied to forge-releases CHANGELOG.md on every release (at the release tag). Update it **in the same PR as the version bump** so the in-app updater shows current notes. CI requires a top-level `## x.y.z` heading matching the repo-root **`VERSION`** file (see `npm run sync-version` in CONTRIBUTING.md).
 
+## 6.19.0 (2026-05-29)
+
+**Tool Registry Waves 4 & 5 (B-LC-02):** Extracts **filesystem** (10), **git** (11), and **browser/vision/web** (14) agent tools from `mod.rs` into domain modules, bringing the registry to **80 registered tools**. Consolidates job delegation onto `build_job_delegation_brief()` so delegated text agents receive a single-task scope (no full Quick Plan dump).
+
+**Why:** Waves 1–3 (6.16–6.17) migrated daily flow, lifecycle, and job clusters. Waves 4–5 complete the general-purpose file/git and browser/vision surfaces still inline in the god file, shrinking `mod.rs` execute impls below the 7000 LOC advisory budget while preserving Article 1 routing through `registry::try_execute_registered`.
+
+### Tool registry (`src-tauri/src/agent/tools/`)
+
+- **`filesystem_tools.rs` (Wave 4):** 10 tools — `read_file`, `write_file`, `edit_file`, `list_directory`, `search_files`, `file_delete`, `file_rename`, `diff_generate`, `find_file`, `directory_tree`.
+- **`git_tools.rs` (Wave 4):** 11 tools — `git_status`, `git_diff`, `git_add`, `git_commit`, `git_push`, `git_pull`, `git_branch`, `git_checkout`, `git_stash`, `git_log`, `git_merge`.
+- **`browser_vision_tools.rs` (Wave 5):** 14 tools — headless browser (`browser_*`), screenshots (`take_screenshot`, `forge_screenshot`, `compare_screenshots`, `visual_debug_start`), vision (`image_generate`, `image_analyze`), web (`web_fetch`, `web_search`).
+- **`registry.rs`:** `REGISTERED_TOOL_NAMES` expanded 45 → **80**; dispatch routes filesystem, git, and browser/vision modules before legacy fall-through.
+- **`mod.rs`:** ~830 LOC of execute impls removed; `browser_session_mut()` accessor added for Wave 5 session state.
+- **`scripts/check-tool-registry.sh`:** Guard arrays, file probes, and expected count updated for Waves 4–5; LOC budget check retained.
+
+### Job delegation (`lifecycle/delegation_brief.rs`, `job_tools.rs`)
+
+- **`delegate_task`** now calls **`build_job_delegation_brief()`** with `task_id`, `total_tasks`, and plan-scope note — **does not** re-inject the approved Quick Plan draft.
+- Brief includes `## Task ID`, `Execute ONLY` scope for multi-task jobs, and `## Required final step` (`job_complete_task` footer).
+
+### Tests
+
+- Registry routing and error-propagation tests for filesystem, git, and browser/vision clusters.
+- Filesystem roundtrip / path-safety characterization tests.
+- `delegate_task` locked-plan success and unlocked-plan rejection tests.
+- Delegation brief unit tests (single-task scope, no full plan leakage).
+
+### Docs / debt
+
+- **`TECHNICAL_DEBT.md`:** TD-P3-18 → Partial (`mod.rs` under LOC budget); new TD-P2-25/26/27, TD-P3-19–21 (git push guard, B-LC-12 parity, Audit panel scope, registry polish, computer-use Wave 6 deferral).
 
 ## 6.18.1 (2026-05-29)
 
