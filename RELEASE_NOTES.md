@@ -1,6 +1,31 @@
 # SCAINET Forge Release Notes
 
-> **Maintainers:** User-facing notes mirrored to `forge-releases/RELEASE_NOTES.md` on every release. Write for end users — no internal codes, file paths, or PR numbers. CI requires a `## x.y.z` heading matching repo-root **`VERSION`**. Update in the **same PR as the version bump** (use `npm run prepare-release` or edit alongside `docs/CHANGELOG.md`).
+> **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
+> Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
+> Engineering detail belongs in `docs/CHANGELOG.md`.
+
+## 6.20.0 (2026-05-30)
+
+**Smarter detail views and a complete tool registry migration.**
+
+### Detail views stay up to date
+
+When an agent updates a job, daily flow, or project while you have the detail screen open, the UI now refreshes automatically — task lists, stage rails, and plan content update without navigating away and back. Refreshes are debounced and coalesced so rapid changes do not cause flicker or redundant network calls. Returning to the app after switching windows triggers a stale-data check on open detail views.
+
+### Agent tools (Wave 9)
+
+Twenty-two additional agent tools now run through the modular tool registry (125 tools total), including:
+
+- **W5 cognitive checkpoints** — record and present decisions, generate handovers, and manage context snapshots.
+- **Version-control conflict resolution** — show, resolve, abort, and undo merge conflicts; regenerate lockfiles when needed. Tool failures now surface clearly to the agent instead of appearing as successful runs with hidden errors.
+- **CATALYST profiles and gates** — set cognitive profiles, run multi-pass refinement, and check or release lifecycle gates.
+- **Services integration** — create Portal projects from jobs, present artefacts, track milestones, capture feedback, and back-propagate updates.
+
+### Reliability improvements
+
+- Optimistic UI updates for task changes reconcile correctly when background refreshes complete.
+- Audit-driven refresh fallbacks no longer duplicate work already handled by domain events.
+- CI guards help prevent regressions that would bypass the new refresh coordinator.
 
 ## 6.19.4 (2026-05-29)
 
