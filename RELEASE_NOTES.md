@@ -4,6 +4,32 @@
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 > Engineering detail belongs in `docs/CHANGELOG.md`.
 
+## 6.21.0 (2026-05-30)
+
+**More agent tools migrated and clearer error handling.**
+
+### Agent tools (Wave 10)
+
+Fifteen additional agent tools now run through the modular tool registry (140 tools total), including:
+
+- **Code intelligence** — extract symbols, map dependencies, analyse complexity, and inspect scope at a line in source files.
+- **HTTP requests** — agents can call external APIs directly when needed.
+- **GitHub project linking** — connect a lifecycle project to a GitHub repository.
+- **Reference documents** — list and read project reference docs from the workspace.
+- **Portal tasks** — create and list tasks on the SCAINET Platform from within FORGE.
+- **Bug reports** — submit structured bug reports to Nexus with optional screenshots and W5 checkpoint links.
+- **Morpheus integration** — import ideas, run auto S0 intake, notify thinkers, and track revenue events.
+
+### Reliability improvements
+
+- Creating a Portal task or submitting a bug report now fails clearly when the upstream service rejects the request, instead of appearing to succeed.
+- Bug reports with a missing or blank description are rejected immediately instead of being sent to the server.
+- Morpheus notification tools surface database lookup failures instead of failing silently.
+- Opening a project no longer fails when lifecycle stage personas need to be synced — duplicate persona name conflicts are reconciled automatically.
+- When you ask an agent to delegate a job task, it will retry if it tries to finish without actually calling the delegation tool.
+- Constitution Guard blocks on sensitive operations now appear in the audit trail instead of being silently skipped.
+- Delegating a job task accepts simpler task references (sequence numbers like `2` or shorthand like `TASK-002`), not only full canonical ids.
+
 ## 6.20.0 (2026-05-30)
 
 **Smarter detail views and a complete tool registry migration.**
