@@ -5,7 +5,7 @@
     <a href="https://github.com/scainet-enterprise/forge-releases/releases/latest"><img src="https://img.shields.io/badge/version-6.22.0-blue" alt="Version"></a>
     <a href="https://github.com/scainet-enterprise/forge-releases/releases/latest"><img src="https://img.shields.io/badge/status-Beta-brightgreen" alt="Beta"></a>
     <img src="https://img.shields.io/badge/platforms-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey" alt="Platforms">
-    <a href="https://scainet.io/innovation"><img src="https://img.shields.io/badge/patents-6%20filed-orange" alt="Patents"></a>
+    <a href="https://scainet.io/innovation"><img src="https://img.shields.io/badge/patents-9%20filed-orange" alt="Patents"></a>
   </p>
 </p>
 
@@ -74,7 +74,7 @@ Or browse [all releases](https://github.com/scainet-enterprise/forge-releases/re
 
 ## Patents
 
-SCAINET Forge incorporates technology protected by 6 provisional patent applications filed with IP Australia. See [scainet.io/innovation](https://scainet.io/innovation) for details.
+SCAINET Forge incorporates technology protected by 9 provisional patent applications filed with IP Australia. See [scainet.io/innovation](https://scainet.io/innovation) for details.
 
 ## About This Repository
 
