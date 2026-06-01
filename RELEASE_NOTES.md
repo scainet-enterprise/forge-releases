@@ -4,6 +4,19 @@
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 > Engineering detail belongs in `docs/CHANGELOG.md`.
 
+## 6.22.1 (2026-06-01)
+
+**Fixes a launch hang where FORGE could stay on “Initializing…” and never reach sign-in.**
+
+### Startup reliability
+
+- FORGE no longer waits for an online update check before showing the sign-in screen. Update checks still run in the background after launch.
+- If moving API keys into the secure vault takes longer than usual (first launch after an update), the app continues starting instead of waiting indefinitely.
+
+### Who should update
+
+- Anyone on **6.22.0** who sees the splash screen freeze at **Initializing…** should install **6.22.1**.
+
 ## 6.22.0 (2026-06-01)
 
 **See how FORGE builds your agent prompts — and switch views without waiting.**
