@@ -4,6 +4,19 @@
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 > Engineering detail belongs in `docs/CHANGELOG.md`.
 
+## 6.21.2 (2026-06-01)
+
+**The agent tool system is now fully modular — faster to extend and more reliable under the hood.**
+
+### Agent tools
+
+- The remaining built-in agent tools now run through the modular registry (**169 tools** total), including Board of Directors governance, marketplace search and install, Gmail integration, PDF reading, and environment helpers.
+- Tool routing and validation behave the same from your perspective; this release is primarily an architecture and reliability improvement for future agent capabilities.
+
+### Behind the scenes
+
+- CI runs faster on merges to the main branch by skipping duplicate full test suites when changes were already validated on the pull request.
+
 ## 6.21.1 (2026-06-01)
 
 **Explore mode now has a persistent workspace, and navigation back from detail views feels correct.**
