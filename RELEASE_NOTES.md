@@ -4,6 +4,29 @@
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 > Engineering detail belongs in `docs/CHANGELOG.md`.
 
+## 6.23.0 (2026-06-02)
+
+**Drag files in the explorer, manage them like VS Code, and open a terminal where you’re working.**
+
+### File explorer
+
+- **Drag and drop** files and folders within your workspace — drop onto a folder or empty space to move items to that location, with clear highlights for valid targets.
+- **Right-click empty space** in the explorer to create a new file or folder at the workspace root (not only on existing rows).
+- **Richer context menu:** copy, cut, paste, duplicate, reveal in Finder (or your platform’s file manager), copy name/path, and **Open in Terminal**.
+- **Multi-select** with Shift or ⌘/Ctrl-click for bulk copy, cut, paste, and delete.
+- **Inline rename** — press F2 or use Rename from the menu (no popup dialog).
+- **Import from Finder** — drag files from macOS Finder into a folder or the explorer background to add them to your workspace.
+- When you move or rename a file that’s open in the editor, your tab path updates; unsaved changes are protected with a confirmation before the move.
+
+### Terminal
+
+- **Open in Terminal** from the explorer opens a shell in the right folder and shows the terminal panel if it was hidden.
+- Terminal tabs are more reliable when switching workspaces or opening shells from the explorer — fewer blank or stuck terminal panels.
+
+### Who should update
+
+- Anyone who reorganises files in the explorer or uses **Open in Terminal** from the file tree.
+
 ## 6.22.1 (2026-06-01)
 
 **Fixes a launch hang where FORGE could stay on “Initializing…” and never reach sign-in.**
