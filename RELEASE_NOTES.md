@@ -4,6 +4,25 @@
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 > Engineering detail belongs in `docs/CHANGELOG.md`.
 
+## 6.21.1 (2026-06-01)
+
+**Explore mode now has a persistent workspace, and navigation back from detail views feels correct.**
+
+### Explore workspace
+
+- Explore uses a dedicated sandbox folder under your Forge data directory instead of a throwaway temp path.
+- In **Settings → Explore workspace**, you can choose a custom folder or reset to the Forge default.
+- The file explorer and agent working directory stay in sync with your Explore sandbox.
+
+### Better navigation when leaving detail views
+
+- When you open a project, job, or daily flow detail and then go back, FORGE restores the workspace you had before — including Explore mode — instead of leaving the explorer pointed at the wrong folder.
+
+### Behind the scenes
+
+- CI runs faster on routine merges by skipping redundant full test suites while keeping PR checks as the quality gate.
+- Automated version bumps now go through a pull request so they are tested like any other change.
+
 ## 6.21.0 (2026-05-30)
 
 **More agent tools migrated and clearer error handling.**
