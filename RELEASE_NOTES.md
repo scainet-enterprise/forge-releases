@@ -4,6 +4,27 @@
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 > Engineering detail belongs in `docs/CHANGELOG.md`.
 
+## 6.22.0 (2026-06-01)
+
+**See how FORGE builds your agent prompts — and switch views without waiting.**
+
+### Prompt Library (SCAINET team)
+
+If you sign in with a SCAINET tenant account, open **Settings → Prompt Library** to:
+
+- Browse the catalog of prompt injection points and dictionaries.
+- Preview the **effective prompt stack** for your current session (project, job, daily flow, voice, or persona).
+- Pick a persona and see which profile blocks apply before you start a session.
+- In **development builds**, edit persona profile text and reload from disk to iterate quickly (shipped apps still use the embedded profiles until hot-reload ships).
+
+### Voice & session context
+
+- **Live session context** during voice now reflects **voice** prompts, not the text agent defaults — so previews and persona behaviour match what you hear in realtime voice mode.
+
+### Smoother navigation
+
+- Opening **Explore**, a **job**, or a **daily flow** day switches the main view immediately while workspace and agent setup finish in the background — less “stuck on the hub” feeling on slower machines.
+
 ## 6.21.2 (2026-06-01)
 
 **The agent tool system is now fully modular — faster to extend and more reliable under the hood.**
