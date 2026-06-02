@@ -4,6 +4,30 @@
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 > Engineering detail belongs in `docs/CHANGELOG.md`.
 
+## 6.24.0 (2026-05-28)
+
+**Connect Google Workspace and bring calendar and email into Daily Flow.**
+
+### Google Workspace in Settings
+
+- **Connect Gmail and Google Calendar** from Settings → Integrations using one Google sign-in (OAuth).
+- **Built-in setup guide** in the credentials panel walks you through creating Google Cloud OAuth credentials and pasting Client ID / Secret.
+
+### Daily Flow
+
+- **Calendar intake** shows upcoming events from your primary Google Calendar for the day you are planning.
+- **Email intake** surfaces recent Gmail messages relevant to your flow.
+- **Add as task** from a calendar event or email thread to drop it onto your board without retyping.
+
+### Who should update
+
+- Anyone using **Daily Flow** who wants calendar and email context in one place.
+- Requires a Google account and OAuth app credentials (free tier; guide in-app).
+
+### Notes
+
+- This release does **not** include the in-app updater toast fix; that ships separately in the next patch.
+
 ## 6.23.1 (2026-06-02)
 
 **Fixes a startup hang that could leave the app stuck on “Initializing…” after installing a release.**
