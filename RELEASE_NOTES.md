@@ -4,6 +4,22 @@
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 > Engineering detail belongs in `docs/CHANGELOG.md`.
 
+## 6.23.1 (2026-06-02)
+
+**Fixes a startup hang that could leave the app stuck on “Initializing…” after installing a release.**
+
+### Startup reliability
+
+- **Splash screen no longer blocks** while checking for updates — the app reaches the sign-in screen within a few seconds even on slow or offline networks.
+- **More resilient startup** when loading saved API keys and connecting background services.
+- **Settings no longer shows empty providers** after upgrade when keys exist in the environment — model discovery keeps working instead of reporting zero models.
+- **Saving in Settings is faster and safer** — saving never wipes a working key, a momentary network hiccup no longer clears your discovered models, and discovery can’t hang the dialog.
+
+### Who should update
+
+- **Anyone on 6.19.4 or later** who saw the app freeze on the loading splash after install, or who stayed on 6.19.3 to avoid the issue.
+- Recommended for all users on the stable or beta update channel.
+
 ## 6.23.0 (2026-06-02)
 
 **Drag files in the explorer, manage them like VS Code, and open a terminal where you’re working.**
