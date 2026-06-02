@@ -4,6 +4,20 @@
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 > Engineering detail belongs in `docs/CHANGELOG.md`.
 
+## 6.24.1 (2026-06-02)
+
+**Stability Improvements**
+
+- Fixed an issue where the app could fail to check for updates with an internal error
+- Improved reliability of AI provider connections during temporary network issues
+- Fixed a startup delay that could occur when checking for updates
+- Update notifications now link to public release notes for easier access
+
+**Under the Hood**
+
+- Various internal improvements to error handling and resilience
+- Updated testing infrastructure
+
 ## 6.24.0 (2026-05-28)
 
 **Connect Google Workspace and bring calendar and email into Daily Flow.**
