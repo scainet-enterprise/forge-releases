@@ -4,6 +4,24 @@
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 > Engineering detail belongs in `docs/CHANGELOG.md`.
 
+## 6.24.2 (2026-06-04)
+
+**Smarter task delegation and more reliable Job / Daily Flow views while the agent is working.**
+
+### Task delegation
+
+- When you delegate a task to a worker agent, that worker **stays focused on the assigned task** — it can no longer re-delegate, jump to other jobs, or mark the wrong task complete.
+- **Delegate all remaining** and single-task delegation both produce cleaner worker sessions that finish with the right completion step.
+
+### Job and Daily Flow UI
+
+- **Job and Daily Flow detail screens stay in sync** when the agent navigates or updates tasks, plans, or board items during a session — no more stale panels after the agent moves on.
+- **Navigation is more consistent** whether you use voice commands or let the agent drive the UI.
+
+### Who should update
+
+- Anyone using **Jobs**, **Daily Flow**, or **task delegation** who saw wrong screens, stale task lists, or workers that tried to orchestrate instead of execute.
+
 ## 6.24.1 (2026-06-02)
 
 **Stability Improvements**
