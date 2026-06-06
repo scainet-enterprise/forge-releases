@@ -4,6 +4,36 @@
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 > Engineering detail belongs in `docs/CHANGELOG.md`.
 
+## 6.25.0 (2026-06-05)
+
+**Google Workspace goes deep inside Daily Flow — read mail, manage calendar, and let Patrick clean your inbox with your approval.**
+
+### Email in FORGE
+
+- **Click any Needs Attention email** to read the full message (and load the whole thread) without leaving FORGE.
+- **Filter intake** by Today, All Unread, Drafts, and more; section expands and collapses so it does not dominate the day view.
+- **Draft replies** go through an approval queue — agents draft, you approve and send.
+- **Patrick** is your email specialist: delegated email tasks route to him; he can search, label, archive, filter, and stage bulk cleanups for your confirmation.
+
+### Calendar in FORGE
+
+- **Tap a calendar item** to open an in-app event sheet — view details, edit, **reschedule** (if you created the event), and **RSVP**.
+- Create tasks from events with suggested titles and email/event details pre-filled.
+
+### Safer inbox cleanup
+
+- **Bulk trash, archive, and label** actions from Patrick are staged for your review — trash always needs a confirm; large batches do too.
+- **View the list** of emails in a staged batch and remove any you want to keep before approving.
+
+### Audit and transparency
+
+- Human approvals (send, trash, bulk confirm) and persona handoffs are now recorded in the audit trail.
+- Tool calls and results show in the Agent Stream by default so you can see what agents did.
+
+### Who should update
+
+- Anyone using **Google Workspace** in Settings and **Daily Flow** who wants to stay in FORGE for mail and calendar instead of switching to the browser.
+
 ## 6.24.2 (2026-06-04)
 
 **Smarter task delegation and more reliable Job / Daily Flow views while the agent is working.**
