@@ -4,6 +4,24 @@
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 > Engineering detail belongs in `docs/CHANGELOG.md`.
 
+## 6.26.0 (2026-06-08)
+
+**My Issues — work assigned tickets inside Forge, without leaving your desk.**
+
+### My Issues (SCAINET staff)
+
+- New **My Issues** tab in Work Hub shows incident tickets **assigned to you** from Portal Service Desk.
+- Read linked error events, add comments, **resolve** tickets, or **promote** to a local Job with a quick plan and starter tasks.
+- Real-time inbox updates when triagers assign work on Portal.
+
+### Smarter error priority
+
+- New Forge-captured errors get an automatic **severity** rating so triage queues are easier to prioritise.
+
+### Work Hub polish
+
+- Clearer tab icons; My Issues uses distinct inbox styling so it is easy to spot.
+
 ## 6.25.0 (2026-06-05)
 
 **Google Workspace goes deep inside Daily Flow — read mail, manage calendar, and let Patrick clean your inbox with your approval.**
