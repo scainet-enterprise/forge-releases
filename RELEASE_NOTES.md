@@ -2,7 +2,52 @@
 
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
+
+## 6.27.1 (2026-06-08)
+
+- deps(npm): bump the production-deps group across 1 directory with 9 updates
+
+_Auto-generated — curate before external comms._
+
 > Engineering detail belongs in `docs/CHANGELOG.md`.
+
+## 6.27.0 (2026-06-08)
+
+**Daily Flow planning works the way you intended, voice stays responsive while Patrick works, and Work opens where you actually start your day.**
+
+### Quick Plan ceremony
+
+- **Clara drafts the Quick Plan in voice** (`save plan`) — not ad-hoc “add task” shortcuts during planning.
+- **Lock for Approval** in the Quick Plan panel (or Clara’s submit) stages the plan without creating tasks.
+- **Approve Plan** (UI only) turns each line into a task and moves the day to **Executing**.
+- **Skip planning anytime** — advance phase without a plan if you want to rush through; add tasks later.
+- **Quick Plan** is now collapsible and **tucks away automatically** when you enter Executing so task work stays front and centre.
+- Planning guidance **refreshes when the day changes phase** so Clara’s instructions stay current.
+
+### Briefing & cast personas
+
+- **Structured briefing ceremony** for Daily Flow — email triage (Patrick), calendar snapshot, task rollover, and a clear path into Planning.
+- **Cast personas** (Patrick, Lens, Quill, …) load their tool policies correctly without backend warnings.
+- **Delegated briefing** uses cast-specific instructions without cluttering the main agent identity.
+
+### Voice reliability during delegation
+
+- **Voice tools no longer freeze** for the full duration of a delegated briefing or inbox review while a text agent runs in the background.
+
+### Email-linked tasks
+
+- **Create tasks from Needs Attention emails** via voice with the same source linkage as the UI.
+- **Needs attention** starts **collapsed** so your task board is the focus until you expand intake.
+
+### Work tab
+
+- **Daily Flow** is now the **first tab** and opens **by default** — Jobs in the middle, Projects on the right.
+- **Super admins and admins:** filter projects by **My projects** or **All tenancy** (Work tab and project picker). Defaults to **My projects**.
+
+### Who should update
+
+- Anyone running **Daily Flow** on voice (planning → lock → approve) or **delegated briefing**.
+- **Tenant admins** who want a focused project list without losing tenancy-wide visibility.
 
 ## 6.26.0 (2026-06-08)
 
