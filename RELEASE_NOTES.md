@@ -3,6 +3,39 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.29.0 (2026-06-09)
+
+**Daily Flow completes the morning briefing — Patrick and Aurora work in the background while Clara walks you through the day, without cutting you off mid-sentence.**
+
+### Morning briefing pipeline
+
+- **Patrick** triages your inbox automatically when you open today's day.
+- **Aurora** drafts your briefing document from your interests and news sources.
+- **Clara** delivers the briefing section by section and discusses it with you **before** planning starts — briefing and planning are clearly separate steps.
+
+### Briefing quality
+
+- Briefing documents use clear sections per topic, with **links to sources** and one story per bullet.
+- When you approve your plan, Clara knows the plan is locked — she won't ask again.
+- Planning avoids duplicating tasks already on your day.
+
+### Voice reliability
+
+- Clara **waits until you finish speaking** before relaying briefing updates from Patrick or Aurora.
+
+### Daily Flow stage gates
+
+- Formal **stage artifacts** for briefing and wrap-up phases, with visible gate controls on the day view.
+- **Plan tracking** improvements including dependencies and overnight task rollover.
+
+### For SCAINET developers (dev builds)
+
+- **Clear Day (dev)** resets today's day for UAT — admin-only, development builds only.
+
+### Who should update
+
+- Anyone using **Daily Flow on voice** for morning briefings or **delegated persona work** (Patrick, Aurora).
+
 ## 6.28.0 (2026-06-09)
 
 **Promote Service Desk issues straight into coding jobs — with a repo worktree and Quick Plan ready to review.**
