@@ -3,6 +3,21 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.28.0 (2026-06-09)
+
+**Promote Service Desk issues straight into coding jobs — with a repo worktree and Quick Plan ready to review.**
+
+### My Issues → Service Desk job
+
+- **Promote** an assigned issue from **My Issues** to a **Service Desk coding job** in one step.
+- Forge **infers the target repository** from linked events, projects, and stack traces — or lets you pick from your tenant’s repo list.
+- A **git worktree** is provisioned automatically so the agent can work in the right codebase.
+- The job opens at **Plan (J1)** with a **Quick Plan draft** seeded from the issue — review it, add numbered tasks, then approve when ready.
+
+### My Issues polish
+
+- **Selection highlight** in the issue list now shows clearly which ticket you’re viewing.
+
 ## 6.27.1 (2026-06-08)
 
 - deps(npm): bump the production-deps group across 1 directory with 9 updates
