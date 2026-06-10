@@ -3,6 +3,24 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.29.1 (2026-06-10)
+
+**Critical fix: FORGE failed to open at all after updating from 6.27 to 6.28/6.29. Also fixes the Jobs tab showing no jobs.**
+
+### App would not start after updating
+
+- If you updated from **6.27.x** to 6.28.0 or 6.29.0, FORGE could **fail to launch entirely** — no window, no error. An internal database upgrade step tried to apply a change your database already had, and the app stopped before opening.
+- 6.29.1 makes the upgrade system self-healing: it recognises what your database already has, applies only what is missing, and starts normally. **No data was lost** — your days, jobs, and projects are intact.
+- Because the broken version cannot open to auto-update, affected users need to **download and install 6.29.1 manually** from the releases page (one time only).
+
+### Jobs are back
+
+- A related issue made the **Jobs tab show 0 jobs** on some databases even though all jobs were safe. The same self-healing upgrade restores them on next launch.
+
+### Who should update
+
+- **Everyone on 6.28.0 or 6.29.0**, and especially anyone whose FORGE **won't open** after updating — install 6.29.1 manually and launch.
+
 ## 6.29.0 (2026-06-09)
 
 **Daily Flow completes the morning briefing — Patrick and Aurora work in the background while Clara walks you through the day, without cutting you off mid-sentence.**
