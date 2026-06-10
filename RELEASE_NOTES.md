@@ -3,6 +3,31 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.30.0 (2026-06-10)
+
+### Daily Flow — close your day properly
+
+- **Evening wrap-up ceremony** mirrors the morning briefing: Aurora writes the wrap document, Clara walks you through it section by section, then you **Close day** when you're done.
+- **No more typing a wrap-up summary** — the wrap document is the record. Clara won't ask you to repeat what Aurora already wrote.
+- **Close day** button replaces "Advance Phase" while you're in Wrapping — enabled once the wrap document is ready.
+- **Day notes** — optional scratch pad on the day view for quick reminders (separate from the wrap-up).
+- **Reopen today's day** if you wrapped up early and more work appears — same calendar day only.
+- **Local Weather** is on by default for morning briefings and wrap-up outlook; turn it off in briefing interests if you prefer.
+
+### Gmail — trash and approvals actually work
+
+- **Trash and untrash** in Needs Attention now use the correct Gmail API path — fixes messages that silently failed or returned errors.
+- When trash fails for specific messages, you see **which ones** failed instead of a false "all done".
+- **Clara and text agents know when you approve or reject** a draft email or bulk action — no more re-asking after you've already decided in the UI.
+
+### Editor
+
+- Markdown and other previewable files open in **preview** first so you read documents without staring at raw source.
+
+### Who should update
+
+- Anyone using **Daily Flow** (especially voice wrap-up), **Gmail Needs Attention**, or the **in-app editor** for day documents.
+
 ## 6.29.2 (2026-06-10)
 
 ### Bug reports go to Service Desk
