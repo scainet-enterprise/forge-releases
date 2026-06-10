@@ -3,6 +3,17 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.29.2 (2026-06-10)
+
+### Bug reports go to Service Desk
+
+- When an agent files a bug with **Create bug report**, it is sent to the **Portal Service Desk** so you get a real issue key and can triage it in the inbox.
+- Bug reports now require **severity** and **tags** so issues are easier to filter and prioritize on the Service Desk.
+
+### Who should update
+
+- Anyone using **agent bug reports** or **Service Desk intake** from Forge.
+
 ## 6.29.1 (2026-06-10)
 
 **Critical fix: FORGE failed to open at all after updating from 6.27 to 6.28/6.29. Also fixes the Jobs tab showing no jobs.**
