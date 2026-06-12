@@ -3,6 +3,34 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.31.0 (2026-06-12)
+
+### Daily Flow — task order that actually means something
+
+- **Link tasks on your day** — mark what must finish before something else can start. Blocked tasks show clearly; satisfied dependencies unlock automatically.
+- **Jobs can gate your day** — a task can wait until a FORGE job completes, so cross-repo work and daily tasks stay in sync.
+- **Add standing processes from the task picker** — morning briefing, inbox cleanup, and other process templates are one click away when you add a task.
+
+### Inbox cleanup — Patrick classifies the whole inbox, you approve once
+
+This is the big one. Blue-moon inbox cleanup is now a **plan → review → confirm** flow instead of a chat roulette.
+
+- **Delegate “Full email clean up”** — FORGE fetches every message in your Gmail inbox (`in:inbox`, not just the Primary tab count) and Patrick classifies each one in **audited batches** you can watch in Agent Stream (`patrick-prep` sessions).
+- **Live progress** — while Patrick works, Daily Flow shows how many emails were found and batch progress (e.g. `2/3`), not an endless spinner.
+- **Review before anything moves** — Trash, Archive, and **Keep** counts are all inspectable. Click a subject to **read the full email** in-app; pull individual messages out of a batch before you approve.
+- **Two confirmations after approve** — only Trash and Archive need Gmail bulk confirm (Keep stays in inbox). When you confirm the last batch, the task completes automatically.
+- **No more 48-iteration Patrick loops** on delegate — preparation runs as a server pipeline, not a text agent told to “do nothing.”
+
+### Gmail reliability
+
+- Large inbox surveys and bulk-action previews **finish in seconds**, not minutes — concurrent metadata fetch and sensible timeouts.
+- **Drafts include your Gmail send-as signature** (HTML) when you create them from FORGE.
+
+### Who should update
+
+- Anyone using **Daily Flow task dependencies**, **process tasks** (especially **inbox cleanup**), or **Gmail bulk approve** workflows.
+- Recommended after a heavy inbox-cleanup UAT pass — this release is the polished pipeline Simon validated on 2026-06-12.
+
 ## 6.30.0 (2026-06-10)
 
 ### Daily Flow — close your day properly
