@@ -3,6 +3,30 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.32.0 (2026-06-13)
+
+### Agent Observatory — finally, a window into what your agents are doing
+
+Delegated tasks and direct persona conversations no longer fight for space in the main Agent Stream. **Agent Observatory** (right rail) gives each agent its own lane.
+
+- **One row per agent** — delegated tasks show as **Task N · title**; direct chats show as **Direct · Patrick** (or Aurora, Lens, etc.). Expand a row to read that agent's stream: your messages, replies, tool calls, and live thinking — without cluttering Clara's conversation.
+- **Talk to personas with `@`** — type `@patrick`, `@aurora`, `@lens`, `@architect`, and more in the compose box. Resolved mentions highlight in cyan so you always know who you're addressing. No more mystery routing.
+- **STREAM badges** above compose filter what appears in the main Agent Stream. Observatory holds the delegated work — clean separation, no duplicate persona banners.
+- **Follow up** on any Observatory row to continue that thread in compose. The faint **cyan row highlight** shows which persona is currently active.
+- **All / Direct** toggle — focus on direct persona threads when you want to, or see every tracked lane.
+- **Clara knows the Observatory** — ask her how to watch Patrick classify your inbox or follow up with Lens; she can coach you through it.
+
+### Daily Flow polish
+
+- **Skip Plan** during planning when you want to move on without drafting a Quick Plan first.
+
+### Who should update
+
+- Anyone on **6.31.0** or later who delegates Daily Flow tasks or uses **`@persona`** direct messages.
+- Recommended after one Observatory UAT pass — expand rows, send `@` messages to two personas, confirm each row only shows its own **You** messages.
+
+> **Note:** Daily Flow task dependencies, inbox cleanup, and process templates shipped in **6.31.0** (12 Jun 2026). This release is **Observatory-only** on top of that baseline.
+
 ## 6.31.0 (2026-06-12)
 
 ### Daily Flow — task order that actually means something
