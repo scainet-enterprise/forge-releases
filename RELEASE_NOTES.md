@@ -3,6 +3,31 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.32.1 (2026-06-18)
+
+### Daily Flow — dependency removals that stay removed
+
+Removing a task dependency now sticks. Previously, navigating away (or restarting Forge) could bring the chip back — especially on carried plan tasks after overnight roll. Removals are recorded on the day and honoured across navigation, list refresh, and startup carry.
+
+- **Add and remove dependencies** from the task menu — blocked-by chips show on the task list with satisfied/blocked indicators.
+- **Standing briefing gates** respect your choice — if you remove the email → briefing-doc dependency, it will not be re-seeded when you return to the day.
+- **Smarter overnight carry** — completed tasks no longer roll forward; tasks you explicitly drop stay dropped; standing process tasks are not duplicated on carry.
+
+### Agent Observatory — rows that hydrate correctly
+
+- **Task numbers and titles** populate on Observatory rows as soon as Daily Flow tasks load — no more anonymous delegated lanes after navigation.
+- **Session-scoped rows** — switching context no longer bleeds events between days or jobs.
+
+### Voice — natural speed control
+
+- **Pitch-preserving speed** (WSOLA) — Clara and cast speech stay natural at faster or slower playback, not chipmunk/slurred.
+- **Coarser speed slider** — easier to land on a comfortable listening pace.
+
+### Who should update
+
+- Anyone on **6.32.0** who uses **Daily Flow task dependencies**, **Agent Observatory**, or **voice playback speed**.
+- Strongly recommended if you removed a dependency and saw it reappear after leaving the day or restarting Forge.
+
 ## 6.32.0 (2026-06-13)
 
 ### Agent Observatory — finally, a window into what your agents are doing
