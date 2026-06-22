@@ -3,6 +3,33 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.33.0 (2026-06-22)
+
+### Tool surface registry — smarter tool selection for large catalogs
+
+Forge can send a **curated hot set** (~49 common tools) directly to the model and expose the rest via **tool_search → invoke_tool**, staying under provider tool caps (e.g. Grok 200). **Enabled in shipped Forge builds** from this release; local release builds without the CI compile flag stay off until you opt in.
+
+- First-turn system prompt matches the inline tool list (hot tools documented in full; cold tools listed as searchable names)
+- Discovery instructions guide the agent to search before assuming a tool is unavailable
+- Voice sub-sessions keep the legacy full tool surface
+- Disable at runtime with `FORGE_TOOL_SURFACE_REGISTRY=0` if you need the legacy full inline surface
+
+**Known limitation:** MCP tools from a server connected _after_ the session started require a **new session** to appear in the catalog.
+
+### My Issues — clearer Service Desk vocabulary, manual intake, agent tools, and session context
+
+- Promoted Service Desk jobs label the J1 section **Issue Summary** (not Quick Plan)
+- My Issues list and detail show **tags** and intake kind (Defect, Improvement, etc.)
+- Daily Flow and My Issues tabs no longer show **+ New Project** in the toolbar
+- **+ New Issue** on the My Issues tab submits a ticket to Portal Service Desk for team triage — track it under **Submitted by me** (staff) or **My Requests** (all users)
+- The agent can list assigned and submitted issues, check status, add comments, resolve tickets, and create new issues
+- **Selecting an issue** now updates session context like projects and jobs: an amber **Issue** pill in the session bar, chat resumes per issue when you switch rows, and clearing context returns you to the My Issues tab
+
+### Who should update
+
+- Anyone on **6.32.x** using **My Issues**, **Service Desk promoted jobs**, or **Grok/OpenAI** with the full tool catalog
+- Recommended if you hit provider tool-cap errors or want the agent to work issues with proper session context when switching between tickets
+
 ## 6.32.1 (2026-06-18)
 
 ### Daily Flow — dependency removals that stay removed
