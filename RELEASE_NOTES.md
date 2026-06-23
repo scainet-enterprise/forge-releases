@@ -3,6 +3,22 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## Unreleased
+
+## 6.34.1 (2026-06-23)
+
+### My Issues — agent navigation and calmer account switching
+
+- The agent can **open My Issues** and **drill into a specific ticket** by title or id — free users see **My Requests**, staff see the assignee inbox
+- **Account switching** no longer floods you with dozens of “project removed” warnings — you get at most one summary toast
+- Clicking a request you submitted now shows an **Issue** context pill and resumes prior chat about that ticket (read-only — you still cannot mutate tickets you did not assign)
+- **Fix:** agent navigation to an issue now opens the detail panel reliably
+
+### Who should update
+
+- Anyone on **6.34.0** using **My Issues** with the agent, or switching Firebase accounts on one machine
+- Strongly recommended if the agent listed jobs instead of your requests, or issue drill-in did not open the UI row
+
 ## 6.34.0 (2026-06-23)
 
 ### PDF deliverables — `document_render_pdf` agent tool
