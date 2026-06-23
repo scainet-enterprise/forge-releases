@@ -3,6 +3,22 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.34.0 (2026-06-23)
+
+### PDF deliverables — `document_render_pdf` agent tool
+
+Agents can now produce real PDF files from HTML or markdown using Forge's built-in document engine (headless Chromium). Use it for quotes, briefs, patent drafts, and any PDF the user asks for — no browser print workarounds.
+
+- **`document_render_pdf`** — pass `html` or `markdown` + optional `template` (`minimal` or `patent`) and a required `output_path`
+- Works alongside existing **`pdf_read`** (extract text from PDFs)
+- **Pro tier** and above
+- Requires Chromium, Chrome, or Edge installed on the machine
+
+### Who should update
+
+- Anyone on **6.33.x** who wants agents to generate PDF deliverables in the workspace
+- Pairs with the tool surface registry from 6.33.0 — search for `document_render_pdf` if it is not in the hot tool set
+
 ## 6.33.0 (2026-06-22)
 
 ### Tool surface registry — smarter tool selection for large catalogs
