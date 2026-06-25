@@ -3,6 +3,13 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.34.3 (2026-06-25)
+
+- Operator browser
+
+_Auto-generated — curate before external comms._
+
+
 ## Unreleased
 
 ## 6.34.2 (2026-06-23)
