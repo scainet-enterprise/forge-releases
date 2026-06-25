@@ -5,6 +5,19 @@
 
 ## Unreleased
 
+## 6.34.2 (2026-06-23)
+
+### My Issues — reliable assignee inbox
+
+- **Assigned to me** now loads your **open** tickets first — closed work no longer pushes active assignments off the list when you have many resolved issues
+- **My Requests** still shows **resolved** submissions so you can track closure
+- Agent issue lists follow the same rules as the panel
+
+### Who should update
+
+- Staff with large My Issues history who saw missing open tickets
+- Anyone on **6.34.1** using My Issues assignee or submitter lenses
+
 ## 6.34.1 (2026-06-23)
 
 ### My Issues — agent navigation and calmer account switching
