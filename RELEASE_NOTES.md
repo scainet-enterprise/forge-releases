@@ -3,12 +3,24 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.34.4 (2026-06-27)
+
+**My Issues improvements**
+
+- Agent can now navigate you to "Submitted by me" or "Assigned to me" tabs correctly
+- Fixed: asking the agent to select a submitted issue by title no longer opens the wrong (assigned) copy
+- Fixed: Settings panel shows correct working directory when on the My Issues list
+- Fixed: agent-selected issues now properly update the UI panel for staff users
+- Fixed: Jobs tab snap-back when navigating from an issue
+- Agent can now read issue comments and activity
+- Reduced voice-mode log noise
+- Agent conversation stream now correctly scopes to your focused issue
+
 ## 6.34.3 (2026-06-25)
 
 - Operator browser
 
 _Auto-generated — curate before external comms._
-
 
 ## Unreleased
 
