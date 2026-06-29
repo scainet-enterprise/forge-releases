@@ -3,6 +3,73 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.35.0 (2026-06-29)
+
+### Threads — a new first-class Work surface
+
+**Threads** are ongoing life context — separate from Projects and Jobs. Pick a template, name your thread, and Clara helps you capture what matters over weeks and months.
+
+**Ten templates, each with its own Clara guidance:**
+
+| Template             | What it's for                                                        |
+| -------------------- | -------------------------------------------------------------------- |
+| **Medical**          | Appointments, symptoms, care team — organised, never clinical advice |
+| **Dream**            | Fluid dream journal — recall, feelings, patterns when you want them  |
+| **Food & Cooking**   | Tastes, skills, recipes, family meals over time                      |
+| **Health & Fitness** | Movement and wellbeing goals — not medical care                      |
+| **Goals**            | Life goals and values — long horizon, not work projects              |
+| **Learning**         | Explore a topic with Clara as tutor                                  |
+| **Gratitude**        | Notice what matters — moments, people, small wins                    |
+| **Mindfulness**      | Breath, presence, and reflection practice                            |
+| **Relationships**    | People who matter — conversations, milestones, care                  |
+| **Creativity**       | Writing, art, music, making — capture the process                    |
+
+**How Threads work:**
+
+- **Threads tab** in Work — create from the template picker, open for detail, archive when done
+- **Session notes** — Clara writes dated session documents (`thread_write_session`); nothing is remembered without an explicit tool write
+- **Care & profile panel** — intake summary visible in the UI (medical-first design, works for every template)
+- **Medical disclaimer** — acknowledged once, persisted and audited; Clara will not give clinical advice
+- **Morning briefing** — Aurora can mention active threads; Dream threads stay quiet unless you enable briefing per thread
+- **End-of-day wrap** — Aurora sees threads you created or updated today, even before the first session note
+- **Escalation (Pro+)** — turn a thread into a Job or link to a Project when work needs a formal track
+- **Free tier** — one active thread; **Pro+** — unlimited threads
+
+### Work state sync — Days, Jobs, and Threads across devices
+
+Signed-in users can keep Daily Flow days, Jobs, and Threads aligned with the cloud — so a second machine or a fresh install can pick up where you left off.
+
+- **Settings → Account → Work state sync** — status, last pull time, pending queue, and actions: **Sync now**, **Backfill**, **Hydrate**
+- **Cloud is the reconciliation layer** — local changes push after mutations; pull applies last-write-wins metadata
+- **Threads and artifacts** — thread workspace files sync with your work-state payload
+- **Offline-safe** — changes queue when disconnected and drain when you're back online
+
+### Daily Flow — clearer task control
+
+- **Roll count** — carried tasks show how many times they've rolled forward
+- **Mark complete** from the ⋮ menu without starting the task first
+- **Do today (clear deferral)** — bring a deferred task back to today's plan in one action
+
+### What's New in FORGE — morning mini-news
+
+- Aurora may include up to three benefit-led bullets when you have unseen releases (from bundled release notes, not engineering changelogs)
+- **Pro+** can turn this off in Settings → Daily Flow; **Free** always sees it when updates are available
+- Ask Clara _"what's new?"_ any time via `forge_get_release_news`
+
+### My Issues — included in this release
+
+- Agent navigation to **Submitted by me** / **Assigned to me** tabs
+- Fixed title resolution when staff ask for a submitted issue by name
+- Settings shows the correct working directory on the My Issues list
+- Agent-selected issues update the UI panel; Jobs tab no longer snaps back from issue drill-in
+- Agent can read issue comments and activity; conversation stream scopes to the focused issue
+
+### Who should update
+
+- **Everyone on 6.34.x** who wants **Threads**, **work-state sync**, or the Daily Flow task improvements
+- **Multi-device users** — run Backfill once after updating, then Sync now on each machine
+- **Free users** trying Threads — you get one active thread; archive or complete before starting another
+
 ## 6.34.4 (2026-06-27)
 
 **My Issues improvements**
@@ -21,8 +88,6 @@
 - Operator browser
 
 _Auto-generated — curate before external comms._
-
-## Unreleased
 
 ## 6.34.2 (2026-06-23)
 
