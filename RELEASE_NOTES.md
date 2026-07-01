@@ -3,6 +3,48 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.36.0 (2026-07-01)
+
+### Work state sync — production ready on installed Forge
+
+**6.35.0** introduced work state sync; **6.36.0** makes it work out of the box on downloaded installers — no manual `.env` setup.
+
+Signed-in users can keep **Daily Flow days**, **Jobs**, and **Threads** aligned across machines. This release hardens the path from dev to production:
+
+- **Installed builds authenticate automatically** — the Portal client key is baked in at compile time, so sync works the moment you sign in
+- **Fresh Firebase tokens before sync** — Settings and restore actions refresh your session token so long-lived installs don't fail with silent auth errors
+- **Smarter reconciliation** — last-write-wins timestamps on days, tasks, and jobs; scoped job backfill avoids pulling unrelated history
+- **Clearer errors** — push failures surface in the UI instead of failing quietly
+- **Offline-safe queue** — Daily Flow changes made offline enqueue and drain when you're back online
+
+**Getting started (two machines):**
+
+1. Sign in with the **same SCAINET account** on each machine
+2. On your primary machine: **Settings → Account → Work data sync → Sync all Work to cloud**
+3. On the second machine: **Restore from account**, then **Sync now** as needed
+
+Ask Clara _"how does work state sync work?"_ — updated in-app guides cover setup, troubleshooting, and what syncs (and what doesn't).
+
+### Operator Browser — smoother shared browsing
+
+The **Operator Browser** (right rail → **Browser**) is a real browser you share with your agent. This release polishes the experience:
+
+- **No more tab traps** — keyboard focus stays where you expect when switching between FORGE and the live browser panel
+- **Headed navigation** — agent-driven browsing can open a real Chromium window when a full browser is needed (sign-in, pop-ups, OAuth)
+- **Loading feedback** — clearer state while pages load so you know the agent is working
+- **Profile recovery** — if the persistent browser profile gets into a bad state, FORGE can recover without a full reinstall
+
+### In-app guides expanded
+
+Human and agent coaching docs were overhauled for **Threads**, **Work state sync**, **Daily Flow**, **Operator Browser**, **My Issues**, and **Agent Observatory**. Find them in **Settings → Help** or the title bar **?** button; Clara uses the agent guides automatically in context.
+
+### Who should update
+
+- **Everyone on 6.35.0** who uses **work state sync** on an installed build — this is the release that makes cross-device sync work without manual configuration
+- **Multi-device users** — update all machines to 6.36.0, run **Sync all Work to cloud** once on your primary machine, then **Restore from account** on others
+- **Operator Browser users** — tab-focus, sign-in, and loading improvements
+- **6.34.x users** still on an older line — skip straight to 6.36.0 for Threads, sync, and Daily Flow improvements from 6.35.0 as well
+
 ## 6.35.0 (2026-06-29)
 
 ### Threads — a new first-class Work surface
