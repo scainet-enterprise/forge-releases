@@ -3,6 +3,41 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.36.2 (2026-07-02)
+
+### Dependency updates
+
+Routine security and maintenance updates to bundled npm dependencies (including Sentry and js-yaml). No feature changes — install if you are already on **6.36.1** and want the latest dependency pins.
+
+### Release notes correction
+
+**6.36.1** also shipped the work state sync verification fix below; that section was missing from the original 6.36.1 release notes and is now documented under **6.36.1**.
+
+## 6.36.1 (2026-07-01)
+
+### Work state sync — verified before it runs
+
+If **6.36.0** showed a cryptic `401` or "Missing or invalid X-Forge-Key" when syncing, **update to 6.36.1 or later**:
+
+- **Settings shows Portal connectivity status** before sync — you'll see whether this build can reach the cloud, not a silent failure after you click sync
+- **Sync is blocked when misconfigured** — install the verified release; no manual Windows environment variables required
+- **Release builds are gate-checked** — CI proves the baked Portal key matches production before installers ship
+
+### Agent Stream — clearer conversation layout
+
+This patch improves how the centre **Agent Stream** and compose area feel day to day:
+
+- **Your instructions stay visible** — when you scroll through a long agent reply, the user message for that turn remains pinned at the top so you always know what you asked
+- **Smoother scrolling** — less jitter when reading history near the bottom of the stream; auto-follow only engages when you are actually at the latest messages
+- **Compose stays at the bottom** — the message box is anchored to the bottom of the window and expands **upward** as you type, similar to Cursor and other chat tools
+- **Softer cards** — message and event blocks use slightly rounder corners for a cleaner read
+
+No settings changes required. Drag the handle between the stream and compose area if you want more room for typing.
+
+### Who should update
+
+Anyone who spends time in the **Agent Stream** and found the old compose area awkward or the stream hard to scroll — especially on longer sessions with multiple turns.
+
 ## 6.36.0 (2026-07-01)
 
 ### Work state sync — production ready on installed Forge
