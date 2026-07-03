@@ -3,6 +3,13 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.36.3 (2026-07-03)
+
+- Merlin persona
+
+_Auto-generated — curate before external comms._
+
+
 ## 6.36.2 (2026-07-02)
 
 ### Dependency updates
