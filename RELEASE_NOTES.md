@@ -3,12 +3,25 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.36.4 (2026-07-04)
+
+### Agent Stream — long instructions no longer hide agent output
+
+If a task delegation brief or other long prompt appeared as your message in the stream, it could cover the whole view and make tool calls hard to read. **6.36.4** keeps your latest instruction visible at the top but limits it to a scrollable area so agent activity stays on screen below.
+
+### Compose — clears after you send
+
+The message box now clears reliably after you submit, including when using @mentions. If sending fails, your draft is put back so you can retry without retyping.
+
+### Compose — roomier default
+
+The input area starts at about two lines tall so it is easier to write longer messages before it grows upward.
+
 ## 6.36.3 (2026-07-03)
 
 - Merlin persona
 
 _Auto-generated — curate before external comms._
-
 
 ## 6.36.2 (2026-07-02)
 
