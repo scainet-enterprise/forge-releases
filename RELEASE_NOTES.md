@@ -3,6 +3,18 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.37.1 (2026-07-05)
+
+### Work data sync — progress and complete restore
+
+Multi-device Work sync is easier to follow and more reliable when moving between computers.
+
+- **Sync now**, **Restore from account**, and **Sync all Work to cloud** each show phase, a progress bar, and batch detail in Settings
+- A **floating banner** continues in the background if you close Settings while sync is running
+- **Restore from account** now downloads **all workspace files** (briefings, plans, session notes) across large libraries — not only metadata from the first sync batch
+
+If you use more than one device, update to **6.37.1** on each, then run **Restore from account** on any machine that was missing files after an earlier restore.
+
 ## 6.37.0 (2026-07-05)
 
 ### Audit Trail — three views on the right rail
