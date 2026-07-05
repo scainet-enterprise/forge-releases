@@ -3,6 +3,32 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.37.0 (2026-07-05)
+
+### Audit Trail — three views on the right rail
+
+The **Audit** tab is now a full trace explorer for agent history:
+
+- **Context mode** — see the same scoped events as your Agent Stream (project, job, day, or thread)
+- **Session mode** — tamper-evident chain with verify badge and **Export JSON** (native save dialog on desktop)
+- **Tree, Timeline, and Graph** — list, timing, and flow-map views with a shared details drawer
+- **Command palette** — open Audit Trail in Context or Session mode directly
+- **Jump to Stream** — from an audit event back to the matching stream row
+
+### Export JSON
+
+Session export opens a **Save** dialog and writes a complete audit JSON file to disk (chain metadata + all events). Cancel the dialog with no error banner.
+
+### Timeline
+
+Timeline tracks scroll together with the time ruler — individual rows no longer have their own horizontal scroll.
+
+### Details drawer
+
+Close selected event details with **×** in the top-right corner.
+
+Agent Stream rows are unchanged — payload expanders remain on stream cards for now.
+
 ## 6.36.5 (2026-07-05)
 
 ### Work across machines — sync reliability (second-device restore)
