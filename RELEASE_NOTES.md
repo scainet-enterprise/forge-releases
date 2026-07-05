@@ -3,6 +3,19 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.36.5 (2026-07-05)
+
+### Work across machines — sync reliability (second-device restore)
+
+If **Restore from account** failed with **Duplicate field 'dayId'**, or a full **Sync all Work to cloud** timed out on large libraries, **6.36.5** fixes the underlying causes:
+
+- **Cloud restore** — handles Portal day records that carry both `id` and `dayId` without error
+- **Large backups** — splits big libraries into smaller upload batches so sync completes instead of timing out
+- **Artifact uploads** — fixes rare storage upload failures on some file types
+- **Clearer errors** — retry and failure detail in logs when a sync step fails
+
+**Update both machines** to **6.36.5** (or run a dev build with this patch). On your source PC, run **Sync all Work to cloud** once; on the new PC, sign in and use **Restore from account**.
+
 ## 6.36.4 (2026-07-04)
 
 ### Agent Stream — long instructions no longer hide agent output
