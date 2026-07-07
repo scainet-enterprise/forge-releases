@@ -3,6 +3,28 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.38.0 (2026-07-07)
+
+### Add a New Device — one click, then just sign in
+
+Moving to a second computer is now a single click:
+
+- **Add a New Device** (Settings → Account → Work data sync) backs up everything — Daily Flow, Jobs, Threads, workspace files, your full agent history, **and your model API keys**
+- On the new machine, **just sign in** — setup starts automatically and finishes with "This device is ready." Your models work immediately; nothing to re-enter
+
+### Everything stays in sync automatically
+
+Work between a PC at the office, a laptop in transit, and a machine at home in the same day — no manual syncing:
+
+- Changes push as you work, including live agent activity
+- Other devices pick them up on window focus and every minute while Forge is open
+- **API keys follow your account** — change or remove a key on one device and the others apply it within a minute. Keys are encrypted on your device before upload; the cloud only ever stores ciphertext
+
+### Restore fixes for multi-device users
+
+- Days restored to a second machine now open in the **correct working folder** (previously some restored days looked empty even though the files were on disk)
+- **Agent Stream history** now restores to a new device — your full activity record follows your account
+
 ## 6.37.1 (2026-07-05)
 
 ### Work data sync — progress and complete restore
