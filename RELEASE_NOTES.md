@@ -3,6 +3,18 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.38.1 (2026-07-07)
+
+### Work data sync — reliable backup on every device
+
+If **Add a New Device** or **Sync all Work to cloud** appeared stuck part-way through (often around step 41), this release fixes that:
+
+- Legacy daily folders are scanned correctly — Forge no longer walks your entire user profile when an old day points at the wrong folder
+- Backup continues past Windows permission blocks instead of stopping
+- Background sync no longer interrupts the restore progress screen
+
+**Recommendation:** Update to **6.38.1** on every machine you use with Work sync, then run **Add a New Device** or **Sync now** once on your primary computer.
+
 ## 6.38.0 (2026-07-07)
 
 ### Add a New Device — one click, then just sign in
