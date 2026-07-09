@@ -3,12 +3,21 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.39.0 (2026-07-09)
+
+### Agent Stream — scroll-aware turn context
+
+When you scroll through a long agent reply, your instruction for that turn stays pinned at the top — similar to Cursor's conversation UX.
+
+- **Compact prompts** — long messages show a short preview in the stream
+- **Click to expand** — open the full text when you need it; click outside to collapse
+- **Smoother scrolling** — less jumpiness when reviewing delegated briefs and past turns
+
 ## 6.38.2 (2026-07-08)
 
 - business launch plan and CTO portal briefing brief
 
 _Auto-generated — curate before external comms._
-
 
 ## 6.38.1 (2026-07-07)
 
