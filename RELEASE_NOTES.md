@@ -3,6 +3,13 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.38.2 (2026-07-08)
+
+- business launch plan and CTO portal briefing brief
+
+_Auto-generated — curate before external comms._
+
+
 ## 6.38.1 (2026-07-07)
 
 ### Work data sync — reliable backup on every device
