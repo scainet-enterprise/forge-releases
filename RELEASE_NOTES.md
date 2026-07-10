@@ -3,6 +3,18 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.40.1 (2026-07-10)
+
+### Work data sync — finish setup on your other PC
+
+If your second computer only got a little data after **Sync now**, or never ran the long restore after sign-in, this release fixes that path.
+
+- Signing in on a new or wiped install starts the full restore when your account already has a backup
+- **Restore from account** stays available even when this PC already has some days — use it to download the rest (safe merge)
+- **Export diagnostics** opens a real Save dialog so support files actually save
+
+**What to do:** Install **6.40.1** on the second PC → Settings → Work data sync → **Restore from account** → let it run as long as the original backup (thousands of files). Do not rely on **Sync now** for a first full setup.
+
 ## 6.40.0 (2026-07-09)
 
 ### Work data sync — truth you can trust across devices
