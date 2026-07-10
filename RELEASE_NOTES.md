@@ -3,6 +3,36 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.40.0 (2026-07-09)
+
+### Work data sync — truth you can trust across devices
+
+This release hardens multi-device Work sync so backup and restore tell the truth about what actually landed in the cloud.
+
+- **Migrate before upload** — older day and thread folders are copied into the correct Forge locations before backup, so sync no longer misses files that lived in legacy paths
+- **Honest completion** — backup and restore only report complete when workspace files actually uploaded or downloaded; you see **Ready**, **Partial**, or **Never** instead of a false success
+- **Full round-trip** — task dependencies, prompts, plans, and live thread sessions survive the trip between machines
+- **Daily Flow on every device** — standing tasks, prefs, and delegation restore cleanly; duplicate standing tasks are healed after overnight roll
+
+**Recommendation:** Update to **6.40.0** on every machine you use with Work sync. On your primary computer, run **Sync all Work to cloud** or **Add a New Device** once, then sign in on the second machine and confirm restore shows **Ready**.
+
+### Daily Flow — restore and tools
+
+Daily Flow preferences, delegation, and tool access are more reliable after a restore so briefing and standing work behave the same on a new device.
+
+### Clara — better handoff from typed chat into live voice
+
+When Clara is already listening, text you type in the stream is injected into the live voice conversation so she can answer with that context — not only from a short instruction summary.
+
+- Typed context is flushed into the voice turn when you stop speaking
+- Freeform compose no longer auto-binds to Aurora when Clara is the active badge
+
+Full mid-session “one Clara” continuity across voice and text is still evolving; this release improves the catch-up path for production sync testing.
+
+### Models — Grok 4.5 in the picker
+
+Grok 4.5 is available in the model matrix with long context and cost-aware ranking. Forge can use conversation cache keys and report cache usage in the audit trail where the provider supports it.
+
 ## 6.39.0 (2026-07-09)
 
 ### Agent Stream — scroll-aware turn context
