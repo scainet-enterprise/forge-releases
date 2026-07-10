@@ -3,6 +3,18 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.40.2 (2026-07-10)
+
+### Work data sync — full Restore actually pulls files and history
+
+If Restore said it succeeded but thread session notes and Agent Stream history were still missing, this release fixes the cause: pagination was skipping most cloud files and agent events after the first batch.
+
+- Restore now pages through the full artifact and agent-history libraries
+- The success message shows file and agent-event counts — not only days/jobs/threads
+- A restore that gets records but zero files is reported as incomplete
+
+**What to do:** Install **6.40.2**, then on the second PC run Settings → **Restore from account** again and wait for the long run. Expect thousands of files and agent events in the result, matching your primary PC backup.
+
 ## 6.40.1 (2026-07-10)
 
 ### Work data sync — finish setup on your other PC
