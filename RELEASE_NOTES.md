@@ -3,6 +3,17 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.40.3 (2026-07-11)
+
+### Work data sync — full job and plan parity, reliable large restores
+
+- Job **task lists** now travel with your jobs between devices (not just the job shell)
+- Daily Flow **plan line-items** and **phase gate notes** restore on a second PC
+- Large Restore / Sync now runs **continue automatically** until the library is complete — you should not need to click Restore again mid-download
+- After restore, standing tasks heal and overnight carry catch up so both PCs stay aligned
+
+**What to do:** Install this release on both PCs. On the master PC run **Add a New Device** (or **Sync now** if already Ready). On the second PC run **Restore from account** and wait for the long run to finish.
+
 ## 6.40.2 (2026-07-10)
 
 ### Work data sync — full Restore actually pulls files and history
