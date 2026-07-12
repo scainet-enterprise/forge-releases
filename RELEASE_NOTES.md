@@ -3,6 +3,13 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.40.5 (2026-07-12)
+
+- deps(npm): bump the production-deps group across 1 directory with 14 updates
+
+_Auto-generated — curate before external comms._
+
+
 ## 6.40.4 (2026-07-12)
 
 ### Under-the-hood — cloud briefing preparation
