@@ -3,6 +3,17 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.40.4 (2026-07-12)
+
+### Under-the-hood — cloud briefing preparation
+
+This release lays groundwork for future **cloud-hosted morning briefings** triggered from the portal. There are **no user-visible changes** in the desktop app today.
+
+- Internal worker infrastructure for processing portal briefing jobs
+- Shared engine refactor so the desktop app and headless worker share the same core
+
+**What to do:** No action required. Daily Flow and briefing behaviour on your PC are unchanged.
+
 ## 6.40.3 (2026-07-11)
 
 ### Work data sync — full job and plan parity, reliable large restores
