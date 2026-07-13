@@ -3,12 +3,34 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.40.6 (2026-07-13)
+
+### Daily Flow — Done stays Done
+
+Standing tasks (email briefing, Aurora document, and related standing work) no longer bounce back to ready or re-run after you finish them — including when another PC syncs.
+
+- Completing a standing task sticks across sync and overnight heal
+- **Auto-run morning briefing** is a clear checkbox on Daily Flow (on by default) so you control whether Aurora starts without a click
+
+### Agent Stream & Observatory — follow the right agent
+
+Following up on a delegated agent (Patrick, Aurora, Merlin, …) now focuses the Agent Stream on **that session**, binds compose to the follow-up, and keeps both streams stuck to the live edge unless you scroll up.
+
+- No more “Message Clara…” placeholder when you meant Patrick
+- Fewer false “agent may be stuck” banners during long model thinking — you see **Waiting on model** first
+- Your own voice comments no longer pin in a stack that covers the live stream
+
+### Email tools
+
+Gmail label updates accept the parameter names agents commonly use, and refuse empty label changes that used to retry forever.
+
+**What to do:** Install **6.40.6** on each PC you use for Daily Flow. After update, confirm standing tasks that are Done stay Done after Sync, and try **Follow up** once on a completed delegated task.
+
 ## 6.40.5 (2026-07-12)
 
 - deps(npm): bump the production-deps group across 1 directory with 14 updates
 
 _Auto-generated — curate before external comms._
-
 
 ## 6.40.4 (2026-07-12)
 
