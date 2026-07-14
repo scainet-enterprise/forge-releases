@@ -3,6 +3,17 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.40.7 (2026-07-14)
+
+### Under-the-hood — cloud briefing worker (continued)
+
+Continued internal work on **cloud-hosted morning briefings** triggered from the portal. There are **no user-visible changes** in the desktop app.
+
+- Worker can now authenticate with the portal, pull your day state, and load credentials securely for headless briefing execution
+- Staging end-to-end test path verified (job claim → session → hydrate → succeed)
+
+**What to do:** No action required. Daily Flow and briefing behaviour on your PC are unchanged.
+
 ## 6.40.6 (2026-07-13)
 
 ### Daily Flow — Done stays Done
