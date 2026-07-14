@@ -3,6 +3,17 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.40.9 (2026-07-15)
+
+### Under-the-hood — cloud briefing worker (full handler)
+
+Further internal work on **cloud-hosted morning briefings**. There are **no user-visible changes** in the desktop app.
+
+- Cloud worker now completes the full briefing job path: generate the document, upload the artifact, and sync results back to portal work-state
+- Staging verified end-to-end on `2026-07-16` (job succeeded, briefing reference and storage artifact confirmed)
+
+**What to do:** No action required. Daily Flow on your PC is unchanged.
+
 ## 6.40.8 (2026-07-14)
 
 ### Under-the-hood — cloud briefing worker (headless spike)
