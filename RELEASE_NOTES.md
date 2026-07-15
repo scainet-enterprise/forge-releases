@@ -3,6 +3,29 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.41.0 (2026-07-15)
+
+### Programs — operate the enterprise from Work
+
+Enterprise and White Label operators now have a real **Programs** home in Work: strategic initiatives with charters, status, child projects, and a FORGE-first Operations docs spine — not a markdown-only side channel.
+
+- **Portfolio + detail** — browse Business Launch, Operate Surface, and your own programs; open a charter, change status, attach projects, archive or delete with clear feedback
+- **Operations spine** — program docs live under a governed Operations layout (including Completed / Archived), with charter templates and provision that keep Explorer in sync with the portfolio
+- **Charter confidence** — when disk and synced charter disagree, Forge asks you to keep your edits or take the other version instead of silently overwriting
+- **Enterprise gate** — Programs stays Enterprise / White Label; the session tier comes from Portal, not a client claim you can spoof
+
+### Work data sync — Programs travel with your library
+
+Programs now round-trip with the rest of Work sync (alongside Daily Flow, Jobs, and Threads).
+
+- Charters, members, project links, and program docs upload and restore across devices
+- Soft-delete and conflict rules match the rest of Work: last write wins, equal timestamps stay stable, tombstones do not resurrect finished work
+- Account isolation: programs are owned per signed-in account; signing in claims local orphans and does not leak another account’s portfolio into your cloud backup
+
+**What to do:** Install **6.41.0** on every PC you use for Enterprise operate sessions. Sign in so Portal can refresh your subscription tier, then open **Work → Programs**. On a second device, run **Sync now** or **Restore from account** and confirm your programs and charters land with the rest of your Work library.
+
+**Requires matching Portal work-state APIs** (Programs domain + tier on status) deployed to the environment you sync against.
+
 ## 6.40.9 (2026-07-15)
 
 ### Under-the-hood — cloud briefing worker (full handler)
