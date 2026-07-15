@@ -3,6 +3,17 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.41.2 (2026-07-15)
+
+### Under-the-hood — cloud worker CI
+
+Internal fix for **staging cloud worker image builds** in GitHub Actions. There are **no user-visible changes** in the desktop app.
+
+- Staging deploy workflow now builds with the runner Docker CLI (enterprise action allowlist)
+- Layer caching restored via the previous `:staging` image
+
+**What to do:** No action required.
+
 ## 6.41.1 (2026-07-15)
 
 ### Under-the-hood — cloud briefing worker (staging deploy)
