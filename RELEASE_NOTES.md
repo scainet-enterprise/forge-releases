@@ -3,6 +3,18 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.41.1 (2026-07-15)
+
+### Under-the-hood — cloud briefing worker (staging deploy)
+
+Further internal work on **cloud-hosted morning briefings**. There are **no user-visible changes** in the desktop app.
+
+- Packaging and deployment assets for running the headless briefing worker on a schedule in Google Cloud (container image, job definition, scheduler)
+- Staging images rebuild automatically when worker code merges to main
+- Worker logs now redact sensitive values before writing to stdout
+
+**What to do:** No action required. Daily Flow on your PC is unchanged.
+
 ## 6.41.0 (2026-07-15)
 
 ### Programs — operate the enterprise from Work
