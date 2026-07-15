@@ -3,6 +3,14 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.41.3 (2026-07-16)
+
+### Under-the-hood — cloud worker image build
+
+Internal fix so the **staging cloud worker Docker image** compiles after Programs seed charters were added. There are **no user-visible changes** in the desktop app.
+
+**What to do:** No action required.
+
 ## 6.41.2 (2026-07-15)
 
 ### Under-the-hood — cloud worker CI
