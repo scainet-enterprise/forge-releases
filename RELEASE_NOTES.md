@@ -3,6 +3,65 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.42.0 (2026-07-17)
+
+### Daily Flow — Clara, compose, and the stream you meant
+
+This release tightens the day-to-day conversation surface so unbound chat, follow-ups, and voice feel like one product — not a pile of routing quirks.
+
+- **Clara by default** — unbound text goes to Clara; Direct with `@Aurora` (or another persona) still routes where you pointed it
+- **Sticky persona only when you chose one** — Task Follow-up and Delegation Brief keep the agent you selected; free chat no longer “sticks” to the last persona by accident
+- **Optimistic YOU** — your message appears in the stream immediately, then reconciles with the live audit trail
+- **Stage follow-ups** — send the next instruction while an agent is still working; Forge queues it instead of dropping or fighting the in-flight turn
+- **Naming ceremony restore** — opening an existing EGO agent resumes that identity; no rebirth theatre when the agent already exists
+- **Capable models for short turns** — Clara and Daily Flow cast personas stay on capable cloud models for short replies (no surprise drop to a weak local model)
+
+### Voice — one growing turn, mic that stays alive
+
+Voice YOU text grows as one open message for the turn — not a stamp of ever-longer fragments — and the mic recovers after UI churn.
+
+- **One growing YOU block** per spoken turn until the assistant starts; fragments no longer over-merge into the wrong message
+- **Mic stays running** after clicking around the UI while Voice is On
+- **Speaker mute** for Clara’s voice output, with quieter Agent Stream chrome so the live conversation stays readable
+- Voice conductor uses the same capable-model floor as typed Clara turns
+
+### Day history — yesterday’s stream comes back
+
+Switching days (or reopening a day) loads that day’s conversation more reliably.
+
+- Day audit replay no longer truncates history when the only change in a bucket was a mode flip
+- Opening yesterday’s Daily Flow should return the conversation you had — not an empty or partial stream
+
+### Work surface — Explorer, compose files, Programs, Browser
+
+Day files and operator chrome catch up with how people actually work.
+
+- **Explorer owns the day** — day/context files live in Explorer; the separate Documents panel is gone so there is one place to browse the day
+- **Drag/drop into compose** — dropped files persist into the workspace `context/` folder and attach for the agent
+- **Program charter in context** — when you work inside a Program, Clara and agents receive the charter so answers stay aligned with the initiative
+- **Operator Browser** — product chrome for the in-app browser; the URL bar no longer fights your keystrokes while you type
+
+### Multi-device Daily Flow & sync honesty
+
+Standing work and cloud sync tell the truth across PCs.
+
+- **Done stays Done** for standing tasks across multi-device sync (briefing and related standing work do not bounce back to ready after another PC syncs)
+- **Honest sync** — pull cursor, tombstones, and artifact counts report what actually landed instead of a false “all good”
+- **Programs ACL** — membership gates and quarantine purge so program access matches who is actually on the charter
+
+### Business tier — tools match your subscription
+
+Business subscription entitlements are enforced fail-closed: tools that require a higher tier stay gated, and the session tier comes from Portal — not a client claim.
+
+**What to do:** Install **6.42.0** on every PC you use for Daily Flow. Sign in so Portal can refresh your subscription tier. Then:
+
+1. Open **today’s Daily Flow**, send unbound chat (expect Clara), then a Direct `@Aurora` message (expect Aurora)
+2. Turn **Voice On**, speak a turn, and confirm one growing YOU message; click around the UI and confirm the mic still works
+3. Open **yesterday’s day** and confirm the Agent Stream history returns
+4. On a second device, complete a standing task, sync, and confirm **Done** does not reopen on the first PC
+
+**Requires matching Portal** work-state / entitlements APIs for the environment you sync against (Business tier and standing-task sync).
+
 ## 6.41.5 (2026-07-17)
 
 - Fixed cloud morning briefing so model API keys from the secure vault are used when generating the briefing (not only when listing models).
