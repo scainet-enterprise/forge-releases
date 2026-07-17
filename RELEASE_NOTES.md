@@ -3,6 +3,10 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.41.5 (2026-07-17)
+
+- Fixed cloud morning briefing so model API keys from the secure vault are used when generating the briefing (not only when listing models).
+
 ## 6.41.4 (2026-07-17)
 
 - Fixed cloud briefing worker startup on staging so it can write temporary briefing files during a run.
