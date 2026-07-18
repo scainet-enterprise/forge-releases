@@ -3,6 +3,10 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.42.2 (2026-07-18)
+
+- Fixed cloud morning briefing uploads failing after the document was written (artifact storage path aligned with Portal rules).
+
 ## 6.42.1 (2026-07-17)
 
 - More reliable cloud morning briefings: the worker now sends only the tools briefing needs, and stays within Grok's tool limit
