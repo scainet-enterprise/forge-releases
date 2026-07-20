@@ -3,6 +3,10 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.42.5 (2026-07-19)
+
+- Cloud morning briefing can reach Gmail and Calendar tools again during email triage (fix for a case where inbox tools were hidden from the worker)
+
 ## 6.42.4 (2026-07-19)
 
 - Cloud morning briefing starts reliably when Portal day records use older field names or omit optional planning/task seed fields.
