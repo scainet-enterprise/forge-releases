@@ -3,6 +3,38 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.43.0 (2026-07-21)
+
+### Meetings — first-class video ceremony with Clara
+
+This is the release that makes **Meetings** a peer of Daily Flow and Jobs: native video, real ceremony, and Clara who chairs with the **same Live Voice** you already trust — not a bolted-on second product.
+
+Forge Meetings (Pro+) brings LiveKit video, ceremony phases, and Agent Stream continuity into one Work surface.
+
+- **Work → Meetings** — create, schedule, and run meetings beside Days and Jobs
+- **Join the room** — Forge-hosted LiveKit video for you and invitees
+- **Facilitate with Live Voice** — Activate Voice or Facilitate while joined; remotes hear Clara on her room track; interrupt, speed, and MIC work like Jobs/Days
+- **One shared transcript** — your speech and Clara’s from Live Voice; invitee captions after consent (cloud STT)
+- **Ceremony that keeps minutes honest** — lock the agenda before Items; send minutes via Gmail **or** skip with a reason before Closed
+- **Scribe with your say** — Take notes now (or auto on wrap); tick to confirm proposals before they land in minutes
+- **Recurring series that stay tidy** — daily / weekly / biweekly / monthly with a rolling current + next horizon and a collapsed list
+- **Duration presets** — 30 / 45 / 60 / 90 / 120 minutes set a real end time
+- **Standing vs open tasks** — draft/circulate standing work stays clean; finishing a task clears stale copies on the next occurrence
+- **Wrap previous** — if a prior occurrence never closed, wrap it (skip minutes) so today’s run stays clean
+- **Links & filing** — searchable picker for jobs, projects, programs, related meetings, and minutes (no cryptic id fields)
+- **Up Next** — bar and start reminders across Forge; quiet while you are already in that room
+- **Meeting-mode Agent Stream** — select a meeting and keep conversation history; Clara coaches with the Meetings guide injected
+- **Delegate from the meeting** — send a meeting task to a text persona without leaving the ceremony
+
+**What to do:** Install **6.43.0**, sign in on Pro+, open **Work → Meetings**, create a short meeting, **Join**, turn on **Facilitate** or **Activate Voice**, speak a turn, and confirm Clara answers on Live Voice with a transcript line. Invite a remote (or second device) when you can, accept caption consent, and confirm named lines for invitees.
+
+**Honest limits:** Google Calendar gets timed events for the open horizon (not a native infinite RRULE yet). Agenda item sync across two PCs is still limited — prefer one operator for agenda edits until that ships.
+
+### Guides
+
+- New **Meetings** human guide in Help (title bar **?** / Settings → Help), plus Work tab and Getting started updates so Meetings sits with the rest of Work
+- Agents load Meetings coaching automatically whenever Meeting mode is active
+
 ## 6.42.7 (2026-07-21)
 
 - Internal agent architecture update: desktop and cloud agent paths share the same interaction layer (no user-facing behaviour change expected for Daily Flow or chat).
