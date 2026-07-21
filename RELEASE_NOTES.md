@@ -3,6 +3,11 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.42.7 (2026-07-21)
+
+- Internal agent architecture update: desktop and cloud agent paths share the same interaction layer (no user-facing behaviour change expected for Daily Flow or chat).
+- Quality: continuous integration now checks that the headless agent path stays free of desktop-only UI wiring.
+
 ## 6.42.6 (2026-07-21)
 
 - Cloud morning briefing prompts now match the tools the worker actually has (no instructions to search for hidden tools)
