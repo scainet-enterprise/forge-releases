@@ -3,6 +3,11 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.43.1 (2026-07-21)
+
+- Cloud morning briefings no longer accept unfinished placeholder drafts or the wrong persona signature as “done”
+- Portal / worker uploads now use the same quality checks as task completion, so a stub briefing cannot slip through as Ready
+
 ## 6.43.0 (2026-07-21)
 
 ### Meetings — first-class video ceremony with Clara
