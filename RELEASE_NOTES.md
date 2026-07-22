@@ -3,6 +3,10 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.43.2 (2026-07-22)
+
+- Production cloud briefing worker now rebuilds and redeploys automatically when worker code lands on main (same path as staging), with project and branch safeguards
+
 ## 6.43.1 (2026-07-21)
 
 - Cloud morning briefings no longer accept unfinished placeholder drafts or the wrong persona signature as “done”
