@@ -3,6 +3,43 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.44.0 (2026-07-22)
+
+### PDFs you can actually work with
+
+Agents could already write and dissect PDFs. Humans could not — until now. Forge opens PDFs in a **bundled viewer that looks and behaves the same on Windows, Mac, Linux, and iOS**: zoom, page nav, select/copy text, and (when editing is allowed) highlight, ink, and sticky notes.
+
+- **Open a PDF in the editor or document viewer** — no grey native iframe, no “download to Preview”
+- **Annotate** with FreeText / Ink / Highlight when the file is editable
+- **Sign** with a visible attestation stamp + audit trail
+- **OCR** pages when the text layer is missing (BYOK vision)
+- **Redact** real content — including Chromium print PDFs where words are split glyph-by-glyph
+- **Merge / extract pages** without leaving Forge
+- **Export Markdown → PDF** from the editor with workspace-aware save defaults
+- **Clara can help** — Live Voice Mode B can read, render, merge, redact, sign, and OCR PDFs (same tools as text agents)
+
+**What to do:** Open a PDF from Explorer or a day/thread folder. Confirm pages render. Try Redact on a word you can see. Ask Clara to “read this PDF” while Voice is on.
+
+### Files that stay put — sync honesty for notes & screenshots
+
+Session notes and screenshots that appeared then vanished ~30 seconds later were not “you closed the tab.” Cloud hydrate was overwriting (and sometimes deleting) newer local files.
+
+- **Local wins when it is newer** — downloads no longer clobber a fresher note or screenshot
+- **Failed downloads never delete your live file** — verify on a temp sibling first
+- **Screenshots land in the workspace you are in** — day/thread `artifacts/screenshots`, not a random folder under your user home
+- **Voice on a Thread writes into that Thread’s workspace** — notes and captures stay with the work
+- **Saves push promptly** so the cloud catches up instead of fighting you
+
+**What to do:** On a Thread, write a session note and take a screenshot. Leave Forge open for a minute. Both should still be there.
+
+### Daily Flow — “take me to today” lands on today
+
+When Clara navigated to Daily Flow with a calendar date instead of the full day id, Forge showed an empty “Day data did not load” screen. That path now resolves to the real day (and heals wrong-suffix ids). Past dates are not silently invented.
+
+**What to do:** Ask Clara to open today’s Daily Flow. Expect the real day view — not Retry emptiness.
+
+---
+
 ## 6.43.2 (2026-07-22)
 
 - Production cloud briefing worker now rebuilds and redeploys automatically when worker code lands on main (same path as staging), with project and branch safeguards
