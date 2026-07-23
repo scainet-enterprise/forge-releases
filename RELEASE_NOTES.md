@@ -3,6 +3,45 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.45.0 (2026-07-23)
+
+This is the Daily Flow release that stops treating **planning as a separate hallway** between briefing and work — and the release where **Patrick’s drafts can carry real files**, not just text.
+
+### Daily Flow — Briefing & Planning, one continuous morning
+
+The old day had an extra hop: read the brief, advance, then plan. That hop is gone. You now land in **Briefing & Planning** — Aurora’s morning brief, Clara beside you, today’s tasks growing in the same breath — then you advance straight into **Executing**.
+
+- **One morning phase** — Briefing & Planning → Executing → Wrapping (no orphan Planning step)
+- **Add work where you already are** — tell Clara what belongs on today; she adds tasks without bouncing you to another screen
+- **Standing work still arrives** — carried tasks and the morning cast still show up; you only add what’s new
+- **Older days heal cleanly** — a day that still said “planning” under the hood now reads as Briefing & Planning
+
+**What to do:** Open today. Confirm the phase strip is Briefing & Planning → Executing → Wrapping. Ask Clara to add one real task while you’re still in briefing. Advance once — you should land in Executing, not a second planning ceremony.
+
+### Email with attachments — draft, see, approve, send
+
+Patrick could already draft mail for your approval. He can now **attach the spreadsheet, PDF, or note from the day workspace** — and you can see it on the approval card before anything leaves Forge. You can attach more yourself. Inbound attachments can be pulled into the day. Forwards can carry the original message as a file.
+
+- **Patrick attaches from the workspace** — budgets, briefs, exports: on the draft, not “I’ll send it later”
+- **You attach on the approval card** — Attach… opens in **today’s day folder** so `references/` and the rest of the day are right there (every file type, not a narrow filter)
+- **The card names the files** — no guessing whether the `.xlsx` made it on
+- **Drafts appear live** — when Patrick creates one, the Work panel updates without leave/re-enter theater
+- **You still own send** — Approve & send remains the gate; agents never send on their own
+- **Inbound files land in the day** — download an attachment into the workspace when you need it on disk
+- **Forward with the original** — include the source message as an `.eml` when that is the right hand-off
+
+**What to do:** Put a sample file under today’s `references/`. Ask Patrick to draft a short test mail with that file attached. Watch the draft card appear with the filename listed. Approve & send. Confirm the message arrives with the attachment. Try Attach… yourself and confirm the picker opens on today’s day.
+
+### Morning polish that shows up immediately
+
+- **Save note** writes the day note and **clears the scratch pad** so the next thought starts blank
+- **Morning auto-run** labels itself honestly in the Agent Stream (system / delegation — not a fake “you typed this” brief)
+- **What’s New** leads with real features, not CI noise
+- **Merlin** shows with a proper badge when he is on the day
+- **Aurora’s briefing** lands in Changed Files so you can open the doc from the Work panel
+
+**What to do:** Type a day note, hit Save note, confirm the pad clears and the file appears under the day’s notes. Skim What’s New after update — you should see feature headlines first.
+
 ## 6.44.1 (2026-07-23)
 
 - Internal restructuring of the Forge engine workspace so desktop and cloud can share the same core contracts. No change to everyday Freeform, Daily Flow, or briefing behaviour.
