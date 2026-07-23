@@ -3,6 +3,10 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.44.1 (2026-07-23)
+
+- Internal restructuring of the Forge engine workspace so desktop and cloud can share the same core contracts. No change to everyday Freeform, Daily Flow, or briefing behaviour.
+
 ## 6.44.0 (2026-07-22)
 
 ### PDFs you can actually work with
