@@ -3,6 +3,22 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.46.0 (2026-07-23)
+
+This release adds **Edward** — Forge’s image media specialist in the Daily Flow cast — so cropping, resizing, converting, and pulling labelled images out of PDF packs are first-class agent work, not a pile of one-off scripts.
+
+### Edward — images you can actually edit
+
+Edward is the cast member for **image craft**: inspect a photo, crop the subject, resize for sharing, convert formats, and — for the hero case — **extract every embedded image from a PDF into clearly named files** without touching the original PDF.
+
+- **Ask in plain language** — “pull the images out of this PDF and name them” or “crop this screenshot and make a smaller copy”; the day routes to Edward when the work is image/PDF-extract
+- **Always new files** — originals stay put; Edward writes new copies into the day workspace (or a destination you choose that does not already exist)
+- **PDF image packs** — extract + label into individual jpeg/png with descriptive names
+- **Pro+ mutate tools** — image edit and labelled extract are entitlement-gated like other specialist cast tools
+- **Video stays later** — Martin (video) is intentionally not in this release
+
+**What to do:** Put an image-heavy PDF and a sample photo in today’s workspace. Create a day task in normal language (no @mention required). Confirm Edward picks it up, extracts labelled images, leaves the PDF unchanged, and lists the new paths. Open one labelled file and the cropped copy from Changed Files / the explorer.
+
 ## 6.45.0 (2026-07-23)
 
 This is the Daily Flow release that stops treating **planning as a separate hallway** between briefing and work — and the release where **Patrick’s drafts can carry real files**, not just text.
