@@ -3,6 +3,16 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.46.1 (2026-07-24)
+
+This release hardens the foundation under Daily Flow and the agent stack, and fixes a small UI snag when many cast stream filters are on.
+
+### Stream filters stay out of the way
+
+When several persona stream badges are active, they now stay on **one scrollable row** instead of wrapping and pushing the compose box off the bottom of the panel.
+
+**What to do:** Open a day with multiple cast streams visible. Confirm the Stream badge row scrolls horizontally if needed, and the compose textarea remains fully usable.
+
 ## 6.46.0 (2026-07-23)
 
 This release adds **Edward** — Forge’s image media specialist in the Daily Flow cast — so cropping, resizing, converting, and pulling labelled images out of PDF packs are first-class agent work, not a pile of one-off scripts.
