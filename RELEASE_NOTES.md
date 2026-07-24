@@ -3,6 +3,16 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.46.2 (2026-07-24)
+
+This release continues hardening the cloud morning-briefing worker foundation. No intentional change to desktop Daily Flow behaviour.
+
+### Cloud briefing worker — transport foundation
+
+The worker’s connection layer (job queue, Portal session, progress updates) now lives in a dedicated cloud crate, paving the way for a leaner cloud worker later.
+
+**What to do:** No desktop action required. If you use Portal cloud briefing on staging, a normal morning brief should still complete as before.
+
 ## 6.46.1 (2026-07-24)
 
 This release hardens the foundation under Daily Flow and the agent stack, and fixes a small UI snag when many cast stream filters are on.
