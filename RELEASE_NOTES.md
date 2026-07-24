@@ -3,6 +3,10 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.46.5 (2026-07-25)
+
+- Internal reliability work: job creation and workspace path handling now share the same core engine used by desktop and cloud. No intentional change to how you create, open, or advance jobs.
+
 ## 6.46.4 (2026-07-24)
 
 - Internal reliability work: shared project and job data access is better isolated for cloud and desktop. No intentional change to Daily Flow, project lists, or jobs behaviour.
