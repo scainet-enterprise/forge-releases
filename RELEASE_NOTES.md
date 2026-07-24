@@ -3,6 +3,10 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.46.4 (2026-07-24)
+
+- Internal reliability work: shared project and job data access is better isolated for cloud and desktop. No intentional change to Daily Flow, project lists, or jobs behaviour.
+
 ## 6.46.3 (2026-07-24)
 
 - Under-the-hood reliability work so desktop and cloud share the same database engine and schema. Your projects, jobs, and daily flow data stay on your machine — this release does not change or remove your local work.
