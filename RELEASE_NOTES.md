@@ -3,6 +3,11 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.46.7 (2026-07-25)
+
+- Internal reliability work: Daily Flow day and task data access now shares the same core engine used by desktop and cloud. No intentional change to how you open Today, add tasks, or run them.
+- Developer note: quieter database spam in local `tauri:dev:quiet` logs after the shared DB engine move.
+
 ## 6.46.6 (2026-07-25)
 
 - Internal reliability work: project lifecycle (create, gates, and documents) now shares the same core engine used by desktop and cloud. No intentional change to how you create, open, or advance projects.
