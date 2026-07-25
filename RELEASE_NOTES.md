@@ -3,6 +3,10 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.46.9 (2026-07-25)
+
+- Internal reliability work: shared tool inventory and subscription tier checks now live in the core engine used by desktop and cloud. No intentional change to which tools Free vs Pro can use.
+
 ## 6.46.8 (2026-07-25)
 
 - Internal reliability work so Forge can keep moving core agent tooling into a shared engine. No intentional change to everyday Jobs, Daily Flow, or voice workflows.
