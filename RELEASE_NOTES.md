@@ -3,6 +3,11 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.46.10 (2026-07-26)
+
+- Asking Clara to take you to the Jobs tab (without naming a job) now opens the Jobs list instead of leaving you stuck on a job you already had open.
+- Internal reliability work so agent tooling can keep moving into the shared core engine. No intentional change to everyday Jobs, Daily Flow, or project workflows beyond the Jobs-tab navigation fix above.
+
 ## 6.46.9 (2026-07-25)
 
 - Internal reliability work: shared tool inventory and subscription tier checks now live in the core engine used by desktop and cloud. No intentional change to which tools Free vs Pro can use.
