@@ -3,6 +3,10 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.46.8 (2026-07-25)
+
+- Internal reliability work so Forge can keep moving core agent tooling into a shared engine. No intentional change to everyday Jobs, Daily Flow, or voice workflows.
+
 ## 6.46.7 (2026-07-25)
 
 - Internal reliability work: Daily Flow day and task data access now shares the same core engine used by desktop and cloud. No intentional change to how you open Today, add tasks, or run them.
