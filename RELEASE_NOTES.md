@@ -3,6 +3,13 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.46.11 (2026-07-25)
+
+- Continued internal engine work so more of Forge’s tool system runs in the shared core (faster, more consistent desktop and cloud behaviour).
+- Live Voice again speaks when Clara replies (fixes cases where you only saw text).
+- Voice playback defaults to normal speed (1×). If speed felt stuck slow, it should reset after update — you can still adjust the Speed slider.
+- Quieter developer logs when Live Voice has been on for a while (less spam about audio buffers).
+
 ## 6.46.10 (2026-07-26)
 
 - Asking Clara to take you to the Jobs tab (without naming a job) now opens the Jobs list instead of leaving you stuck on a job you already had open.
