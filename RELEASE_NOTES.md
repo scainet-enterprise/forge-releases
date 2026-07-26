@@ -3,6 +3,10 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.46.12 (2026-07-26)
+
+- **macOS Live Voice microphone fix** — Restores the system microphone permission prompt on macOS 26.5 and newer. After updating, Activate Voice once and choose Allow when macOS asks for microphone access.
+
 ## 6.46.11 (2026-07-25)
 
 - Continued internal engine work so more of Forge’s tool system runs in the shared core (faster, more consistent desktop and cloud behaviour).
