@@ -3,6 +3,87 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.47.0 (2026-07-27)
+
+This is the release that makes **Projects feel like a product again** — dual workspaces for docs vs code, a Work pane that tells the truth about stages and tasks, agents that start as the right specialist, and the first foundation of **Vox**: social drafts you approve before anything hits X.
+
+It also hardens **Work data sync** so a full account backup can finish even when agent history is large — the failure class that left Pro accounts stuck on **Partial backup** with opaque server errors.
+
+### Work data sync — finish the first full backup
+
+If Settings → Work data sync showed **Partial backup** and **Add a New Device** failed mid-batch with a server error on work-state backfill, update to this build and run **Add a New Device** again on the PC that holds your master copy (Sync now alone will not finish a failed first backup). Pair with the matching Portal deploy.
+
+- **Smaller, safer backup batches** — large agent-history uploads are split so they no longer blow past cloud request limits mid-backup
+- **Files only after they land in the cloud** — backup no longer marks file entries “ready” when the upload did not actually succeed
+- **Clearer Partial guidance** — when a full account backup is incomplete, the UI tells you to run **Add a New Device** again (not Sync now)
+- **Pro-safe program skips** — Business/Pro no longer fail the whole backup because of Programs-tier data
+- **Oversized single history events** are skipped with a warning instead of failing the entire backup
+
+**What to do:** Install 6.47.0 → Settings → Work data sync → **Add a New Device** once. Expect Ready (or a clear incomplete message naming files/history issues). Then Sync now keeps later changes current.
+
+### Projects — docs in one place, code in another
+
+Lifecycle projects no longer force plans and source into the same pile. Each project gets a **docs/artifacts home** and a **linked code workspace** so Explorer, Save/Publish, and agents know which root they are standing in.
+
+- **Dual-root projects** — plans, gates, and build notes live with the project; implementation lands in the code workspace
+- **Create / open / worktree flows** understand both roots so you stop losing the thread between “the plan” and “the repo”
+- **Catalyst and stage agents** get clear paths so they edit the right tree
+
+**What to do:** Open a lifecycle project. Confirm docs and code are distinct in Explorer. Start a build task and watch tools resolve against the code root while drafts still write under project docs.
+
+### Project Work pane — stages you can read at a glance
+
+Finished stages collapse with a clear **Complete** badge. The stage you are in stays open and honest. Daily Flow task parity is restored so “what’s next” matches what you already trust on Today.
+
+- **Collapse completed stages** — less scroll, same history when you expand
+- **Complete badge** on finished stages so progress is obvious without hunting
+- **Daily task parity** — project Work and Daily Flow speak the same language again
+
+**What to do:** Open a mid-lifecycle project. Confirm past stages are collapsed with Complete. Expand one. Confirm the active stage stays readable.
+
+### Lifecycle agents — the right voice, the right closeout
+
+Starting a task no longer drops you into the wrong persona. Stage specialists own their craft. Drafts close with **Happy with**, gates finish in one Approve, Diamond/Gold reviews behave by tier, and Standard builds no longer auto-skip real QA tasks.
+
+- **Start → stage specialist** — Cartographer, Architect, and friends — not Clara covering for everyone
+- **Happy with for drafts** — agents stop “completing” a document task that still needs your stamp
+- **Approve & Advance** finishes the gate in one shot
+- **Diamond / Gold** — forensic Diamond posture; Gold tasks stay out of Standard catalogs
+- **S5 Gold-skip bug fixed** — real build/verify/test tasks stay pending until you actually do them
+- **In progress** shows when craft or gate work is live — not “ready” while the agent is already writing
+- **Project Observatory** scopes to the project stream so Daily delegation does not hijack project chat
+
+**What to do:** On a Standard project at Build, open Work. Confirm tasks 5–7 are not falsely completed. Start a draft task — expect the stage specialist. Lock a draft with Happy with. On a gate, Approve & Advance once.
+
+### Agent Stream — live while they work
+
+Long tool arguments no longer look frozen. You see progress, heartbeats, and a writing state that stays alive until the thought is done. Draft Review CTAs are merged so you are not staring at two competing buttons.
+
+- **Live tool-arg progress + heartbeat** — silence is no longer the only signal
+- **WRITING stays live** through streaming tool args
+- **Clearer draft Review** controls
+
+**What to do:** Start a heavy lifecycle task. Watch the stream show progress while tools run — not a stuck spinner with no story.
+
+### Vox — social intents, human Approve (foundation)
+
+Meet **Vox**, the social media specialist. Phase 1 lands the rails: connect X (Pro+), draft pending intents, exclusive Vox tools, and a hard rule — **publish only when you Approve in the UI**. Agents never post as the bot.
+
+- **Vox persona** in cast / Direct (`@Vox`) with hard rules: no auto-reply, no agent discard, prefer search for research
+- **Settings → Integrations → X (Vox)** — connect BYO client (Pro+); Free sees an upgrade path
+- **Pending social actions** stored locally for human approve / discard / update
+- **Full `x_*` tool set registered** as pending-only stubs (draft post/reply/quote, engage intents, connect/status)
+- **Rail A vs Rail B** — `x_search` stays shared research; publish tools are Vox-only and denied without persona context
+
+**What to do (Pro+):** Settings → Integrations → X (Vox). Connect when credentials are ready. Ask Vox to draft a post — expect a **pending** intent, not a live tweet. Approve remains human-only (publish path continues in the next build arc).
+
+### Work pane polish
+
+- **Changed Files** expands into a tall, scrollable list — no more unreadable green stripes
+- Short path labels with full path on hover; Undo All unchanged
+
+**What to do:** After an agent edits several files, expand Changed Files. Every row should stay readable and clickable.
+
 ## 6.46.13 (2026-07-26)
 
 - Continued internal engine work so more of the agent orchestrator runs in the shared core used by desktop and cloud. No intentional change to everyday chat, Jobs, or project workflows.
