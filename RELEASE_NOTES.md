@@ -3,6 +3,11 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.47.2 (2026-07-28)
+
+- Cloud worker: more of the briefing and day-push path runs in the shared cloud crate (same behaviour; safer internals)
+- Live Voice: fixing a bug that kept polling the voice backend after you turned voice off (noisy logs / wasted work)
+
 ## 6.47.1 (2026-07-28)
 
 - Cloud worker internals: clearer job failure reasons and safer handling of worker identity
