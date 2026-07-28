@@ -3,6 +3,55 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.48.0 (2026-07-28)
+
+This release gives **Jobs the same dual workspace clarity Projects already have**, makes **Work Explorer tell the truth** about Issues vs Jobs, restores **Meetings Join room** on production installs, and turns **Help → User Guides** into a guide you actually want to open.
+
+### Jobs — artifacts in one place, code in another
+
+Jobs no longer dump plans, notes, and source into a single pile. When a job has a code worktree, Explorer shows a **Job | Code** toggle — same idea as Project | Code.
+
+- **Job root** — plans, Issue Summary / Quick Plan artifacts, notes, and job-local files
+- **Code root** — the git worktree where implementation lives
+- **Changed Files** and **Job notes** sit on the job detail panel so session edits and scratch notes stay easy to find
+- Jobs promoted from **My Issues** get the same dual-root layout when code is provisioned
+
+**What to do:** Open **Work → Jobs**, select a coding job. Confirm Explorer shows **Job | Code**. Switch to Code to edit source; switch to Job for notes and artifacts. Try **Save note** and expand **Changed Files** after an agent edit.
+
+### My Issues — honest Explorer (promote when you need files)
+
+Selecting an issue no longer pretends there is a local scratch folder. Issues live in Portal; Explorer stays clear until you need a real workspace.
+
+- **No local workspace for this issue** — empty state with a clear promote path
+- **Promote to Job** when you need files, notes, or a git tree — then use Job | Code
+- Issue chat context (pill + conversation) still works for assignee and submitter lenses
+
+**What to do:** Open an issue under **My Issues**. Confirm Explorer explains there is no local workspace. Promote when you need files; confirm the new job opens with Job | Code.
+
+### Meetings — Join room on production builds
+
+Production installers can again mint LiveKit tokens for **Join room**. Dev builds that worked from local config are unchanged; shipped builds now receive the same credentials at release time.
+
+- **Join room** works on updated production installs (not only Dev)
+- Clearer standby messaging when a build was produced without video credentials
+
+**What to do:** Install 6.48.0 → **Work → Meetings** → open a meeting → **Join room**. Expect Room ready (not permanent Video standby). Facilitate + Live Voice so remotes hear Clara on the room track.
+
+### Daily Flow — calmer auto-run and clearer phase skips
+
+Morning auto-run respects sync budget and does not restart work that is already complete. Phase gates that block advance show a labelled skip with a reason so wrap stays honest.
+
+**What to do:** On Today during Briefing & Planning, use Auto-run if you want — already-complete standing work should not thrash. When a phase gate blocks you, use the labelled skip and leave a short reason.
+
+### User Guides — current, richer, and beautiful
+
+Help is no longer a thin afterthought. Guides cover Jobs dual-root, Issues promote, Meetings video, and Daily Flow gates — with a polished in-app viewer (search chips, callouts, featured cards, related guides).
+
+- Open **?** in the title bar, **Settings → Help**, or the contextual guide button on Work tabs
+- New **Jobs** guide; refreshed Getting started, Work overview, My Issues, Meetings, and Daily Flow
+
+**What to do:** Press **?**. Open Jobs and My Issues. Confirm the copy matches what you see in Explorer.
+
 ## 6.47.2 (2026-07-28)
 
 - Cloud worker: more of the briefing and day-push path runs in the shared cloud crate (same behaviour; safer internals)
