@@ -3,6 +3,11 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.47.1 (2026-07-28)
+
+- Cloud worker internals: clearer job failure reasons and safer handling of worker identity
+- Cloud scheduling: automatic minute-by-minute worker wake-ups remain paused to control cost; manual runs still work for demos and testing
+
 ## 6.47.0 (2026-07-27)
 
 This is the release that makes **Projects feel like a product again** — dual workspaces for docs vs code, a Work pane that tells the truth about stages and tasks, agents that start as the right specialist, and the first foundation of **Vox**: social drafts you approve before anything hits X.
