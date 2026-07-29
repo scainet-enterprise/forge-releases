@@ -3,6 +3,11 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.49.0 (2026-07-29)
+
+- **Cloud Briefing:** Continued improvements to the headless cloud worker architecture that runs daily briefings — better separation of worker runtime from the desktop app, paving the way for a leaner cloud deployment
+- **Reliability:** Cloud briefing pipeline and verification steps hardened for Patrick and Aurora task completion
+
 ## 6.48.4 (2026-07-29)
 
 ### Fix — white screen after long idle
