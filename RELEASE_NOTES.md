@@ -3,6 +3,28 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.48.2 (2026-07-29)
+
+This patch keeps **Project | Code** trustworthy after listing projects, puts **Meetings shelf** back inside the project tree (instead of replacing it), and stops **Changed Files** from following you into unrelated Work surfaces.
+
+### Projects — dual workspace toggle stays put
+
+Opening or refreshing Projects no longer collapses docs and code into one path. If your project still has a Project folder and a Code folder on disk, Explorer keeps the **Project | Code** toggle — including after a sync that used to overwrite the docs root with the code checkout.
+
+**What to do:** Open a dual-root project (for example Vox). Confirm **Project | Code** is visible. Switch both sides and confirm docs vs source stay distinct after leaving and returning to the project list.
+
+### Meetings shelf — open inside the project, not over it
+
+**Meetings shelf** now expands the project’s `meetings` folder in Explorer while you stay on the project workspace. It no longer swaps the whole Explorer root to a single meeting folder.
+
+**What to do:** On a project Work pane, click **Meetings shelf**. You should still see `context` / `docs` / `meetings`, with `meetings` expanded and selected.
+
+### Changed Files — only this surface’s edits
+
+The Work pane **Changed Files** list is scoped to the workspace you are in. Edits from Daily Flow no longer appear when you open a Project or Job (and the reverse). Return to the original surface to see those rows again.
+
+**What to do:** Create or edit a file in **Daily Flow** until it appears under Changed Files. Navigate to a **Project**. Confirm the Daily Flow rows are gone. Return to Daily Flow and confirm they reappear.
+
 ## 6.48.1 (2026-07-29)
 
 - Internal cloud briefing worker reliability work (credential and day-session handling in the shared cloud library)
