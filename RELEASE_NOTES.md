@@ -3,6 +3,11 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.48.3 (2026-07-29)
+
+- **Cloud Briefing:** Improved reliability of Aurora briefing generation in cloud worker
+- **Developer Tools:** Added local briefing reset script for UAT testing
+
 ## 6.48.2 (2026-07-29)
 
 This patch keeps **Project | Code** trustworthy after listing projects, puts **Meetings shelf** back inside the project tree (instead of replacing it), and stops **Changed Files** from following you into unrelated Work surfaces.
