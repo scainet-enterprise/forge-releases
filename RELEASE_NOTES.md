@@ -3,6 +3,14 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.48.4 (2026-07-29)
+
+### Fix — white screen after long idle
+
+Leaving Forge open for a long time (especially with the display asleep) could leave a **solid white** window even though the app was still running. Returning focus after ~10+ minutes of idle now refreshes the UI surface automatically so you get your workspace back without quitting.
+
+**What to do:** Leave Forge idle long enough that the screen would previously go white, then click back into the window. The UI should reload into a normal Forge session instead of staying blank.
+
 ## 6.48.3 (2026-07-29)
 
 - **Cloud Briefing:** Improved reliability of Aurora briefing generation in cloud worker
