@@ -3,6 +3,11 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.48.1 (2026-07-29)
+
+- Internal cloud briefing worker reliability work (credential and day-session handling in the shared cloud library)
+- Quieter console logging during Daily Flow when another agent session is busy
+
 ## 6.48.0 (2026-07-28)
 
 This release gives **Jobs the same dual workspace clarity Projects already have**, makes **Work Explorer tell the truth** about Issues vs Jobs, restores **Meetings Join room** on production installs, and turns **Help → User Guides** into a guide you actually want to open.
