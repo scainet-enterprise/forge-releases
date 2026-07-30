@@ -3,6 +3,26 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.51.0 (2026-07-30)
+
+### Agent Stream — see the work as it happens
+
+Agent Stream is clearer as a live work feed: digests group busy tool activity, mid-turn checklists stay pinned until done, and tool outcomes are easier to scan — including search hits when the model cites the web.
+
+**What to do:** Run a multi-step agent turn with tools on. Confirm digests appear instead of a wall of raw calls, and that an incomplete agent checklist stays visible at the top until finished.
+
+### Live updates — editor and Needs Attention
+
+When an agent edits a file you already have open, the editor refreshes in place (you no longer need to close and reopen the tab). Unsaved local edits are preserved.
+
+On Daily Flow, **Mark handled** on a Needs Attention email flips the badge immediately — and the **handled** tag is green, matching **completed** on tasks. No leave-and-re-enter.
+
+**What to do:** Open a doc, ask an agent to edit it, watch the buffer update. Mark an inbox item handled and confirm the green **handled** badge without leaving the day.
+
+### Smarter model picks for high-guidance personas
+
+Aurora and Patrick prefer higher-capability models in their family when routing, including dated Grok builds that inherit the same skills as their base model line.
+
 ## 6.50.0 (2026-07-30)
 
 - **Cloud Briefing:** Further separation of the cloud worker from the desktop app — briefing orchestration now runs through the dedicated host layer, improving maintainability and paving the way for a leaner cloud deployment
@@ -692,7 +712,7 @@ Grok 4.5 is available in the model matrix with long context and cost-aware ranki
 
 ### Agent Stream — scroll-aware turn context
 
-When you scroll through a long agent reply, your instruction for that turn stays pinned at the top — similar to Cursor's conversation UX.
+When you scroll through a long agent reply, your instruction for that turn stays pinned at the top so you always know what you asked.
 
 - **Compact prompts** — long messages show a short preview in the stream
 - **Click to expand** — open the full text when you need it; click outside to collapse
@@ -835,7 +855,7 @@ This patch improves how the centre **Agent Stream** and compose area feel day to
 
 - **Your instructions stay visible** — when you scroll through a long agent reply, the user message for that turn remains pinned at the top so you always know what you asked
 - **Smoother scrolling** — less jitter when reading history near the bottom of the stream; auto-follow only engages when you are actually at the latest messages
-- **Compose stays at the bottom** — the message box is anchored to the bottom of the window and expands **upward** as you type, similar to Cursor and other chat tools
+- **Compose stays at the bottom** — the message box is anchored to the bottom of the window and expands **upward** as you type, like other modern chat tools
 - **Softer cards** — message and event blocks use slightly rounder corners for a cleaner read
 
 No settings changes required. Drag the handle between the stream and compose area if you want more room for typing.
