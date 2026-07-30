@@ -3,6 +3,11 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.50.0 (2026-07-30)
+
+- **Cloud Briefing:** Further separation of the cloud worker from the desktop app — briefing orchestration now runs through the dedicated host layer, improving maintainability and paving the way for a leaner cloud deployment
+- **Reliability:** Headless briefing pipeline uses injected ports so Patrick and Aurora steps share consistent persona context within each job
+
 ## 6.49.0 (2026-07-29)
 
 - **Cloud Briefing:** Continued improvements to the headless cloud worker architecture that runs daily briefings — better separation of worker runtime from the desktop app, paving the way for a leaner cloud deployment
