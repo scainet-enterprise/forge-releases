@@ -3,6 +3,28 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.51.1 (2026-07-31)
+
+### Live Voice — Grok Voice Think Fast 2.0
+
+Live Voice now uses **Grok Voice Think Fast 2.0** by default — faster first audio, sharper transcription (especially in noisy rooms), and more reliable tool use while you talk.
+
+Your words appear in the Agent Stream as you speak. Clara's spoken replies show there too, so you hear and read the same conversation.
+
+When Clara uses tools mid-conversation (editing files, screenshots, and similar), her speech stays continuous instead of cutting in and out.
+
+**What to do:** Start Live Voice. Speak a short sentence and confirm your text grows live in the stream. Ask Clara to edit a file while she talks, and confirm her voice stays smooth.
+
+### Daily Flow and Threads
+
+Clara opens today's Daily Flow only when you ask to start your day or work in today — not from casual testing or orientation chat on the calendar.
+
+Session notes save only when that thread is your active work context. Open the thread first, then ask Clara to file the note.
+
+### Optional — stay on Think Fast 1.0
+
+Set `XAI_VOICE_MODEL=grok-voice-think-fast-1.0` before launching Forge if you need the previous voice model.
+
 ## 6.51.0 (2026-07-30)
 
 ### Agent Stream — see the work as it happens
