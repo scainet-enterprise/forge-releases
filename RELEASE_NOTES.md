@@ -3,6 +3,18 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.52.0 (2026-07-31)
+
+**Cloud Briefing Reliability**
+
+- Improved daily briefing pipeline architecture for better modularity and testability
+- Fixed an issue where stale session state could cause Grok API errors during briefing runs
+- Enhanced model selection to prevent unsuitable models from being chosen during error recovery
+
+**Internal Improvements**
+
+- Continued progress on cloud worker crate separation (forge-core decoupling)
+
 ## 6.51.1 (2026-07-31)
 
 ### Live Voice — Grok Voice Think Fast 2.0
