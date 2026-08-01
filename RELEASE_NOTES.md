@@ -3,6 +3,17 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.53.0 (2026-08-01)
+
+**Cloud Briefing — worker architecture**
+
+- Continued separation of the cloud briefing worker into focused crates, improving maintainability and paving the way for leaner cloud deployments
+- Daily Flow day record helpers now live in the shared core layer used by both desktop and cloud paths
+
+**Internal**
+
+- No intentional desktop UI or behaviour changes in this release — cloud worker and crate-boundary work only
+
 ## 6.52.0 (2026-07-31)
 
 **Cloud Briefing Reliability**
