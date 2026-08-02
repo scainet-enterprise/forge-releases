@@ -3,6 +3,12 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.54.0 (2026-08-02)
+
+- Daily Flow standing tasks and dependency logic now run from shared core code, improving reliability for both desktop and cloud briefing runs
+- Cloud morning briefing worker pipeline verified end-to-end (email triage → briefing document)
+- Past days stay read-only in Daily Flow; task completion guards prevent accidental edits to historical days on desktop
+
 ## 6.53.0 (2026-08-01)
 
 **Cloud Briefing — worker architecture**
