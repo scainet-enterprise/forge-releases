@@ -3,6 +3,31 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.56.0 (2026-08-03)
+
+### Tour De Forge — the guided walkthrough of Forge
+
+Forge now has a full **Tour De Forge**: Clara walks you through Daily Flow, your morning briefing, a live agent build, the Editor and Browser, Threads, and Jobs — spoken and on screen together.
+
+Start it from the command palette (**Ctrl+K → Tour De Forge**). Sample work appears on a far-future day so nothing mixes into your real calendar. Every chapter can also stand alone as a short for demos and marketing.
+
+**What you will see**
+
+- **Daily Flow** — how today is organised: phase rail, tasks, and day notes underneath.
+- **Your morning** — standing email + briefing tasks, and why Clara delivering the briefing live (like a high-end personal assistant) is the real magic, not only the document.
+- **FORGE NEWS** — Clara adds a real task, hands it to Atlas, and you watch the Agent Stream and Observatory while a site is built into the day workspace.
+- **See the site** — Code → Split → Preview in the Editor, then a real Browser: Clara opens a live website, fills an enquiry form field by field (she does **not** submit), and returns to the local site.
+- **Threads and Jobs** — lasting context vs work you are shipping, each introduced so the chapter works on its own.
+
+**Controls that stay with you**
+
+- **Continue** (or say “continue” / “do it” / “go ahead”)
+- **Back** and **Skip chapter** — cut Clara mid-sentence on purpose so speech and screen snap together
+- **Skip the wait** during the FORGE NEWS build — keep the chapter and open a prepared edition if you do not want to wait on the agent
+- **Exit** / **Finish** — leave cleanly; Finish lands you on the Daily Flow picker
+
+**What to do:** Open **Ctrl+K → Tour De Forge** with Live Voice on. Walk Chapter 4 (FORGE NEWS): confirm only the new task lights up when Clara names it, and that **Skip the wait** / **Skip chapter** still work if the build finishes early. In Chapter 5, watch Clara fill the live form without submitting.
+
 ## 6.55.0 (2026-08-03)
 
 This release continues internal architecture work on the cloud briefing worker. There are no user-visible changes in the desktop app.
