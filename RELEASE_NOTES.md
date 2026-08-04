@@ -3,6 +3,14 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.57.0 (2026-08-04)
+
+This release continues internal architecture work on the cloud briefing worker. There are no user-visible changes in the desktop app.
+
+- Headless day-task planning and dispatch logic consolidated into shared core code used by both desktop and cloud worker paths
+- New orchestrator crate skeleton wired for future native worker agent loop (transitional — worker still uses desktop loop body at startup)
+- Persona routing for Daily Flow delegation verified unchanged (Pat for email, Atlas for research, Aurora for briefing)
+
 ## 6.56.0 (2026-08-03)
 
 ### Tour De Forge — the guided walkthrough of Forge
