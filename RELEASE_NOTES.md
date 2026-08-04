@@ -3,6 +3,14 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.59.0 (2026-08-04)
+
+This release continues internal architecture work on the cloud briefing worker. There are no user-visible changes in the desktop app.
+
+- Audit trail engine extracted into shared core code, preparing for a leaner cloud worker image
+- Lifecycle and agent module boundaries consolidated so desktop and worker paths share the same foundations
+- Morning briefing worker headless sessions verified on staging (Patrick email triage and Aurora briefing pipeline)
+
 ## 6.58.0 (2026-08-04)
 
 ### Watch your agents work — live terminal output in the Agent Stream
