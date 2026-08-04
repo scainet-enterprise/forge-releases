@@ -3,6 +3,46 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.58.0 (2026-08-04)
+
+### Watch your agents work — live terminal output in the Agent Stream
+
+Until now, when an agent ran a command you saw a line saying it had run one, and nothing else until it finished. A long build or a deep search was a black box: no output, no progress, no way to stop it.
+
+Now every command an agent runs has a **live mini-terminal** in the Agent Stream. Output streams in as it happens, with colours, progress bars and carriage-return updates rendered the way a real terminal shows them. A running command expands on its own and carries a **live** badge, so your eye goes to the thing that is actually happening.
+
+**You can act on a running command, not just watch it**
+
+- **Stop** — end a command mid-run. It stops the whole process tree, so a runaway build or scan really dies instead of leaving orphans behind.
+- **Open in Terminal** — send the command to the full Terminal panel. If it is still running, the terminal **follows it live** to the end and then leaves the command ready to re-run; if it has finished, you get its output replayed with the command typed and waiting.
+- **Copy output** — the whole captured output on the clipboard.
+- **Cmd** — copy just the command.
+
+**Built to stay out of your way**
+
+- **Secrets are hidden by default.** API keys, tokens and passwords are masked wherever they appear. Reveal them for the current session if you need to — and anything remembered between restarts is only ever stored masked, so a token cannot survive on disk.
+- **Long output tells you it is long.** Very large commands can produce megabytes; the preview keeps the most recent output and now says exactly how much you are seeing, such as _last 24 KB of 9.2 MB_, rather than quietly showing you the tail.
+- **Previews survive a restart.** Recent command output is still there when you reopen Forge.
+- **Git tools stream too** — `git push`, `git pull` and friends are no longer silent.
+
+**A much smoother app while commands run**
+
+Chatty commands used to flood the interface with thousands of updates a second, which made the Terminal panel and its **+** button unresponsive until the command ended. Output is now batched before it reaches the interface, and the preview only redraws what is on screen. Opening terminals, switching tabs and stopping commands stay responsive even during a heavy recursive scan.
+
+### THIS TURN checklists — clearer, and they finish what they start
+
+- The **THIS TURN** checklist now shows **which agent** owns it, so you can tell Atlas' plan from Aurora's at a glance.
+- Updating a checklist **evolves the same block** instead of stacking a new copy each time, so one turn reads as one plan.
+- A checklist belonging to a finished session no longer stays pinned at the top as though it were still live.
+- Agents can no longer mark a task complete while their own checklist still has open items. If a step turns out to be impossible, they must cancel it and say why — so a task can never be quietly closed over unfinished work.
+
+### Voice — fewer false alarms
+
+- The red **voice error** banner no longer appears when Clara is interrupted at the moment she finishes speaking. That was a harmless timing overlap being reported as a failure; genuine voice errors still surface.
+- Long calls no longer log a recurring audio-loss warning during perfectly healthy conversations.
+
+**What to do:** Ask an agent to run something long — a recursive directory scan is ideal. Watch the output stream in the Agent Stream, press **Stop** partway, then run it again and use **Open in Terminal** while it is still going to see the terminal follow it to the end.
+
 ## 6.57.0 (2026-08-04)
 
 This release continues internal architecture work on the cloud briefing worker. There are no user-visible changes in the desktop app.
