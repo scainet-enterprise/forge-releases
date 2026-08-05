@@ -3,6 +3,10 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.59.2 (2026-08-05)
+
+Internal architecture improvements for the cloud briefing worker — no user-facing desktop changes.
+
 ## 6.59.1 (2026-08-04)
 
 Internal architecture improvements for cloud worker — no user-facing changes.
