@@ -3,6 +3,12 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.60.0 (2026-08-06)
+
+This release continues background work to decouple the cloud briefing worker from the desktop app. There is no intended change to daily briefing behaviour for desktop users.
+
+Cloud worker and orchestrator internals were reorganised to prepare for a leaner worker image in a future release. If you rely on cloud morning briefing, no action is required until the next worker image is deployed.
+
 ## 6.59.2 (2026-08-05)
 
 Internal architecture improvements for the cloud briefing worker — no user-facing desktop changes.
