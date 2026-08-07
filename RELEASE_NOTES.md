@@ -3,6 +3,16 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.61.1 (2026-08-07)
+
+### Cancel returns tasks to ready
+
+Cancelling a running agent (including standing morning Auto-run) now stops the session and puts the delegated day task back to **ready to action**, so you can Delegate again. Cancel during Auto-run prep no longer lets Patrick start afterward.
+
+### Quieter cloud sync
+
+Forge no longer pulls work-state on a fixed one-minute timer. Sync runs on focus, when you ask, and other real events — cutting avoidable cloud read cost from idle Forge windows.
+
 ## 6.61.0 (2026-08-06)
 
 ### Clara — a Forge-owned look in the Agent Stream
