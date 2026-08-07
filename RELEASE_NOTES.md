@@ -3,6 +3,26 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.61.0 (2026-08-06)
+
+### Clara — a Forge-owned look in the Agent Stream
+
+Clara’s on-screen presence is no longer a painted sample avatar. She now wears a **Forge-owned uniform**: navy suit, gunmetal shoulder plates, cyan piping, and a backdrop framed for the bust shot you actually see in the Agent Stream.
+
+Shoulders sit with the suit when her arms are down (they used to lift off like empty pads). The collar no longer fights the neck. Lighting treats the plating as dark metal rather than blown-out chrome, so the cyan accents read cleanly.
+
+This is the first release of the **Avatar Library** path — owned masters in, shippable VRM out — with Clara as the archetype. Demo quality is intentionally "good enough to ship and show"; fuller cartoon and near-human options remain a later authoring step, not more plate tweaks in this build.
+
+**What to do:** Start Voice or Text with Clara on. Look at the Agent Stream bust — shoulders, collar, and backdrop should feel like one composition, not a cutout on a blank panel.
+
+### Come back to the work you left — not the Work Hub
+
+If Forge sat idle long enough for Windows to blank the UI, waking the window used to **reload the screen and drop you on the Work Hub** (New Project / New Job / Daily / Explore), even when you had a Daily Flow day — or a job or project — open.
+
+That reload is still how Forge recovers a dead compositor after a long idle. What changed is the **return path**: Forge now remembers the day, job, project, or other work you were in and puts you back there after the refresh.
+
+**What to do:** Open today’s Daily Flow day, leave Forge unfocused for ten minutes or more, then click back. You should land on that day again — not the four hub tiles.
+
 ## 6.60.0 (2026-08-06)
 
 This release continues background work to decouple the cloud briefing worker from the desktop app. There is no intended change to daily briefing behaviour for desktop users.
