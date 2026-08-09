@@ -3,6 +3,22 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.62.0 (2026-08-09)
+
+### Desktop Forge starts reliably again
+
+A regression in the orchestrator refactor could crash Forge immediately on startup (stack overflow before the UI loaded). That is fixed — desktop UAT confirmed normal boot, Daily Flow, project chat, delegation, and cancel flows.
+
+### Stronger cloud morning briefing foundation
+
+Behind the scenes, the agent orchestrator and headless tool path were extracted from the desktop app into shared crates. The cloud briefing worker no longer depends on the full desktop tree, uses a leaner Docker image, and has hard CI gates preventing that dependency from creeping back.
+
+Headless sessions also pick a stronger default model after credential discovery, and delegated daily tasks finalize correctly when the agent finishes its turn.
+
+### What to do
+
+Update Forge as usual. If you run cloud morning briefing, redeploy the worker image when your pipeline promotes this release — no desktop setting changes required.
+
 ## 6.61.1 (2026-08-07)
 
 ### Cancel returns tasks to ready
