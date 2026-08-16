@@ -3,6 +3,22 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.63.0 (2026-08-16)
+
+### Jobs and Daily Flow use the same task menu
+
+You can add tasks to a job at any time. Jobs no longer have an Approve Plan button — adding the first task unlocks the job so you can run work. If you Move Back, use **Resume execution** (no draft required).
+
+Each task’s ⋮ menu can **Delegate to a text agent**. Forge chooses who from the task wording (for example Patrick for inbox and email, Atlas for research). After that succeeds, a small name tag appears on the row so you can see who has it. **Start** only marks the task as in progress for you — it does not launch an agent.
+
+Changed Files now says “Changed in this day” or “Changed in this job”. Switching between a job and Daily Flow no longer leaves the previous workspace’s files on the list.
+
+Daily Flow still has Approve Plan, defer, and escalate. Jobs still have fail, retry, and approve after Move Back.
+
+### What to do
+
+Update Forge as usual. Open a job, add a task, then use ⋮ → Delegate to text agent. The name tag should still be there after you leave the job and come back.
+
 ## 6.62.0 (2026-08-09)
 
 ### Desktop Forge starts reliably again
