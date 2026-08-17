@@ -3,6 +3,54 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.64.0 (2026-08-17)
+
+### Try Forge Pro for free — no account, one month
+
+The first screen now offers **Try Forge Pro for FREE**. No email. No credit card. Thirty days of Pro on this computer — Daily Flow, the morning briefing, and the Pro tools included.
+
+Work stays on this device. When you create an account, Forge can bring across the days, threads, meetings, and projects from the trial.
+
+If you **already have a SCAINET account** on this computer: tap **End trial** first, then Sign in. That keeps trial days from being attached to the wrong account.
+
+A signed-in Free account stays Free. Only the no-email trial is Pro.
+
+### Your first morning is a short conversation
+
+Clara greets you. She offers **Tour de Forge now**, or **set up Daily Flow first**. The tour is still there whenever you want it, as many times as you like.
+
+If you set up Daily Flow, she asks to store your city and a few topics on this computer — then she records them. Aurora waits until that is done, then writes a briefing Clara can speak. You get a conversation, not a brochure pasted into chat.
+
+Connecting Google Mail during the no-account trial is deferred until you have an account, so an inbox already saved on this computer is not touched.
+
+First open lands on **today**, not the Work Hub. The calendar is one click away.
+
+### SuperGrok is your plan, not ours
+
+**Sign in with SuperGrok or X** and Forge uses your xAI quota — not SCAINET credit. Prefer a developer key? Paste a console.x.ai key. Keys stay on this machine.
+
+Some SuperGrok plans cannot talk to Forge yet. If sign-in fails, paste a key and keep going. Voice, dictation, and Imagine still use the API-key path.
+
+### Morning briefings have to cite the article
+
+Aurora’s briefing must end each news story with a real article link — publication, date, and URL. A name in brackets is not a source. A homepage is not a source. Weather needs a forecast link. If a search found nothing in the window, she can say so without inventing a URL.
+
+### Grok 4.6, Imagine 2.0, and Edward’s brand pack
+
+Auto routing prefers **Grok 4.6**. Edward can generate and edit with **Imagine Image 2.0** without overwriting the source file. There is a Daily Flow **brand-package** process: Edward writes stills into a brand-assets folder for you to review.
+
+Files you drop into compose now land on the **day or job you have open**, not a leftover sandbox. Switching between a job and Daily Flow no longer leaves the previous workspace’s files on Changed Files.
+
+### What to do
+
+Update Forge as usual.
+
+On a fresh install — or after End trial — tap **Try Forge Pro for FREE**. Talk to Clara. Give a city and a few topics. Ask for this morning’s briefing. Open a story link: it should be the article, not a homepage.
+
+If you already use Forge with an account on this PC, **End trial** before Sign in.
+
+Optional: Sign in with SuperGrok, or paste a key.
+
 ## 6.63.0 (2026-08-16)
 
 ### Jobs and Daily Flow use the same task menu
