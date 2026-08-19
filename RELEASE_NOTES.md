@@ -3,6 +3,82 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.65.0 (2026-08-19)
+
+6.64.0 opened the door: a no-account Pro trial, SuperGrok on your own xAI plan, and a first morning that is a conversation. This cut is the trust release for that door — stop means stop, Settings tells the truth, and a trial you skip into no longer looks broken.
+
+### Correction to 6.64.0 — Live Voice works on SuperGrok
+
+The 6.64.0 notes said voice, dictation, and Imagine still needed a pasted developer key. That was wrong about voice.
+
+**Talking to Clara on Live Voice works on a SuperGrok subscription.** Signing in with SuperGrok gives her the same credential everything else uses, so the conversation runs on your xAI plan — not SCAINET credit, and not a second key you have to hunt for.
+
+Dictation and Imagine use that credential too, but we have not confirmed xAI accepts a SuperGrok sign-in for them. If either asks for a key, paste a console.x.ai key for that feature.
+
+### SuperGrok is on the xAI row
+
+Settings used to put SuperGrok in a box above the provider list, as if it were a second Grok. It vanished while Settings waited on other work, which made the whole page look empty.
+
+**xAI (Grok) is one row.** On that row: SuperGrok | Key. Sign in, disconnect, or paste a key without opening another panel. Only one method can be on at a time. Switching asks first, then disconnects the other.
+
+When a provider is live, the status is **Ready**. The green SuperGrok control is what tells you the subscription is the live method — not a second badge. Remove lives behind a quiet menu, so a working connection is harder to wipe by accident.
+
+### Disconnecting SuperGrok now stops the conversation
+
+Pressing **Disconnect SuperGrok** while Clara was talking used to leave the conversation running. The connection had already been authorised, so it kept going — and kept using your xAI allowance — until you closed voice or quit Forge.
+
+Disconnecting now ends the live conversation straight away. The same happens if you switch the xAI provider off in Settings.
+
+Signing back in restores Grok and Live Voice. You do not have to hunt for a switch that was turned off earlier.
+
+### When you say stop, everything stops
+
+Signing out, switching accounts, starting a trial on a machine that already had keys, or turning a provider off in Settings now ends whatever that credential was paying for — the live conversation, and any work Clara had in progress.
+
+Previously those actions only changed a setting. A conversation that had already started carried on using your plan.
+
+This is the same underlying problem as Disconnect. Rather than fix it one button at a time, every action that withdraws a credential now goes through one path, so the behaviour is the same wherever you do it from.
+
+Adding a key is faster too. A provider you have just set up is usable immediately, instead of after a background check that could take up to a minute.
+
+### Getting started without an account
+
+If you started the trial and chose **Skip for now** when asked to connect Grok, Forge used to let you through to an app where Clara could not answer, the briefing could not run, and nothing explained why.
+
+There is now a prompt with a button that takes you straight to connecting her. It disappears as soon as you do.
+
+A few related rough edges are gone:
+
+- A new install no longer shows a red provider badge as though something has broken. Nothing is wrong — you have not connected anything yet, and it now says **Not set up**.
+- Saving Settings with no providers used to warn you to "check your API keys". On a trial you were told you would not need any. It now explains what to connect instead.
+- Asking Clara to start your day, or to start voice, without a connection no longer shows a raw internal error. It says plainly that she is not connected, and where to go.
+- The welcome screen says what happens next, rather than promising no account is needed and then asking you to sign in to Grok.
+- Your trial badge shows how many days are left.
+
+### Typing in the in-app browser
+
+Typing into a field on a website in the Operator Browser used to enter every letter twice. That is fixed — each key now appears once.
+
+### Clara can tell you what is running her
+
+Ask Clara what model she is, or who is paying for the conversation, and she now answers from fact: the voice model she is actually using, and whether that is your SuperGrok subscription or a key you pasted. She will never repeat the key itself.
+
+Previously she guessed, and could tell you she was running locally with nothing connected while she was in fact using your plan.
+
+### Fewer false alarms about local models
+
+Forge no longer reports an error when Ollama is not running. Ollama is optional — if you have never installed it, there is nothing wrong, and Forge stops saying otherwise. Genuine problems with any provider are still reported.
+
+### What to do
+
+Update Forge as usual. Nothing to reconfigure.
+
+If you use SuperGrok: Live Voice runs on your own xAI plan, and **Disconnect** now stops it immediately. In Settings, SuperGrok is on the xAI row — pick SuperGrok or a console key, not both.
+
+If you skipped connecting Grok during the trial: use the prompt on the hub, or open Settings and sign in on the xAI row.
+
+If dictation or Imagine asks for a key after a SuperGrok sign-in, paste a console.x.ai key for that feature. We have not confirmed those yet.
+
 ## 6.64.0 (2026-08-17)
 
 ### Try Forge Pro for free — no account, one month
