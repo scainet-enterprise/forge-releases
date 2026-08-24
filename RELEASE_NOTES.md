@@ -3,6 +3,66 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.66.0 (2026-08-24)
+
+6.65.0 made the front door honest. This cut gives the company a **Board**.
+
+Not a video room. Not a Program factory. A chamber where the CEO and Miles write what the company _is_ and how it will win the next three years — then the nine seats read that document and say **ratify** or **feedback**. When you Lock, the signed Vision and Strategy live on The Board. That is the instrument every later Program has to honour.
+
+### Miles chairs The Board
+
+Open **Work → Board** (Enterprise and White Label). Miles is in the chair. Clara stays on Jobs, your day, and Meetings.
+
+He does not guess which plate you will open. Tell him. Compose is **@miles**. The empty stream is the Forge splash — there is no second “start” ritual here.
+
+### Vision and Strategy are company files
+
+**Create Vision** and **Create Strategy** open a sitting with Miles. He interviews you and writes the draft. Directors do not author it.
+
+Then three verbs, in order:
+
+1. **Save draft** — the file is on the estate.
+2. **Ask the Board** — all nine seats read _this_ document. They return ratify or feedback. Not go / no-go. Not a Program mint.
+3. **Lock** — your seal. The plate is now Signed. There is no second Board pass.
+
+Click the plate to **read**. That is not a sitting.
+
+### The chamber
+
+Three columns. Voices on the left. The document in the centre. Versions on the right.
+
+Click a name to read that Director properly — thesis, why, suggested changes, risks. Click Close, press Escape, or click anywhere off the submission to return to the Vision. Recommendation appears once, coloured: green for ratify, blue for feedback.
+
+Comments on **Current** belong to the sitting that locked this version. An older dated copy keeps that day’s voices. After you Revise and Lock again, the old opinions stay with the old version.
+
+### Revise is how history grows
+
+**Revise** takes a copy of what is signed, files the old workshop, and opens a new draft. The live file stays the company Vision or Strategy. Versions only lists a dated row when that copy is actually different from Current. Lock does not invent extra copies.
+
+The first Lock says this is the first version on file. That is correct.
+
+### Sittings
+
+Active, Closed, Archived. Cancel withdraws open work. Archive files a finished sitting. The signed documents do not disappear.
+
+**+ Sitting** is title-only. Miles interviews you, then writes the Submission. Use the plates for Vision and Strategy — not this form.
+
+### Meetings are still the hall
+
+Meetings remain video ceremony with Clara. Circulate now sends a real letter and keeps the transcript in that room. Patrick is not renamed Marcus.
+
+### What to do
+
+Update Forge as usual.
+
+If you are on Enterprise or White Label: open **Work → Board**. Form Vision, then Strategy, with Miles. Ask the Board. Lock. Help → User Guides → **The Board** walks the room.
+
+If you run Programs: form the pair first. Adopt stays on Programs.
+
+If you run Meetings: nothing about The Board replaces Join room, minutes, or circulate.
+
+---
+
 ## 6.65.0 (2026-08-19)
 
 6.64.0 opened the door: a no-account Pro trial, SuperGrok on your own xAI plan, and a first morning that is a conversation. This cut is the trust release for that door — stop means stop, Settings tells the truth, and a trial you skip into no longer looks broken.
