@@ -3,6 +3,14 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.67.0 (2026-09-06)
+
+Cloud issue jobs now run a locate → implement → review → revise path. The worker keeps host tests off the agent clock, skips a second verify when nothing changed after implement, and can reuse compiled crates across jobs when a cache bucket is configured. Progress shows how many agent turns each phase used.
+
+Pull requests to this repo enqueue through GitHub’s merge queue. Opening a PR runs a light check; the full suite runs in the queue. Dependabot stays skipped until someone (or the batch bot) adds the run label — that label now unlocks checks even when Actions applied it.
+
+In the desktop agent stream, finished replies render markdown, you can copy a bubble, and Cancel clears the caret. “Add a task” in JOB MODE adds a step instead of opening a new job. Memory tools remember the session agent. A context-window overflow is recorded once as an incident.
+
 ## 6.66.0 (2026-08-24)
 
 6.65.0 made the front door honest. This cut gives the company a **Board**.
