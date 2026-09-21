@@ -3,6 +3,40 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.68.0 (2026-09-21)
+
+6.66.0 gave the company a Board. This cut is the sitting.
+
+The chamber no longer waits for nine finished speeches before it looks like a Board. Seats paint as they work. Agreement is a pass, not another speech. A raised hand takes the floor. Miles offers the seat that has not been heard — including after the majority has spoken — and he will not call the question while a hand is still up. When the room has already decided, he closes. You can Stop the sitting. You sit as CEO: Approve mints, Open Program opens Programs.
+
+Rounds, not beats. The live verb on each seat is what that Director is doing now — listing, reading, writing, raised, pass — then the position when the paper lands. Matching positions cluster, so you see the split instead of nine identical caution chips.
+
+The Meridian Home demo is a real choice. Neither Milwaukee nor Monterrey is a free win. The pack is in Explorer. The Board reads it.
+
+### What to do on The Board
+
+Update Forge as usual.
+
+If you are on Enterprise or White Label: open **Work → Board**. Help → User Guides → **The Board** is the walkthrough. If you already signed Vision and Strategy, those plates stay. This cut is how a sitting runs, not a new ceremony.
+
+If you are on Business or Pro: The Board tab stays hidden. Daily Flow, Jobs, and the morning are yours.
+
+### The morning on the portal
+
+The worker that writes the morning briefing now names today’s visits, quotes, and unpaid invoices, and it can leave a tray of mail that needs a decision. Patrick may prepare a draft. He does not send. Approve & send stays with the owner on the portal.
+
+Re-run today after you update. An old briefing file does not grow a tray.
+
+### Cloud issue jobs
+
+Locate tells the truth about the plan. Search hits are not a finished diagnosis. A named file the host already accepted stays accepted. Staff who run cloud issue jobs will see an honest closeout, not a green tick on an empty plan.
+
+Owner Clara on the portal uses the timezone you saved in Settings, and can preview the Team on a sitting.
+
+### What this is not
+
+Clara on Jobs is unchanged. Meetings are unchanged. Programs still adopt after the Board, not from a Vision sitting.
+
 ## 6.67.0 (2026-09-06)
 
 Cloud issue jobs now run a locate → implement → review → revise path. The worker keeps host tests off the agent clock, skips a second verify when nothing changed after implement, and can reuse compiled crates across jobs when a cache bucket is configured. Progress shows how many agent turns each phase used.
