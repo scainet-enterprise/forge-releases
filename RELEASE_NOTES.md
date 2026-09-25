@@ -3,6 +3,40 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.69.0 (2026-09-23)
+
+Grok 4.7 is a first-class Forge model.
+
+Select it in Manual and the reasoning chips appear — Auto, None, Low, Med, High, xHigh. Auto mode picks 4.7 for most work. It still picks 4.6 when you ask for UI or image generation, because 4.7 is even or slightly worse there in our testing.
+
+### What to do
+
+Update Forge. Refresh Models if 4.7 is already in the list but the reasoning row is missing. Then turn Manual on and set effort, or leave Auto on and let the router choose.
+
+xHigh is the 4.6 / 4.7 ceiling. A later Grok 4.x that appears in the model list uses these same settings until we publish a specific profile for it. Grok 4.7 Fast is a Cursor / Grok Build SKU, not the public API, so it will not appear here.
+
+### A new Work Hub
+
+The first screen now speaks the same design language as scainet.io, build.scainet.io, and scainetforge.com: the same type, the same calm surfaces, one cyan for every action. Four doors start a project, a job, your day, or an open workspace. Recent work and your full list sit underneath with their stage at a glance.
+
+### One Forge, one look
+
+The rest of the app follows the Work Hub. Every screen uses the same type. Tabs, menus, and dialogs share one style. Jobs and Threads read as clean rows with an icon for each stage or template. The Daily Flow calendar shows busy days as a deeper tint, not a heavy outline. The Agent Stream opens on the Forge mark, and Start Voice and Start Text sit side by side as matching buttons. A Board sitting now reads like the Board itself: parchment and gold, with every turn and the Chair's minute set out on its own plate. Starting a new project walks through the same calm steps, from connecting GitHub to naming the project. Buttons and highlights in Meetings, job details, and the day view that had been showing as plain text now show in Forge cyan. Your day and each job now open on the same layout: a clear stage rail, one main button, and tidy task rows. Programs and Threads follow suit, with status shown in its own colour at a glance. My Issues, the Models list, and Settings complete the set.
+
+Program charters now read like documents. The title leads, the key facts sit in a tidy grid, and each section has its own heading, numbered lists, and clean tables. Edit opens the charter text in the same card. The same styling reaches everywhere Forge shows a document: guides, review documents, action cards, and the Board's signed Vision and Strategy.
+
+The Browser, ARBITER, Personas, Agents, and Audit tabs now match the rest of Forge. The Browser has a proper address bar, and a clear prompt when the agent needs you to sign in. ARBITER shows project health at a glance, with a cleaner Board briefing. Personas read as an org chart with a face for every seat. Agents and the Audit trail use the same calm rows, chips, and icons as everything else.
+
+New to Forge? The Work Hub now opens with Tour De Forge: Clara shows you around, out loud, and the card tells you how long it takes. Once you have taken the tour, a quiet Replay link stays under the doors. The tour's own panel now matches the rest of Forge. It sits under the Agent Stream instead of over your work, and you can fold it into the bottom bar. Continue stays right there when it is your turn. Folded, that pill stays clear of the Agent and Terminal buttons.
+
+Clara is who you talk to everywhere except the Board. On the Board, Miles chairs. Leaving a sitting, or finishing the tour, no longer leaves his name on the stream or in the message box.
+
+Your projects are listed again. Forge was treating the current account tenant and the tenant on older projects as two different companies, so the list came back empty.
+
+Each part of Forge now has its own short tour. Click the **?** in Daily Flow, Threads, Jobs, or the Browser and pick that area's tour, a single chapter, the guide, or the full Tour De Forge. Clara plays it right where you are, on a private sample, and brings you back to exactly where you were. Until you have watched an area's tour, its **?** reads **Tour**. The first time you visit an area, Forge offers the tour once. You can also ask Clara how something works and she will offer to show you. On Free, every chapter plays, and the Pro parts are marked **Pro preview**.
+
+The tour now ends with the Board. On a staged sample sitting, you watch nine AI Directors form their opinions on a hard decision. They argue it out on the floor, and the Chair closes with a minute that keeps the dissent in. Then the decision comes back to you. Clara tells you first that the sitting is staged so the whole process fits in a few minutes. Real sittings run longer. On plans without the Board, the chapter plays as an **Enterprise preview**.
+
 ## 6.68.0 (2026-09-21)
 
 6.66.0 gave the company a Board. This cut is the sitting.
