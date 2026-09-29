@@ -3,6 +3,38 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.70.0 (2026-09-29)
+
+This cut is the Forge half of a paired ship. The portal half is invoices and brand assets: one Products & Services list for quotes and invoices, and Edward drawing a brand pack onto the company.
+
+### Meetings
+
+You run the meeting from the top of the page: Back, the stage chips, and Advance sit under the title. Stages are grouped as before the room, in the room, and after. Host notes open by default and fold to a cyan **Host notes** cue when you hide them.
+
+The agenda stays at the top. You can add or drop items and put a time on each row until wrapping. Last-minute topics are normal. Weekly check-ins start from a template; they are not frozen.
+
+The list defaults to open meetings, with Closed and All when you need them. **Other business** is the in-room slot after the named agenda. Minutes are drafted in the meeting, then queued for Daily Flow **Approve & send**. Forge sends. If there is no guest email (a typical seat 1:1), Skip with a reason, then close. Advance to Closed stays dim until you send or skip.
+
+### Follow-up
+
+When you pin Follow-up to a specialist, it stays there. They read your latest message first: questions and reviews get an answer in the thread; “do this” still runs the work.
+
+### Brand packages on the portal
+
+When a brand-package job is queued, this Forge worker starts the portal run and marks the job done. Edward draws the stills onto the tenant. Review them on the portal Digital Assets card — not as a second Daily Flow approval inbox.
+
+Quotes and invoices on the portal now pick from one Products & Services list, with GST, cost, and recipes. That lives on the portal. This Forge release is what lets the brand job actually run.
+
+### Quiet wake
+
+Coming back to a hidden window no longer flashes the splash unless the window itself has died.
+
+### What to do
+
+Update Forge. Open **Work → Meetings** for the new stage rail. After a meeting, approve or skip minutes in Daily Flow. If you run brand packages, confirm the matching portal stage is live before you queue a job.
+
+If your project list was empty after the account moved to the Build tenancy, update and open Work → Projects again.
+
 ## 6.69.0 (2026-09-23)
 
 Grok 4.7 is a first-class Forge model.
