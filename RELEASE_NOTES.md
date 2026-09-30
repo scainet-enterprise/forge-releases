@@ -3,6 +3,42 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.71.0 (2026-09-30)
+
+This cut is the Forge half of two desks and one person. You stay you. SCAINET and Build stay separate. Meetings you were invited to finally open in Forge.
+
+### Two desks, one login
+
+The account menu now names the tenancy you are on. If you belong to more than one, you switch there — no second email, no sign-out. Jobs and projects on SCAINET stay on SCAINET. Build stays empty until that desk has work. Your day, your meetings, and your threads stay with you.
+
+A real switch needs the matching portal change live on scainet.io. After that lands, open the account menu once so Simon and Paul are both on both desks. You can also grant a desk from that menu, or from Portal Admin → Tenancy desks, for anyone who has already signed in.
+
+Until the portal API is up, the list can still show both desks on an operator login. Clicking through waits on the portal.
+
+### Meetings you were invited to
+
+If someone sent you a Forge meeting, it now appears under Work → Meetings. Accept the calendar invite, then open it in Forge and join. The invite carries the meeting id so the room matches.
+
+If you sent invites before this update, open Work → Meetings once as the host (or send Update invites) so older calendar events pick up the stamp.
+
+### Daily Flow
+
+**+ Add Meeting** sits on the Schedule row, same as **+ Add Task**. Advance Phase lives on the phase banner. Skip is on the standing morning and wrap rows — say why, then Advance. Clear Day (dev) is on the top row with Back. The extra status chips are gone; the phase card already says where the day is.
+
+A task that really failed now says Failed, with Retry. Editing a task puts it back to ready. Forge meetings on the day’s schedule open the meeting instead of a dead click.
+
+### Account card
+
+The signed-in account dialog matches the rest of Forge: overlay, card, tenancy as current and other desks, then sign out.
+
+### What to do
+
+1. Promote the portal memberships change so switch and Grant desk work on scainet.io.
+2. Update Forge.
+3. Open the account menu. Confirm SCAINET and Build both appear. Switch once each way.
+4. Ask Paul to update Forge, open the account menu, and switch. If his list is one desk only, grant Build from your menu.
+5. For a meeting Paul could see in Google but not in Forge, open Meetings as host once, then have him refresh Work → Meetings.
+
 ## 6.70.0 (2026-09-29)
 
 This cut is the Forge half of a paired ship. The portal half is invoices and brand assets: one Products & Services list for quotes and invoices, and Edward drawing a brand pack onto the company.
