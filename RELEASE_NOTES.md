@@ -3,6 +3,18 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.72.0 (2026-10-01)
+
+You can invite someone who does not have Forge. They open a link in the browser, type their name, and join the room. You stay in Forge.
+
+Clara can appear in the meeting video, and her mouth moves when she speaks. Turn her tile off from the meeting toolbar if you want the plain mark instead.
+
+In the live room, share a document with the paperclip or by dropping it on the stage. It is kept with the meeting, separate from your own notes.
+
+When you summon a director, that director is the person in the room. Clara does not appear beside them.
+
+Talking with Clara on the Meetings screen stays a normal conversation. The quieter name rule, and the meeting transcript, start when you join the live room. Leaving the room gives you your microphone back.
+
 ## 6.71.0 (2026-09-30)
 
 This cut is the Forge half of two desks and one person. You stay you. SCAINET and Build stay separate. Meetings you were invited to finally open in Forge.
