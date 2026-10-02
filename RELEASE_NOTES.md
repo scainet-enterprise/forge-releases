@@ -3,6 +3,50 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.73.0 (2026-10-02)
+
+Career lives on a Thread. Job letters wait for you. Voice hangs up when you turn it off.
+
+### Career
+
+Work → Threads now includes **Career** and **Custom**.
+
+Career is the home for your résumé and a weekly check-in. **Actively Looking** is a switch on that thread: off means no hunt work; on means Forge can put **Job shortlist** then **Apply for jobs** on the briefing day (default Monday). Those two also sit in Daily Flow **+ Add task → From process library**. If you turn Looking on after today is already open, the hunt tasks appear without waiting until tomorrow. If application drafts are already queued, Forge does not seed a second pair.
+
+Keep the current résumé on the Career thread. Clara and Patrick look there first when they write applications.
+
+**Custom** is a blank thread: title, files, notes, optional cadence. No prescribed ritual.
+
+### Letters you approve
+
+Application drafts stay in **Drafts awaiting approval** on Daily Flow until you send them. They are not tied to one calendar day, so they are still there tomorrow.
+
+**Open** a draft to read or edit To, subject, and body. Click an attachment to preview it. **Close** puts the card away. **Discard** deletes that Gmail draft for good. **Approve & send** is the only send. If you ask Clara or Patrick to change a queued letter, they edit that draft — they do not make a second copy, and they never send.
+
+### Long paste in compose
+
+A long paste or text-only drop in Clara's compose box (about 400 characters or more) is saved as a file in that workspace's **context** folder — the same place dropped documents go. That works on Daily Flow, Jobs, Projects, Threads, Meetings, and Explore. Short pastes stay in the message box.
+
+### Live Voice
+
+Click **Voice On** again to hang up. That ends the live session.
+
+If you leave Voice on and nobody speaks, Forge hangs up after three minutes of silence so an unused session does not keep running. Meetings keep Clara on the call through quiet agenda time.
+
+The red square in compose appears only while Clara is talking. It stops her speaking. It does not hang up.
+
+Starting Voice a second time while the first connection is still opening does nothing.
+
+Leaving a meeting room hangs up the voice session that meeting opened.
+
+### What to do
+
+1. Update Forge.
+2. Open or create a Career thread. Confirm the résumé folder and the Actively Looking switch.
+3. On a briefing day with Looking on, confirm Job shortlist then Apply for jobs on Daily Flow — or add them from the process library.
+4. For a queued letter: Open, edit if needed, Approve & send when you are ready. Use Discard only when you mean to delete it.
+5. End a live session with Voice On. The red square should be absent while Clara is silent.
+
 ## 6.72.0 (2026-10-01)
 
 You can invite someone who does not have Forge. They open a link in the browser, type their name, and join the room. You stay in Forge.
