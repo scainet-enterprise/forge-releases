@@ -3,6 +3,34 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.74.0 (2026-10-06)
+
+The person you are talking to is the same person if you type or speak. Follow Up goes back into the work you already started. The day title reads the way dates read where you are.
+
+### The same person, typed or spoken
+
+Clara, Patrick, Aurora, Atlas, Quill, Lens, and the rest of the cast each keep one conversation. A line you type is part of the same memory as a line you say, and the other way around.
+
+**Voice On** uses whoever is already on the face. If you are with Patrick, you hear Patrick. **Back to Clara** returns you to Clara.
+
+Type `@patrick` (or any name) and finish the sentence before you send. The stream stays where it is until you send. Then that person takes the thread.
+
+**Follow Up** on someone’s existing work reopens that thread. It does not start a second copy of the same briefing or inbox chat. A new row appears only when the work itself is new.
+
+### Dates and draft cards
+
+The Daily Flow day title follows your computer’s region. In Australia that is **6 Oct 2026**. The record underneath stays the same calendar day, so overnight tasks still roll forward correctly.
+
+On **Drafts awaiting approval**, the attachment links sit on the same line as **Discard**. The card is shorter. **Open**, **Attach**, and **Approve & send** are unchanged. **Approve & send** is still the only send.
+
+### What to do
+
+1. Update Forge.
+2. Open today’s Daily Flow and check the day title reads naturally.
+3. Follow Up on an existing task, talk or type, then Follow Up again. It should be the same thread.
+4. Turn Voice On with that person on the face. Ask them something you just typed.
+5. On a queued letter, confirm the attachment sits with Discard, then Approve & send only when you mean to send it.
+
 ## 6.73.0 (2026-10-02)
 
 Career lives on a Thread. Job letters wait for you. Voice hangs up when you turn it off.
