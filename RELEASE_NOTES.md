@@ -3,6 +3,65 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## 6.75.0 (2026-10-13)
+
+This release is for operators who run meetings, hunt, and browse in the same sitting. Invites mean a send. Career keeps the hunt pack. Browser pages stay as tabs. Clara works the page she already has. Live Voice closes when you walk away, and greets the day you can see.
+
+### Meetings
+
+**Send invites** is the only action that emails a guest and places the sitting in their diary. Adding someone to People lists them as **Not sent**. Copying the guest link is a backup, not a send. **Invited** means the invite left Forge.
+
+Guests can **Accept** in Forge or from the calendar email. Accept records Yes for the host and writes the sitting to the guest’s connected calendar. The host People list then shows **Confirmed**.
+
+An **Accept invite** bar can appear at the top of Forge as soon as you have an unanswered invite. When the sitting is close, that bar becomes **Join now**.
+
+Join asks for the microphone and the camera separately. Declining the camera no longer ends the room. You can still join on audio.
+
+### Career and Daily Flow
+
+Hunt work lives on the **Career** thread until you **Approve & send**. Cover letters and shortlist files no longer wander onto a Daily Flow folder when the day rolls, and they are no longer attached as empty PDFs.
+
+A shortlist review can move into Career and back to the day without losing that pack. Monday’s hunt is not held back by older unsent applications.
+
+Ask Clara to open a named file, and the editor opens it. Asking her only to move to Daily Flow, Career, or another view changes the screen and leaves the editor alone.
+
+Ask her to make a PDF from a file you already have, and she exports that file — the same idea as **Export PDF** in the editor.
+
+Overnight, unfinished work still carries forward. It no longer appears twice.
+
+The activity row names who is working.
+
+### Operator Browser
+
+Each page is its own tab. Click a tab to return to that page. A link that opens a new window becomes another tab; it does not replace the page you were on.
+
+Clara can attach a file from the workspace to a **Browse** or upload control on the page. Typing Backspace in the browser address bar or a page field no longer deletes a file that happens to be selected in Explorer.
+
+Clara is paced so she searches and changes view a limited number of times per turn, then reads the page she already has. Work on the live page is not capped.
+
+### Voice
+
+**Voice On** hangs up after three minutes of silence, or if Forge cannot see you for a minute. Meetings are exempt, so Clara can sit quietly through the agenda. On a local rebuild, Voice On hangs up so a leftover session does not keep billing. A hangup you asked for does not show “Voice connection lost.”
+
+Turn Voice On on Daily Flow and Clara greets for the day in front of you, including after a rebuild.
+
+**Follow Up** on a task returns to that card and that conversation. Voice On resumes it. Following up a different person, or using a stream tag, still starts their own conversation.
+
+### Observatory
+
+Live Daily Flow tasks stay on the Observatory. Follow Up does not create a second row for the same task.
+
+### What to do
+
+1. Update Forge.
+2. Add a guest to a meeting. Confirm **Not sent**, then **Send invites**, then **Invited**.
+3. Join a room, decline the camera once, and confirm you remain in the sitting on audio.
+4. If you are the guest, **Accept invite** and confirm the sitting appears on your calendar and as **Confirmed** for the host.
+5. On Career, write or review a shortlist letter, roll or change day, and confirm the letter is still on Career until Approve & send.
+6. Ask Clara to move to Daily Flow without opening a file; then ask her to open a named file and to export that file as a PDF.
+7. In Operator Browser, open two pages, click the tabs, type Backspace in the address bar, and attach a file on a page that asks for one.
+8. Turn Voice On on today’s Daily Flow. Confirm the greeting. Follow Up a task, then Voice On again — same conversation. Leave Voice On idle past three minutes and confirm it hangs up. In a meeting, confirm quiet agenda time does not hang up.
+
 ## 6.74.0 (2026-10-06)
 
 The person you are talking to is the same person if you type or speak. Follow Up goes back into the work you already started. The day title reads the way dates read where you are.
