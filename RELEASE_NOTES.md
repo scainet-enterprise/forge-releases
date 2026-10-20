@@ -3,6 +3,22 @@
 > **Maintainers:** User-facing release notes mirrored to `forge-releases/RELEASE_NOTES.md` on release.
 > Do **not** include internal workstream IDs (B-LC-_, F-LC-_), file paths, or technical-debt references here.
 
+## Unreleased
+
+## 6.76.0 (2026-10-20)
+
+Provider keys on this computer can move into the system credential store. Forge asks before an existing vault moves. A new account uses the system store directly.
+
+Signing out clears those keys from the running app. You can remove this account’s keys from the computer. Uninstall can leave them in the system store.
+
+If an older Forge no longer has this computer’s vault file, it does not see those keys. Keys that were synced come back from your account. Keys that were never synced do not. A reinstall that loses Forge’s saved record on this computer can fill the keys from your account again.
+
+While Forge is open, each saved key asks the system once. Choose Always Allow and the next open does not ask for that key again.
+
+The crash-report question waits until you are signed in. It names the error name, the function names, and the app version. It does not include the raw error text, the business name, the email, or files.
+
+If a newer version is ready, you can install it from the sign-in screen.
+
 ## 6.75.0 (2026-10-13)
 
 This release is for operators who run meetings, hunt, and browse in the same sitting. Invites mean a send. Career keeps the hunt pack. Browser pages stay as tabs. Clara works the page she already has. Live Voice closes when you walk away, and greets the day you can see.
