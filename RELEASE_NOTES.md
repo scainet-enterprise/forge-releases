@@ -5,6 +5,16 @@
 
 ## Unreleased
 
+## 6.76.1 (2026-10-20)
+
+Forge checks each provider key with its provider before the key syncs between your computers. A key the provider rejects is not sent, and a rejected key from another computer does not replace a working one here. Forge tells you when either happens.
+
+Settings shows whether each provider key is ready, rejected by the provider, or saved but not yet checked.
+
+A key no longer disappears from this computer because it is missing from your account's copy. When you remove a provider, its key is also removed from your other synced computers.
+
+Signing in no longer shows "Daily Flow: Not authenticated".
+
 ## 6.76.0 (2026-10-20)
 
 Provider keys on this computer can move into the system credential store. Forge asks before an existing vault moves. A new account uses the system store directly.
