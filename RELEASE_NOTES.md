@@ -5,6 +5,14 @@
 
 ## Unreleased
 
+## 6.76.2 (2026-10-24)
+
+The API key security update now says plainly what is happening. Forge is moving your saved API keys into your computer's secure storage, and they stay on this computer. If your computer asks for permission, choose Always Allow so it does not ask again. If you choose Not now, Forge asks again the next time you sign in.
+
+On a Mac, allowing Forge to use a saved key lasts across later Forge updates, until you remove that permission in Keychain Access.
+
+A provider you have switched off is not loaded when you sign in. Forge does not call it, and does not tell you it is out of credits.
+
 ## 6.76.1 (2026-10-20)
 
 Forge checks each provider key with its provider before the key syncs between your computers. A key the provider rejects is not sent, and a rejected key from another computer does not replace a working one here. Forge tells you when either happens.
