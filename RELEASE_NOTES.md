@@ -5,6 +5,15 @@
 
 ## Unreleased
 
+## 6.77.0 (2026-10-31)
+
+- Meeting captions stay with the person who was speaking. A guest can open the room from the link in the email. Long recordings are saved in pieces so a long meeting does not fail to save. On a Mac, the meeting window can go fullscreen when the system window has no fullscreen control of its own.
+- Forge now keeps an organisation report library. Pulse, sealed days, and the sample week are included. Missed mornings are caught up, and a day that has not been signed is not emailed. When a board sitting opens, the sealed quarter and year are attached to the board pack.
+- You can ask Marcus, and two other seats you choose, from inside Forge. Every director is on the same voice roster as the daily cast. Forge asks before a persona is archived. Voice and slider settings you set for the Business cast stay in place, including when they are updated from the portal.
+- If the morning briefing already ran in the portal, Forge will not start a second one for that day.
+- A new job records who created it. My jobs shows that person's jobs. An admin can open a company job to look at it, without that job becoming theirs.
+- A project is seen by its creator, the people assigned to it, and an admin of its company. Signing in downloads that company's projects. Archiving or restoring a project on this computer is not replaced by an older copy from the cloud.
+
 ## 6.76.2 (2026-10-24)
 
 The API key security update now says plainly what is happening. Forge is moving your saved API keys into your computer's secure storage, and they stay on this computer. If your computer asks for permission, choose Always Allow so it does not ask again. If you choose Not now, Forge asks again the next time you sign in.
