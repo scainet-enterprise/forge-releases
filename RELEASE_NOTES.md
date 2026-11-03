@@ -5,6 +5,20 @@
 
 ## Unreleased
 
+## 6.77.1 (2026-11-04)
+
+Unexpected failures are filed on the Service Desk. An ordinary refusal is not sent on as a crash.
+
+Work you do on one computer now reaches the other. Projects, steps, jobs, days, and threads stay together, and a step waits until its project is on this computer.
+
+Forge tells you when a catch-up cannot start yet, for example when you need to sign in, you are offline, or an update is required. News that arrives while the window is in the background waits until you come back.
+
+Deleting a job, a day, or a thread on one computer is not brought back by the other. If your sign-in is no longer valid, Forge treats that as a sign-in problem. A job folder opens on the first try.
+
+A Gmail action that gets stuck fails instead of freezing the morning briefing. The Gmail connection stays with the person who granted it.
+
+When a project sync or a sign-in download fails, Forge records it so it can be looked at.
+
 ## 6.77.0 (2026-10-31)
 
 - Meeting captions stay with the person who was speaking. A guest can open the room from the link in the email. Long recordings are saved in pieces so a long meeting does not fail to save. On a Mac, the meeting window can go fullscreen when the system window has no fullscreen control of its own.
