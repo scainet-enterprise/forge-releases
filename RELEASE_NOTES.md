@@ -5,6 +5,18 @@
 
 ## Unreleased
 
+## 6.78.0 (2026-11-05)
+
+Forge now catches up when you start it, sign in or switch accounts, and otherwise only when your other computer has changed something. Switching back to the Forge window no longer starts a catch-up, and the catch-up window only appears at start-up or sign-in. Everything after that happens in the background, with a short message when something arrives from your other computer.
+
+When something changes on your other computer, Forge brings over just that kind of work, such as a task, a job or a thread, usually within a few seconds. Your own changes are no longer downloaded back to the computer that made them, and saving a change sends only what changed. This makes syncing faster and lighter, especially while an agent is working through a day.
+
+A new computer now offers to restore your work even if Forge has already created today's day. Edits made after a task was dropped bring it back, deletions stay deleted, and a change made while another computer was offline still arrives once it uploads.
+
+A job's files always stay in that job's own folder on every computer, so output written on one computer shows up on the other.
+
+New projects and their steps now reach your other computers.
+
 ## 6.77.1 (2026-11-04)
 
 Unexpected failures are filed on the Service Desk. An ordinary refusal is not sent on as a crash.
