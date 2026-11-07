@@ -5,6 +5,18 @@
 
 ## Unreleased
 
+## 6.78.1 (2026-11-07)
+
+Files now sync reliably between your computers. A file you edit uploads again, a file added as a thread reference reaches your other computer, and a file that cannot be downloaded is set aside instead of stopping the rest of your catch-up. Settings shows how many were set aside. Once, after your first full catch-up, Forge uploads your files again so every copy in the cloud matches.
+
+If you use Forge in more than one company on the same computer, each company's files now stay with that company and no longer hold up the other's catch-up.
+
+Starting Forge is steadier. If your computer is slow to unlock your saved keys, Forge waits and carries on by itself instead of losing access to them until you restart, and syncing starts either way.
+
+A task you complete on one computer shows as completed on the other, even if the other opened today's daily flow first. A project deleted on one computer disappears from the other, and deleting a project no longer shows an error when it worked.
+
+Forge now keeps a log file you can open from Settings, and a Detailed logs switch for when support asks for more. It turns itself off after a day. On Windows, Open logs folder now opens the right folder.
+
 ## 6.78.0 (2026-11-05)
 
 Forge now catches up when you start it, sign in or switch accounts, and otherwise only when your other computer has changed something. Switching back to the Forge window no longer starts a catch-up, and the catch-up window only appears at start-up or sign-in. Everything after that happens in the background, with a short message when something arrives from your other computer.
