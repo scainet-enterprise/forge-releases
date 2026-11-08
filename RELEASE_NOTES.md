@@ -5,6 +5,20 @@
 
 ## Unreleased
 
+## 6.79.0 (2026-11-08)
+
+**Faster start-up and safer file sync**
+
+Forge now starts up with less waiting. It no longer re-checks your whole history for deleted items each day, it loads your project list more efficiently, and it leaves agent history until you open a day or the Agent Stream. The "Catching up" window only appears if catching up takes more than a few seconds.
+
+Files you change are now stored as separate versions in your account, so your other computers always get exactly the version that was recorded, even when two computers save the same file around the same time. This switches on automatically once your account supports it.
+
+Work that was on this computer but missing from your account now uploads straight away, instead of waiting for you to press Sync now.
+
+Settings → Work data sync is simpler. It shows one status, such as "Backed up to your account" or "Changes waiting to upload". Backup and restore happen on their own, so the old Add a New Device and Restore from account buttons now sit under a collapsed Recovery tools section for the rare times support asks you to use them.
+
+Log files are now named by your local date, so today's log is easy to find.
+
 ## 6.78.1 (2026-11-07)
 
 Files now sync reliably between your computers. A file you edit uploads again, a file added as a thread reference reaches your other computer, and a file that cannot be downloaded is set aside instead of stopping the rest of your catch-up. Settings shows how many were set aside. Once, after your first full catch-up, Forge uploads your files again so every copy in the cloud matches.
