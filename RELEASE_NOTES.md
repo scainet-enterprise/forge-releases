@@ -5,6 +5,12 @@
 
 ## Unreleased
 
+## 6.79.1 (2026-11-09)
+
+Files no longer collide when Forge uploads the same file from two places at once, and a busy upload is tried again after a short pause instead of failing.
+
+Starting Forge no longer briefly switches off one of your AI provider keys while it reads your saved keys, so work that starts straight away is not interrupted.
+
 ## 6.79.0 (2026-11-08)
 
 **Faster start-up and safer file sync**
