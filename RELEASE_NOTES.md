@@ -5,6 +5,16 @@
 
 ## Unreleased
 
+## 6.79.2 (2026-11-10)
+
+Forge talks to your account less often. Saving or opening something no longer sends records your account already has, starting Forge no longer repeats its sign-in work every time it syncs, and your computer no longer downloads changes it made itself.
+
+Settings no longer shows agent activity as changes waiting to sync, or a partial backup, after it has already been saved to your account.
+
+The sync summary in the log now says how many records a catch-up brought in.
+
+Meetings no longer keeps trying to update a calendar invite you deleted in Google Calendar, and only updates an invite when something about it changed.
+
 ## 6.79.1 (2026-11-09)
 
 Files no longer collide when Forge uploads the same file from two places at once, and a busy upload is tried again after a short pause instead of failing.
