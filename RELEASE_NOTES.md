@@ -5,6 +5,32 @@
 
 ## Unreleased
 
+## 6.79.5 (2026-11-12)
+
+When you open an older day, job, thread or project on a new computer, its agent history now comes from your account on its own, and the Agent Stream says "Bringing this day's agent history from your account…" while it does. This replaces the "Load it" link. Settings → Work data sync → Load older agent history still brings everything at once.
+
+A new computer now brings the last 30 days of agent history as intended, and the Catching up bar moves with your days and jobs too.
+
+Setting up a new computer no longer uploads all your files again straight afterwards, so your other computers no longer download them a second time.
+
+## 6.79.4 (2026-11-12)
+
+You can add a job on a personal account. Forge no longer asks for a company when your sign-in does not have one. The job stays yours, and it still backs up to your account. Jobs inside a company are unchanged: you see your own, and an admin can still see the company's backed-up jobs.
+
+If you are a Super Admin, **My Issues** has **This tenancy**, next to Assigned to me and Submitted by me. It lists the open issues for the company you are signed into, and you can assign an owner from there. Every issue card shows **Owner:** and the name. On a long issue, **Resolve** stays on screen while the write-up scrolls.
+
+A delegated day task keeps **Cancel** while the agent is still working. Discarding every saved key asks inside Forge, and a SuperGrok sign-in that needs you to connect again says so. Signing in with SuperGrok keeps your Google key, and it does not use a pasted xAI key at the same time. Turning SuperGrok off brings that pasted key back.
+
+A job shortlist leaves out ads that are already closed. A day that fails to load shows the reason, instead of a blank error.
+
+## 6.79.3 (2026-11-12)
+
+Setting up Forge on a new computer is quicker. If your account is on the newer sync, the new computer catches up in one pass instead of also running the older "Restoring work data" restore, and the Catching up window shows how far it has got.
+
+A new computer now brings the last 30 days of agent history instead of all of it. To bring the rest, use Settings → Work data sync → Load older agent history, or "Load it" in the Agent Stream, then reopen the conversation.
+
+Projects that have not changed are no longer sent to your account again, and tasks belonging to a job that was deleted before this computer saw it no longer show up as failures.
+
 ## 6.79.2 (2026-11-10)
 
 Forge talks to your account less often. Saving or opening something no longer sends records your account already has, starting Forge no longer repeats its sign-in work every time it syncs, and your computer no longer downloads changes it made itself.
