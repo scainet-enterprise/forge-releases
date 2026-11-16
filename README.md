@@ -2,7 +2,7 @@
   <h1 align="center">SCAINET Forge</h1>
   <p align="center"><strong>The development tool for the 99% who aren't developers.</strong></p>
   <p align="center">
-    <a href="https://github.com/scainet-enterprise/forge-releases/releases/latest"><img src="https://img.shields.io/badge/version-6.79.5-blue" alt="Version 6.79.5"></a>
+    <a href="https://github.com/scainet-enterprise/forge-releases/releases/latest"><img src="https://img.shields.io/badge/version-6.80.0-blue" alt="Version 6.79.5"></a>
     <a href="https://github.com/scainet-enterprise/forge-releases/releases/latest"><img src="https://img.shields.io/badge/status-Stable-brightgreen" alt="Stable"></a>
     <img src="https://img.shields.io/badge/platforms-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey" alt="Platforms">
     <a href="https://scainet.io/innovation"><img src="https://img.shields.io/badge/patents-filed-orange" alt="Patents"></a>
@@ -25,11 +25,11 @@ The buttons below are the latest release, **6.79.5**. A new install follows the 
 
 | Platform | Download |
 |----------|----------|
-| **Windows** (x64) | [SCAINET-Forge_6.79.5_x64-setup.exe](https://github.com/scainet-enterprise/forge-releases/releases/download/v6.79.5/SCAINET-Forge_6.79.5_x64-setup.exe) |
-| **macOS** (Apple Silicon) | [SCAINET-Forge_6.79.5_aarch64.dmg](https://github.com/scainet-enterprise/forge-releases/releases/download/v6.79.5/SCAINET-Forge_6.79.5_aarch64.dmg) |
-| **macOS** (Intel) | [SCAINET-Forge_6.79.5_x64.dmg](https://github.com/scainet-enterprise/forge-releases/releases/download/v6.79.5/SCAINET-Forge_6.79.5_x64.dmg) |
-| **Linux** (AppImage) | [SCAINET-Forge_6.79.5_amd64.AppImage](https://github.com/scainet-enterprise/forge-releases/releases/download/v6.79.5/SCAINET-Forge_6.79.5_amd64.AppImage) |
-| **Linux** (Debian) | [SCAINET-Forge_6.79.5_amd64.deb](https://github.com/scainet-enterprise/forge-releases/releases/download/v6.79.5/SCAINET-Forge_6.79.5_amd64.deb) |
+| **Windows** (x64) | [SCAINET-Forge_6.80.0_x64-setup.exe](https://github.com/scainet-enterprise/forge-releases/releases/download/v6.80.0/SCAINET-Forge_6.80.0_x64-setup.exe) |
+| **macOS** (Apple Silicon) | [SCAINET-Forge_6.80.0_aarch64.dmg](https://github.com/scainet-enterprise/forge-releases/releases/download/v6.80.0/SCAINET-Forge_6.80.0_aarch64.dmg) |
+| **macOS** (Intel) | [SCAINET-Forge_6.80.0_x64.dmg](https://github.com/scainet-enterprise/forge-releases/releases/download/v6.80.0/SCAINET-Forge_6.80.0_x64.dmg) |
+| **Linux** (AppImage) | [SCAINET-Forge_6.80.0_amd64.AppImage](https://github.com/scainet-enterprise/forge-releases/releases/download/v6.80.0/SCAINET-Forge_6.80.0_amd64.AppImage) |
+| **Linux** (Debian) | [SCAINET-Forge_6.80.0_amd64.deb](https://github.com/scainet-enterprise/forge-releases/releases/download/v6.80.0/SCAINET-Forge_6.80.0_amd64.deb) |
 
 Or browse [all releases](https://github.com/scainet-enterprise/forge-releases/releases).
 

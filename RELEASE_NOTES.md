@@ -5,6 +5,18 @@
 
 ## Unreleased
 
+## 6.80.0 (2026-11-16)
+
+Forge is more dependable when a service it relies on is slow or not answering. Calls to your Scainet account, Google, GitHub, the AI providers, voice and other connected services now stop waiting after a sensible time and tell you, instead of leaving a spinner running for ever. Long AI answers still have up to 10 minutes.
+
+Gmail and Calendar now work the same way on your computer and in cloud jobs. Cloud jobs no longer stall when Google is slow to renew access, and an email drafted in the cloud keeps characters such as dashes in its subject line.
+
+Setting up your account, reporting an issue, linking a repository and checking repository access now always talk to the same Scainet account service as the rest of Forge.
+
+Forge is better protected against harmful content. The app window now only runs code and makes connections it needs, and a web page you preview from your own files now runs in its own protected space: it can use JavaScript, load its own images, styles and scripts, and call the internet like a browser, but it can't reach Forge or anything outside its folder. Links inside a preview open in the Forge Browser.
+
+An open Daily Flow day no longer keeps reloading itself in the background, so Forge sits close to idle instead of using a large share of your computer's processor.
+
 ## 6.79.5 (2026-11-12)
 
 When you open an older day, job, thread or project on a new computer, its agent history now comes from your account on its own, and the Agent Stream says "Bringing this day's agent history from your account…" while it does. This replaces the "Load it" link. Settings → Work data sync → Load older agent history still brings everything at once.
