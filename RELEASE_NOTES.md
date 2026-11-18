@@ -5,6 +5,10 @@
 
 ## Unreleased
 
+## 6.80.1 (2026-11-18)
+
+Forge 6.80.0 closed as soon as it was opened on Windows. Forge now opens normally on Windows again, and your saved provider keys are unchanged.
+
 ## 6.80.0 (2026-11-16)
 
 Forge is more dependable when a service it relies on is slow or not answering. Calls to your Scainet account, Google, GitHub, the AI providers, voice and other connected services now stop waiting after a sensible time and tell you, instead of leaving a spinner running for ever. Long AI answers still have up to 10 minutes.
