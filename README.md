@@ -2,8 +2,8 @@
   <h1 align="center">SCAINET Forge</h1>
   <p align="center"><strong>The development tool for the 99% who aren't developers.</strong></p>
   <p align="center">
-    <a href="https://github.com/scainet-enterprise/forge-releases/releases/latest"><img src="https://img.shields.io/badge/version-6.80.1-blue" alt="Version 6.79.5"></a>
-    <a href="https://github.com/scainet-enterprise/forge-releases/releases/latest"><img src="https://img.shields.io/badge/status-Stable-brightgreen" alt="Stable"></a>
+    <a href="https://github.com/scainet-enterprise/forge-releases/releases/latest"><img src="https://img.shields.io/badge/version-6.80.1-blue" alt="Version 6.80.1"></a>
+    <a href="https://github.com/scainet-enterprise/forge-releases/releases/latest"><img src="https://img.shields.io/badge/status-Beta-brightgreen" alt="Beta"></a>
     <img src="https://img.shields.io/badge/platforms-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey" alt="Platforms">
     <a href="https://scainet.io/innovation"><img src="https://img.shields.io/badge/patents-filed-orange" alt="Patents"></a>
   </p>
@@ -21,7 +21,7 @@ If you can talk, you can build software.
 
 ## Download
 
-The buttons below are the latest release, **6.79.5**. A new install follows the stable channel, which is **6.79.5**.
+The buttons below are the latest release, **6.80.1**. A new install follows the stable channel, which is **6.79.5**.
 
 | Platform | Download |
 |----------|----------|
@@ -86,7 +86,7 @@ The feature lines above are generated from the Forge source. Editing them in thi
 
 | Channel | URL | Description |
 |---------|-----|-------------|
-| **Beta** | `beta/latest.json` | Development builds. Updated when a version is released. Now 6.79.5. |
+| **Beta** | `beta/latest.json` | Development builds. Updated when a version is released. Now 6.80.1. |
 | **Stable** | `stable/latest.json` | The build a new install follows. Promoted from beta after the gates. Now 6.79.5. |
 
 Updater manifests are files in this repository, not release assets. The addresses stay the same. The files they point at change. The binaries stay on the GitHub release.
