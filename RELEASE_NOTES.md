@@ -5,6 +5,24 @@
 
 ## Unreleased
 
+## 6.81.0 (2026-11-18)
+
+Meetings booked in the Portal now appear in Forge, including assessment meetings, so you can open and run them from your computer.
+
+Guest join links are secure and short-lived. The host can revoke a link so an old invite can no longer be used to join.
+
+Meetings are more reliable. A recording stays with the meeting it belongs to, and you can recover recordings if something goes wrong. Invitees stay on a recurring series instead of only one occurrence. Clara's mouth follows the audio that is already playing.
+
+Clara looks clearer in the Agent Stream and in meetings: a closer head-and-shoulders view, more natural lighting, and her mouth follows speech more naturally. The tablet she used to hold is gone, so her hands stay out of the way.
+
+Daily Flow days now stay consistent across devices and future updates.
+
+If you are on a Care plan, AI use in Care morning briefings now counts towards that plan's budget.
+
+Forge can now read spreadsheets. Ask about an Excel (.xlsx, .xlsm, .xlsb, .xls), LibreOffice/OpenOffice (.ods) or CSV file and the agent reads it directly: it sees every sheet and its size, then reads just the rows it needs, so even large workbooks stay quick. Dates show as dates, merged cells and hidden sheets are noted, and password-protected or damaged files get a clear message instead of an error. CSV files saved in other encodings (for example from older Excel versions or Japanese systems) now open correctly instead of being refused. Opening a workbook shows a read-only preview. A fuller spreadsheet viewer is in this release but stays off for now, until it has been tried more thoroughly.
+
+The public Forge page is now written from the product's own facts, so the feature list stays in step when a release goes out.
+
 ## 6.80.1 (2026-11-18)
 
 Forge 6.80.0 closed as soon as it was opened on Windows. Forge now opens normally on Windows again, and your saved provider keys are unchanged.
