@@ -5,6 +5,24 @@
 
 ## Unreleased
 
+## 6.82.1 (2026-11-25)
+
+This release delivers the changes listed under 6.82.0, which was not published. There are no other changes.
+
+## 6.82.0 (2026-11-25)
+
+Forge now keeps your saved API keys only in your computer's secure keychain, and the older encrypted key file is removed. If you last used a much older version of Forge, keys saved in that file can't be carried over: any you saved to your account come back when you sign in, and you can add any others again in Settings → Providers. Forge tells you once if this applies to you.
+
+During a free trial, the API keys you add are now kept on your computer between restarts. When you create or sign in to an account, they're added to it, unless the account already has a key for that provider.
+
+In Settings → Providers, every API key saved to your account now has its own row, including keys added on another computer. While you type a key, you can press Show to check it before saving. Adding a key on one computer no longer drops keys saved on your other computers from your account's copy.
+
+Forge now uses your sign-in for every connection to SCAINET. If you're signed out, syncing pauses until you sign in, and joining a meeting asks you to sign in first.
+
+Asking Clara by voice to create or list your tasks works again.
+
+The cloud morning briefing no longer stops partway through when it reads a long email containing certain characters.
+
 ## 6.81.0 (2026-11-18)
 
 Meetings booked in the Portal now appear in Forge, including assessment meetings, so you can open and run them from your computer.
